@@ -1,6 +1,21 @@
-# SteamRoot: design precis
+---
+doc_id: STR-PRC-001
+title: SteamRoot design precis
+project: SteamRoot
+doc_type: Design precis
+version: "0.1"
+status: Draft
+date: '2026-09-24'
+author: Amish Chadha
+license: CERN-OHL-S-2.0
+revisions:
+- version: "0.1"
+  date: '2026-09-24'
+  author: Amish Chadha
+  change: Initial scaffold
+---
 
-> Status: concept. This precis is a working draft and will be expanded before prototyping.
+# SteamRoot design precis
 
 ## Summary
 
