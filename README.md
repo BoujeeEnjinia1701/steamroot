@@ -1,14 +1,14 @@
 # SteamRoot
 
-![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+![TRL 2](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Agriculture · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $1,500 USD · **Difficulty:** 5 of 5
+**Area:** Agriculture · **TRL:** 3 of 9 (analytical proof of concept on paper) · **Prototype budget:** $1,800 USD · **Difficulty:** 5 of 5
 
 Low-pressure, biomass-fired steam generator with a flue-gas economizer and a steam-hood trailer for soil pasteurization, operated near atmospheric pressure to stay out of pressure vessel code.
 
 ![SteamRoot concept](media/hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement STR-DWG-002 (PDF)](cad/drawings/STR-DWG-002.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Problem
 
@@ -20,21 +20,23 @@ Low-pressure, biomass-fired steam generator with a flue-gas economizer and a ste
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
+TRL 3 status (paper only): the sizing note [STR-CAL-001](docs/04-calcs/01-sizing.md) finds 30 kg/h of steam at a header pressure of about 0.03 bar with 7 L of water in the heated section, but about 54 % fuel-to-steam efficiency against a 65 % target, about 1.9 m²/h at 15 cm against 2 m²/h, 536 kg loaded against 500 kg, and $1,915 in parts against $1,800. A written ruling from the local boiler authority is an open prerequisite before any detail design or build. TRL 4 work is on hold.
+
 ## Key components
 
-- Coil-type once-through generator (copper or stainless)
-- Firebox
+- Once-through monotube coil, 25.4 mm 316 stainless
+- Fiber-lined firebox
 - Economizer coil
-- Feed pump
-- Certified relief valve
-- Steam hood
+- Fixed-rate feed pump with coil outlet and tank level alarms
+- Water-seal vent and certified relief valve
+- Two steam hoods used alternately
 - Thermocouples
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 
 ## Safety
 
-> This design involves heat and pressurized steam. Keep operating pressure and water volume below local boiler and pressure vessel code thresholds, fit a certified relief valve, and never operate it unattended.
+> This design involves open fire, carbon monoxide and steam. Keep operating pressure and water volume below local boiler and pressure vessel code thresholds, get a written ruling from the local boiler authority before any build, fit a certified relief valve, and never operate it unattended.
 
 ## Repository layout
 

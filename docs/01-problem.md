@@ -3,9 +3,9 @@ doc_id: STR-PRB-001
 title: SteamRoot problem statement
 project: SteamRoot
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-24'
+date: '2026-09-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,6 +17,10 @@ revisions:
   date: '2026-09-24'
   author: Amish Chadha
   change: Populate to TRL 2 (users, context, constraints, out of scope, prior work, safety)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Record Amish's 2026-09-25 decisions on first users, first jurisdiction and budget; regulatory ruling marked as an open prerequisite
 ---
 
 # SteamRoot problem statement
@@ -46,7 +50,7 @@ Heating soil to about 70 °C (158 °F) for 20 to 30 minutes kills most weed seed
 
 ## Constraints
 
-- Garage-buildable prototype, about $1,500 USD, using stock steel, stainless tube and off-the-shelf safety parts.
+- Garage-buildable prototype within $1,800 USD (raised from $1,500 by Amish on 2026-09-25 to allow contingency), using stock steel, stainless tube and off-the-shelf safety parts.
 - Near-atmospheric operation: open-vented, never sealed, with a normal working pressure well below the thresholds that bring a boiler under pressure vessel and boiler codes. Thresholds, exemptions and registration rules differ by country, state and province and must be confirmed with the local authority before any build.
 - Fired with locally available dry woody biomass; no diesel or propane burner.
 - Towable by a small tractor, utility vehicle or car with a hitch; loaded mass about 500 kg or less.
@@ -72,9 +76,10 @@ Steam soil disinfestation is established practice. Greenhouse growers have steam
 - **Negative-pressure steaming:** steam is drawn down through the soil by suction through buried perforated pipes. Reaches deeper, but needs a permanent installation.
 - **Band steaming:** research machines steam only a narrow band where the crop row will be, cutting energy per hectare.
 
-Soil solarization (clear plastic in hot weather) and anaerobic soil disinfestation are lower-energy alternatives, but they depend on climate and take weeks. Steam works in hours and in any season. Published studies on steaming consistently report energy use as the main limit on adoption, which is why SteamRoot focuses on a biomass fire and a flue-gas economizer. Specific sources will be cited at TRL 3.
+Soil solarization (clear plastic in hot weather) and anaerobic soil disinfestation are lower-energy alternatives, but they depend on climate and take weeks. Steam works in hours and in any season. Published studies on steaming consistently report energy use as the main limit on adoption, which is why SteamRoot focuses on a biomass fire and a flue-gas economizer. Specific sources are not yet cited; they were not checked in the TRL 3 session and remain flagged in `docs/REVIEW.md`.
 
-## Open questions
+## Decisions and open questions
 
-- Which users to involve first: a local market garden, a nursery or an extension program? Proposed: one market garden and one nursery, awaiting Amish.
-- Which jurisdiction to design to first, so that the low-pressure exemption can be confirmed with that authority? Proposed: Amish's home jurisdiction, awaiting Amish.
+- First users: one market garden and one nursery. Decided by Amish, 2026-09-25 (STR-DDR-001). The named partners are not chosen: Proposed, awaiting Amish.
+- First jurisdiction for the regulatory check: Amish's home jurisdiction. Decided by Amish, 2026-09-25. Which jurisdiction and which authority to ask: Proposed, awaiting Amish.
+- **Open prerequisite:** a written ruling from the local boiler authority on whether an open-vented, fired monotube coil is exempt from boiler and pressure vessel rules. Amish approved getting it before TRL 3 detail work. It has not been obtained, so TRL 3 was limited to paper calculations and preliminary drawings.

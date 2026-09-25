@@ -55,3 +55,75 @@ Requirements not met or at risk:
 ### Recommended next step
 
 Review this note and the media. Decide on items 1, 2 and 5 above. If approved, confirm regulatory status first, then run `/advance-trl3` to check the efficiency, two-phase pressure drop and hood heat transfer by calculation.
+
+## Session 2026-09-25: TRL 3
+
+Authority: on 2026-09-25 Amish wrote "proceed with all of your recommendations across all batches. Make sure we don't proceed to TRL 4 on any of them." The TRL 2 recommendations above are recorded as decided in STR-DDR-001, and the repo now claims TRL 3 (`trl: 3`, `trl_target: 3`). TRL 4 is on hold by Amish's instruction.
+
+**Regulatory prerequisite, still open.** The approved recommendation included getting a written ruling from the local boiler authority before TRL 3 detail work. That ruling cannot be obtained in a documentation session, and it has not been obtained. This session therefore did only paper calculations, a massing-plus model and a preliminary drawing. The ruling is marked as an open prerequisite in STR-DDR-001, STR-PRB-001, STR-PRC-001, STR-REQ-001, STR-CAL-001, in the notes and title block of drawing STR-DWG-002, and in `bom/bom-notes.md`. No detail design, purchase or build should happen before it.
+
+### What was done
+
+- `docs/decisions/0001-trl2-review-decisions.md` (STR-DDR-001 v0.1): the six decided items and the five items still open.
+- `docs/04-calcs/01-sizing.md` (STR-CAL-001 v0.1) and `docs/04-calcs/sizing.py`: first-principles sizing (soil heat with a condensation-front model, hood cycle, combustion and firebox heat transfer, economizer, two-phase pressure drop, stored water, dry-coil refeed, relief valve sizing, mass and cost) with a results table for every requirement. The script reads geometry from the model and prices from the BOM and prints every number the note quotes.
+- `cad/src/model.py`: parametric build123d model (helical coil, fiber-lined firebox, economizer, chimney, header with a 1 m water-seal pot and vent, relief valve, hose, two hoods with skirts, trailer). Exports `cad/step/steamroot.step` and `cad/stl/steamroot.stl` plus firebox, coil, header and hood parts.
+- `cad/src/sheets.py` and `cad/drawings/STR-DWG-002.svg`, `.pdf`, `.png`: general arrangement at Rev P1 (STR-DWG-001 is the concept blueprint in `media/`).
+- `bom/bom.csv`: 16 lines, all priced with a supplier or supplier type; second hood and feed and coil alarms added; `bom/bom-notes.md` updated.
+- `cad/src/concept_media.py`: now builds the media from `model.py` and quotes CAL-001; all media refreshed.
+- `docs/01-problem.md`, `docs/02-concept.md`, `docs/03-requirements.md` bumped to v0.3 with the decisions and TRL 3 results; `project.yaml` (TRL 3, budget $1,800, evidence list); `README.md` (TRL badge, status line, key components).
+
+### Requirement status (STR-CAL-001), not met first
+
+| ID | Result | Target | Status |
+| --- | --- | --- | --- |
+| R2 | 1.88 m²/h at 15 cm; 3.41 m²/h at 5 cm (two hoods) | 2 and 5 m²/h | Not met |
+| R4 | 5.4 kg wood per m² at 15 cm | 4 kg/m² | Not met |
+| R5 | 53.5 % fuel to steam | 65 % | Not met |
+| R6 | 0.110 bar gauge at the coil inlet (header 0.033 bar) | 0.1 bar | Not met (10 % over); open vent met |
+| R11 | 536 kg loaded with a full tank | 500 kg | Not met |
+| R12 | $1,915 parts | $1,800 | Not met |
+| R9 | Standard certified valve is 15 psi = 1.03 bar; 6.2 mm orifice needed | 1 bar (15 psi) or less | At risk |
+| R11 | 1.48 m width | 1.5 m | At risk |
+| R1 | Holds 70 °C at 15 cm in the 1D model if the front reaches 16.5 cm | 70 °C, 20 to 30 min | Not verifiable at TRL 3 |
+| R3, R7, R8, R10 | 30 kg/h at 40.7 kW; 7.0 L; 4.2 h; 2.4 m chimney, 23 °C hood skin | | Met |
+
+Counts: 7 not met, 2 at risk, 1 not verifiable at TRL 3, 4 met (14 checks on 12 requirements).
+
+Numbers from the TRL 2 note that changed: efficiency 62 % became 53.5 %; wood use 7.9 kg/h became 10.1 kg/h because the wood heating value at 20 % moisture is 14.5 MJ/kg, not 16; steam per m² at 15 cm 14 became 15.6 kg/m² (soil behind the steam front sits at 100 °C); rate at 5 cm 6.5 became 3.41 m²/h (hold limited); loaded mass 490 became 536 kg (second hood, seal pot, heavier trailer assumption); coil pressure drop 0.05 became 0.077 bar (two-phase and curvature effects); parts cost $1,500 became $1,915.
+
+### Decisions recorded
+
+Decided by Amish, 2026-09-25, going with the recommendation (STR-DDR-001): open-vented architecture with water-seal vent and certified relief valve; 25.4 mm 316 stainless monotube coil; two hoods used alternately; fixed-rate feed with coil outlet and tank level alarms; `budget_usd` raised to $1,800; first users one market garden and one nursery, first jurisdiction Amish's home jurisdiction.
+
+### Items still awaiting Amish
+
+1. **Regulatory ruling** from the local boiler authority: approved, not obtained. Open prerequisite.
+2. Which jurisdiction is "home" and which authority to ask.
+3. The named market garden and nursery (no partner is named).
+4. Wood only, no liquid fuel backup (from STR-PRC-001; not in the TRL 2 review list).
+5. How to close R5 and R4: options are (a) a convective evaporator bank in the flue before the economizer, (b) controlled primary and secondary air to reach λ near 1.5, (c) a combustion air preheater (about 62 % alone), or (d) relax R5 to about 55 % and R4 to about 5.5 kg/m². Recommendation: study (a) with (b) at the next paper step, and keep the targets for now.
+6. How to treat R2: (a) accept 1.9 m²/h at 15 cm and restate the 5 cm target at about 3.4 m²/h; (b) a third hood (helps 5 cm only, to 4.43 m²/h); (c) raise steam output, which needs a bigger firebox. Recommendation: (a) until soil tests exist.
+7. R6: accept 0.11 bar at the coil inlet (the header is at 0.03 bar) or reduce coil drop with a shorter coil or larger tube. Recommendation: redefine R6 as 0.1 bar at the header and 0.15 bar at the coil inlet, because the vent limit applies at the header.
+8. R9 wording: change "1 bar (15 psi) or less" to "15 psi (1.03 bar) or less", the lowest standard certified set pressure. Also size the valve for the dry-coil refeed flash (about 14 mm orifice), not only for 30 kg/h. Recommendation: both.
+9. R11 mass: (a) tow with the tank and seal pot drained (402 kg) and fill on site; (b) a 100 L tank (3.3 h per fill); (c) raise the limit to 550 kg. Recommendation: (a), written into the requirement as "500 kg or less as towed, with the tank drained".
+10. R12 cost: $1,915 is $115 over the new $1,800 budget with no contingency. Options: (a) raise the budget to about $2,200 for 15 % contingency; (b) keep $1,800 and cut, for example one hood; (c) accept. Recommendation: (a). `budget_usd` stays at 1800.
+11. Design details raised at TRL 3: fiber lining instead of castable (recommended, for mass); one hose moved between hoods with a steam-rated coupling instead of two hoses (recommended, for cost).
+
+### Safety concerns
+
+- **Regulatory status** is still the gating risk (see above).
+- **Dry-coil refeed.** A dry coil near 520 °C can flash about 1.3 kg of water; if that happens over 30 s it is about 155 kg/h, five times the design flow. The vent and relief valve are sized for 30 kg/h. The coil outlet alarm and the rule never to refeed a hot, dry coil remain essential.
+- **Steam jets at the hood skirt.** In soils finer than sand the pressure needed to push steam through the treated layer (about 2,400 Pa in a sandy loam) is ten times what the 29 kg hood can hold down (235 Pa), so steam will escape under the skirt. This is a burn hazard at foot level.
+- **Hose changeover.** Two hoods mean the hot hose coupling is moved about twice an hour. Steam must be diverted to the vent first.
+- **Hot surfaces and fire.** Firebox skin about 100 °C, flue gas about 450 °C at the spark arrestor.
+- **Carbon monoxide** in greenhouses and **fire** in dry fields, as in the TRL 2 note.
+
+### Other notes
+
+- No TRL 4 material exists in the repo; none was created. `firmware/` and `electronics/` hold only placeholders.
+- Citations: the TRL 2 documents describe prior work without sources, and there is no list of unchecked citations. No sources were added. The only web check made was the relief valve price (SupplyHouse.com listing for Watts 315M2-015, $68.19, 2026-09-25). Prior-work sources are still to be cited.
+- The media render takes about eight minutes because of the helical coil in the hidden-line projection. `media/model.glb` is re-exported at a coarser tessellation to keep it small.
+
+### Recommended next step
+
+Obtain the written ruling from the local boiler authority, and have Amish decide items 5 to 11 above. After that, a second paper iteration at TRL 3 (a revised coil and flue layout to address R5 and R4, and restated R2, R6, R9 and R11) is the right next step. **TRL 4 is on hold by Amish's instruction.** For the record only, TRL 4 would need: the regulatory ruling in hand; a lab test article of the coil, header and water seal; a test plan and report (TST, `environment: lab`) for steam output, efficiency, pressure at the coil inlet and header, dry-coil alarm response and relief valve capacity; soil permeability and skirt leakage tests with the hood; and build log entries. None of this has been started.
