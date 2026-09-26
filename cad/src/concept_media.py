@@ -42,7 +42,7 @@ render_all(
         f"30 kg/h steam from {fb['wood_kg_h']:.0f} kg/h wood, {100*fb['eta']:.0f} % fuel to steam (calc.)",
         f"{c['d15']['ms']:.1f} kg steam per m2 to 70 C at 15 cm (calc.)",
         f"{c['rate15_2']:.1f} m2/h at 15 cm, {c['rate5_2']:.1f} m2/h at 5 cm, two hoods (calc.)",
-        f"Loaded mass {c['m_total']:.0f} kg, width {c['width']:.2f} m (calc.)",
+        f"Towed mass {c['m_empty_tank']:.0f} kg drained ({c['m_total']:.0f} kg full), width {c['width']:.2f} m (calc.)",
     ],
     cut_exclude=("Wheels", "Steam hose"),
     flow={"title": "energy flow at 30 kg/h steam, 15 cm depth (all values calculated estimates, STR-CAL-001)",

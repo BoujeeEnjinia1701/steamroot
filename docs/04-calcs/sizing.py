@@ -60,12 +60,15 @@ A = {
     "c_ss": 0.50, "rho_ss": 8000.0, "flash_s": 30.0, "sy_316_700C": 100e6,
     # Relief valve (Napier formula, US units)
     "rv_set_psig": 15.0, "rv_accum": 0.10, "rv_K": 0.878,
+    "rv_rated_lb_h": 375.0,      # Watts Series 315, 3/4 in, 15 psi set: 375 lb/h (maker's capacity table)
+    # R5 and R4 study (decided by Amish 2026-09-25: study a convective evaporator bank with controlled air)
+    "U_bank": 30.0,              # W/(m2 K), bare-tube evaporator bank in cross flow (gas side controlled)
     # Mass (kg) not derived from geometry
     "m_trailer": 160.0, "m_grate_door": 25.0, "rho_st": 7850.0, "rho_lining": 128.0, "rho_castable": 2000.0,
     "m_tank_empty": 8.0, "m_pump": 2.0, "m_battery": 6.0, "m_hose_per_m": 0.9, "m_header_etc": 18.0,
     "m_instr_safety": 8.0, "m_hood_extra": 3.0,
     # Budget
-    "budget_usd": 1800.0,
+    "budget_usd": 2200.0,        # raised from 1800 by Amish, 2026-09-25 (STR-DDR-002)
 }
 
 
@@ -208,6 +211,43 @@ def run(a=A, geo=GEO, verbose=False):
     r["fb"] = base
     r["sens"] = {(lam, F): firebox(lam, F) for lam in (1.5, 2.0, 2.5) for F in (0.25, 0.40, 0.60)}
     r["fb_preheat"] = firebox(a["lambda"], a["F_rad"], air_preheat=135.0)
+    def bank_study(lam, F, eta_t=0.65):
+        """Evaporator bank in the flue between firebox and economizer needed to reach eta_t (R5 study)."""
+        r_fg = 1 + lam * air_st
+        Q_in = r["Q_steam"] / eta_t
+        m_f = Q_in / (lhv * 1000)
+        mfg = m_f * r_fg
+        od = geo["tube_od"] / 1000
+        L = math.hypot(math.pi * geo["coil_mean_d"] / 1000, geo["coil_pitch"] / 1000) * geo["coil_turns"]
+        A_c = math.pi * od * L
+        Tw = a["t_wall"] + 273.15
+        A_fb = 2 * (geo["fb_l"] * geo["fb_w"] + geo["fb_l"] * geo["fb_h"] + geo["fb_w"] * geo["fb_h"]) / 1e6
+        R_wall = geo["fb_lining_t"] / 1000 / a["k_lining"] + 1 / a["h_shell"]
+        avail = Q_in * (1 - a["f_unburned"])
+        def excess(Tg_C):   # heat released minus heat leaving the firebox zone
+            Tg = Tg_C + 273.15
+            q_c = (SIGMA * F * A_c * (Tg**4 - Tw**4) + a["h_conv"] * A_c * (Tg - Tw)) / 1000
+            q_s = (Tg_C - a["t_soil0"]) / R_wall / 1000 * A_fb
+            return avail - q_c - q_s - mfg * a["cp_fg"] * (Tg_C - a["t_soil0"]), q_c
+        lo, hi = 150.0, 1500.0
+        for _ in range(80):
+            mid = (lo + hi) / 2
+            (lo, hi) = (mid, hi) if excess(mid)[0] > 0 else (lo, mid)
+        Tg = (lo + hi) / 2
+        q_fb = excess(Tg)[1]
+        Q_bank = max(0.0, r["Q_coil"] - q_fb)
+        T1 = Tg - Q_bank / (mfg * a["cp_fg"])
+        tb = a["t_steam"]
+        lmtd = (Tg - T1) / math.log((Tg - tb) / (T1 - tb)) if Q_bank > 0 else float("nan")
+        A_bank = Q_bank * 1000 / (a["U_bank"] * lmtd) if Q_bank > 0 else 0.0
+        T_stack = T1 - r["Q_eco"] / (mfg * a["cp_fg"])
+        return dict(lam=lam, F=F, eta=eta_t, Tg=Tg, q_fb=q_fb, Q_bank=Q_bank, T1=T1, A_bank=A_bank,
+                    L_bank=A_bank / (math.pi * od), T_stack=T_stack, wood_kg_h=m_f * 3600)
+
+    r["bank"] = {lam: bank_study(lam, a["F_rad"]) for lam in (1.5, 2.0)}
+    # efficiency needed for R4 (4 kg/m2 at 15 cm with two hoods)
+    # (filled after the treatment rate is known, below)
+
     # stack temperature that would give 65 % at the base excess air and losses
     Q_in65 = r["Q_steam"] / 0.65
     m_f65 = Q_in65 / (lhv * 1000)
@@ -231,6 +271,8 @@ def run(a=A, geo=GEO, verbose=False):
     # Treatment-level fuel figures
     r["wood_per_m2_15"] = base["wood_kg_h"] / r["rate15_2"]
     r["wood_per_m2_5"] = base["wood_kg_h"] / r["rate5_2"]
+    r["wood_per_m2_15_at65"] = r["bank"][2.0]["wood_kg_h"] / r["rate15_2"]
+    r["eta_for_R4"] = r["Q_steam"] / (4.0 * r["rate15_2"] / 3600 * lhv * 1000)
 
     # ---------------------------------------------------- C. pressure drop, steam side
     Di = (geo["tube_od"] - 2 * geo["tube_wall"]) / 1000
@@ -298,6 +340,7 @@ def run(a=A, geo=GEO, verbose=False):
     r.update(rv_P1=P1, rv_area=rv_area(a["steam_kg_h"]), rv_d=math.sqrt(4 * rv_area(a["steam_kg_h"]) / math.pi),
              rv_area_flash=rv_area(flash_rate), rv_d_flash=math.sqrt(4 * rv_area(flash_rate) / math.pi))
     r["rv_set_bar"] = a["rv_set_psig"] * 0.0689476
+    r["rv_rated_kg_h"] = a["rv_rated_lb_h"] / 2.2046
 
     # ---------------------------------------------------- E. mass, envelope, surfaces
     L, W, H_ = geo["fb_l"] / 1000, geo["fb_w"] / 1000, geo["fb_h"] / 1000
@@ -354,27 +397,31 @@ def run(a=A, geo=GEO, verbose=False):
         ("R1", "Soil at 70 C for 20 to 30 min at 15 cm over 80 % of footprint",
          f"front to {100*(0.15+delta):.1f} cm holds 70 C at 15 cm for {a['hold_min']:.0f} min (1D); edge and permeability untested",
          "70 C, 20 to 30 min", "not verifiable at TRL 3"),
-        ("R2", "Treatment rate at 15 cm, two hoods", f"{r['rate15_2']:.2f} m2/h", "2 m2/h or more",
-         status(r["rate15_2"], 2.0, True)),
-        ("R2", "Treatment rate at 5 cm, two hoods", f"{r['rate5_2']:.2f} m2/h", "5 m2/h or more",
-         status(r["rate5_2"], 5.0, True)),
+        ("R2", "Treatment rate at 15 cm, two hoods", f"{r['rate15_2']:.2f} m2/h", "1.85 m2/h or more",
+         status(r["rate15_2"], 1.85, True)),
+        ("R2", "Treatment rate at 5 cm, two hoods", f"{r['rate5_2']:.2f} m2/h", "3.4 m2/h or more",
+         status(r["rate5_2"], 3.4, True)),
         ("R3", "Steam output", f"30 kg/h with coil gas at {fb['Tg']:.0f} C, firing {fb['Q_in']:.1f} kW",
          "30 kg/h or more", "met"),
         ("R4", "Wood per m2 at 15 cm", f"{r['wood_per_m2_15']:.1f} kg/m2", "4 kg/m2 or less",
          status(r["wood_per_m2_15"], 4.0, False)),
         ("R5", "Fuel to steam efficiency", f"{100*fb['eta']:.0f} %", "65 % or more",
          status(fb["eta"], 0.65, True)),
-        ("R6", "Highest normal steam-side pressure (coil inlet)", f"{p_inlet/1e5:.3f} bar gauge",
-         "0.1 bar gauge or less", status(p_inlet / 1e5, 0.10, False)),
+        ("R6", "Normal pressure at the header", f"{p_header/1e5:.3f} bar gauge",
+         "0.1 bar gauge or less", status(p_header / 1e5, 0.10, False)),
+        ("R6", "Normal pressure at the coil inlet", f"{p_inlet/1e5:.3f} bar gauge",
+         "0.15 bar gauge or less", status(p_inlet / 1e5, 0.15, False)),
         ("R7", "Water in heated section, flooded", f"{r['V_heated']:.1f} L", "8 L or less",
          status(r["V_heated"], 8.0, False)),
         ("R8", "Steaming per fill", f"{r['run_h']:.1f} h", "3 h or more", status(r["run_h"], 3.0, True)),
-        ("R9", "Certified relief valve", f"15 psi ({r['rv_set_bar']:.2f} bar) valve; needs {r['rv_d']:.1f} mm orifice at 30 kg/h",
-         "1 bar (15 psi) or less, full capacity", "at risk"),
+        ("R9", "Certified relief valve, set pressure and capacity",
+         f"15 psi ({r['rv_set_bar']:.2f} bar) set; rated {r['rv_rated_kg_h']:.0f} kg/h against {flash_rate:.0f} kg/h refeed flash",
+         "15 psi (1.03 bar) or less; capacity for the refeed flash",
+         status(r["rv_rated_kg_h"], flash_rate, True)),
         ("R10", "Chimney, spark arrestor, handles", f"outlet {r['chimney_top']:.1f} m, 6 mm mesh, hood skin {r['t_hood_skin']:.0f} C",
          "2.2 m, 6 mm, 60 C", "met"),
-        ("R11", "Loaded mass, full tank", f"{r['m_total']:.0f} kg", "500 kg or less",
-         status(r["m_total"], 500, False)),
+        ("R11", "Mass as towed, tank and seal pot drained", f"{r['m_empty_tank']:.0f} kg ({r['m_total']:.0f} kg full)",
+         "500 kg or less", status(r["m_empty_tank"], 500, False)),
         ("R11", "Overall width", f"{r['width']:.2f} m", "1.5 m or less", status(r["width"], 1.5, False, band=0.02)),
         ("R12", "Parts cost", f"${r['cost']:,.0f}", f"${a['budget_usd']:,.0f} or less",
          status(r["cost"], a["budget_usd"], False, band=0.02)),
@@ -418,6 +465,13 @@ def run(a=A, geo=GEO, verbose=False):
     p = r["fb_preheat"]
     say(f"  with combustion air preheated by 135 K: efficiency {100*p['eta']:.1f} %, stack {p['T_stack']:.0f} C, "
         f"wood {p['wood_kg_h']:.1f} kg/h")
+    for lam_, b in r["bank"].items():
+        say(f"  R5 study, lambda {lam_}, F {b['F']}: for {100*b['eta']:.0f} % firing {b['wood_kg_h']:.1f} kg/h wood, "
+            f"firebox gas {b['Tg']:.0f} C, coil in firebox {b['q_fb']:.2f} kW; evaporator bank {b['Q_bank']:.2f} kW, "
+            f"gas {b['Tg']:.0f} to {b['T1']:.0f} C, area {b['A_bank']:.2f} m2 ({b['L_bank']:.1f} m of 25.4 mm tube); "
+            f"stack {b['T_stack']:.0f} C")
+    say(f"  at 65 %, wood per m2 at 15 cm {r['wood_per_m2_15_at65']:.2f} kg/m2; efficiency needed for 4 kg/m2 "
+        f"{100*r['eta_for_R4']:.1f} %")
     say("  sensitivity, efficiency % (rows lambda, columns F 0.25 / 0.40 / 0.60):")
     for lam_ in (1.5, 2.0, 2.5):
         say(f"    lambda {lam_}: " + " / ".join(f"{100*r['sens'][(lam_, F)]['eta']:.1f}" for F in (0.25, 0.40, 0.60)))
@@ -439,6 +493,8 @@ def run(a=A, geo=GEO, verbose=False):
         f"(316 yield at 700 C about {a['sy_316_700C']/1e6:.0f} MPa)")
     say(f"  relief valve set {a['rv_set_psig']:.0f} psi = {r['rv_set_bar']:.3f} bar; orifice for 30 kg/h "
         f"{r['rv_area']:.1f} mm2 ({r['rv_d']:.1f} mm); for the flash {r['rv_area_flash']:.0f} mm2 ({r['rv_d_flash']:.1f} mm)")
+    say(f"  rated capacity of the 3/4 in valve {a['rv_rated_lb_h']:.0f} lb/h = {r['rv_rated_kg_h']:.0f} kg/h; "
+        f"margin over the flash {100*(r['rv_rated_kg_h']/flash_rate-1):.0f} %")
     say("\nF. Mass, envelope, cost")
     for k, v in mass.items():
         say(f"  {k:44s} {v:6.1f} kg")

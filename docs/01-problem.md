@@ -3,7 +3,7 @@ doc_id: STR-PRB-001
 title: SteamRoot problem statement
 project: SteamRoot
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's 2026-09-25 decisions on first users, first jurisdiction and budget; regulatory ruling marked as an open prerequisite
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # SteamRoot problem statement
@@ -50,10 +54,10 @@ Heating soil to about 70 °C (158 °F) for 20 to 30 minutes kills most weed seed
 
 ## Constraints
 
-- Garage-buildable prototype within $1,800 USD (raised from $1,500 by Amish on 2026-09-25 to allow contingency), using stock steel, stainless tube and off-the-shelf safety parts.
+- Garage-buildable prototype within $2,200 USD (raised from $1,500 to $1,800 and then to $2,200 by Amish on 2026-09-25 to allow about 15 % contingency over the priced BOM), using stock steel, stainless tube and off-the-shelf safety parts.
 - Near-atmospheric operation: open-vented, never sealed, with a normal working pressure well below the thresholds that bring a boiler under pressure vessel and boiler codes. Thresholds, exemptions and registration rules differ by country, state and province and must be confirmed with the local authority before any build.
 - Fired with locally available dry woody biomass; no diesel or propane burner.
-- Towable by a small tractor, utility vehicle or car with a hitch; loaded mass about 500 kg or less.
+- Towable by a small tractor, utility vehicle or car with a hitch; 500 kg or less as towed, with the feed tank and seal pot drained and filled on site.
 - Operable by one trained adult, with a second person nearby during steaming.
 - Outdoor operation only for the fire. Steam may be piped into a greenhouse or polytunnel; the firebox and chimney may not.
 
@@ -76,7 +80,7 @@ Steam soil disinfestation is established practice. Greenhouse growers have steam
 - **Negative-pressure steaming:** steam is drawn down through the soil by suction through buried perforated pipes. Reaches deeper, but needs a permanent installation.
 - **Band steaming:** research machines steam only a narrow band where the crop row will be, cutting energy per hectare.
 
-Soil solarization (clear plastic in hot weather) and anaerobic soil disinfestation are lower-energy alternatives, but they depend on climate and take weeks. Steam works in hours and in any season. Published studies on steaming consistently report energy use as the main limit on adoption, which is why SteamRoot focuses on a biomass fire and a flue-gas economizer. Specific sources are not yet cited; they were not checked in the TRL 3 session and remain flagged in `docs/REVIEW.md`.
+Soil solarization (clear plastic in hot weather) and anaerobic soil disinfestation are lower-energy alternatives, but they depend on climate and take weeks. Steam works in hours and in any season. A 2014 UNEP review of the methyl bromide phase-out called steam "probably the best technical alternative to MB in protected agriculture", but noted that deep in-ground steaming needs long boiler use, labor and fuel that can make it uneconomic ([UNEP Ozone Secretariat, *Phasing-out Methyl Bromide in Developing Countries*, 2014](https://ozone.unep.org/system/files/documents/Phasing-out%20Methyl%20Bromide%20in%20developing%20countries%20FINAL%20low%20version.pdf)). Energy per square meter is therefore the main limit on adoption, which is why SteamRoot focuses on a biomass fire and a flue-gas economizer. The other prior-work statements above are general practice and are not yet individually cited.
 
 ## Decisions and open questions
 

@@ -3,7 +3,7 @@ doc_id: STR-CAL-001
 title: SteamRoot sizing calculations
 project: SteamRoot
 doc_type: Calculation note
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -13,11 +13,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: First TRL 3 sizing calculations with script, assumptions and requirement status
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # SteamRoot sizing calculations
 
-The decided configuration (open-vented stainless monotube coil, economizer, two hoods, fixed-rate feed) makes 30 kg/h of steam at near-atmospheric pressure with little stored water, but on paper it misses six of the twelve requirements. Fuel-to-steam efficiency comes out at about 54 %, not 65 %, because a single coil in the firebox leaves the flue gas at about 450 °C. Steam per square meter is higher than the TRL 2 estimate, so two hoods treat about 1.9 m²/h at 15 cm rather than 2 m²/h. Loaded mass (536 kg), parts cost ($1,915) and the coil inlet pressure (0.11 bar) are slightly over their targets. These are paper estimates; nothing here has been tested.
+The decided configuration (open-vented stainless monotube coil, economizer, two hoods, fixed-rate feed) makes 30 kg/h of steam at near-atmospheric pressure with little stored water. With the requirements as restated by Amish on 2026-09-25 (STR-DDR-002), it misses two: fuel-to-steam efficiency comes out at about 54 %, not 65 %, because a single coil in the firebox leaves the flue gas at about 450 °C, and wood use is 5.4 kg/m² at 15 cm, not 4. A paper study of the recommended fix (section 4) finds that about 3.3 m of 25.4 mm evaporator tube in the flue, or excess air held near λ = 1.5, would reach 65 %, but R4 needs about 72 %. The treatment rate (1.88 m²/h at 15 cm) and width (1.48 m) meet their targets with thin margins. These are paper estimates; nothing here has been tested.
 
 > **Safety:** This note sizes a fired steam generator. It is a paper calculation, not a design approval. A written ruling from the local boiler authority on whether an open-vented, fired monotube coil is exempt from boiler and pressure vessel rules is an **open prerequisite**. Amish approved getting that ruling before detail work; it has not been obtained. No part of this note may be used to build or operate the machine until that ruling exists and the design has been reviewed against it.
 
@@ -47,6 +51,8 @@ The calculation has six parts: soil heat and steam demand, treatment rate, combu
 | Gas to coil convection | 20 W/(m² K) | Low-velocity cross flow |
 | Firebox lining | 50 mm ceramic fiber, 0.12 W/(m K) | As BOM item 5 |
 | Trailer tare | 160 kg | Used 2.0 x 1.2 m trailer; range 130 to 250 kg |
+| Relief valve rated capacity | 375 lb/h (170 kg/h) | Watts Series 315, 3/4 in, 15 psi set, maker's capacity table |
+| Evaporator bank coefficient (R5 study only) | 30 W/(m² K) | Bare tube in cross flow, gas side controlled |
 
 ## 2. Soil heat and steam demand
 
@@ -75,10 +81,10 @@ Each setting needs the heat time above plus a 25-minute hold and 2 minutes to li
 | Hoods | 15 cm | 5 cm |
 | --- | --- | --- |
 | 1 | 1.12 (hood limited) | 1.70 (hood limited) |
-| 2 (decided) | 1.88 (steam limited) | 3.41 (hood limited) |
+| 2 (decided; R2 restated to these values) | 1.88 (steam limited) | 3.41 (hood limited) |
 | 3 | 1.88 (steam limited) | 4.43 (steam limited) |
 
-At 15 cm the second hood removes the hold penalty, and the rate is set by steam. At 5 cm even three hoods reach only the steam limit of 4.43 m²/h, below the 5 m²/h target, because the hold overshoot is the same 1.53 cm at any depth.
+At 15 cm the second hood removes the hold penalty, and the rate is set by steam. At 5 cm even three hoods reach only the steam limit of 4.43 m²/h, below the former 5 m²/h target, because the hold overshoot is the same 1.53 cm at any depth. Amish decided on 2026-09-25 to restate R2 at the two-hood values, about 1.9 m²/h (1.85 or more) at 15 cm and 3.4 m²/h at 5 cm, until soil tests exist. Both are met with margins under 2 %, so they are marked at risk.
 
 ## 4. Combustion, heat transfer and efficiency
 
@@ -108,7 +114,20 @@ At 15 cm the second hood removes the hold penalty, and the rate is set by steam.
 | 2.0 | 47.7 | 53.5 | 58.6 |
 | 2.5 | 37.2 | 44.0 | 49.9 |
 
-The TRL 2 figure of 62 % assumed 55 % for the firebox and coil without a heat transfer model. Reaching 65 % needs a stack temperature of about 295 °C at λ = 2.0; the current layout gives 448 °C. Preheating the combustion air by 135 K with flue heat lifts efficiency to 62.4 % (stack 330 °C, 8.7 kg/h of wood). In Table 5 only the corner with λ = 1.5 and F = 0.60 exceeds 65 %, so R5 needs both tighter air control and better heat transfer to the water (more coil surface in the flue, or better radiant exposure). Options for Amish are in the review note; this note does not change the design.
+The TRL 2 figure of 62 % assumed 55 % for the firebox and coil without a heat transfer model. Reaching 65 % needs a stack temperature of about 295 °C at λ = 2.0; the current layout gives 448 °C. Preheating the combustion air by 135 K with flue heat lifts efficiency to 62.4 % (stack 330 °C, 8.7 kg/h of wood). In Table 5 only the corner with λ = 1.5 and F = 0.60 exceeds 65 %, so R5 needs both tighter air control and better heat transfer to the water (more coil surface in the flue, or better radiant exposure). Amish decided on 2026-09-25 to keep the R5 and R4 targets and to study a convective evaporator bank in the flue with controlled primary and secondary air (STR-DDR-002). The study is below; the baseline design is unchanged until the next paper iteration.
+
+**R5 study: evaporator bank and controlled air.** For a target efficiency the firing rate is fixed (33.5 kW, 8.3 kg/h of wood for 65 %). The firebox balance then sets the gas temperature and the heat the coil in the firebox takes by radiation and convection. The rest of the coil duty must come from a bank of evaporator tube in the flue between the firebox and the economizer, with water boiling at 100 °C inside.
+
+*Table 5a. Evaporator bank needed for 65 % (F = 0.40, U = 30 W/(m² K)).*
+
+| Excess air λ | Firebox gas | Coil in firebox | Bank duty | Gas across the bank | Bank area | 25.4 mm tube | Stack |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1.5 | 514 °C | 18.85 kW | 0.49 kW | 514 to 491 °C | 0.04 m² | 0.5 m | 378 °C |
+| 2.0 | 483 °C | 16.69 kW | 2.65 kW | 483 to 389 °C | 0.26 m² | 3.3 m | 301 °C |
+
+At λ = 2.0 about 3.3 m of the existing tube size, run as a continuation of the monotube in the flue, reaches 65 %. With air held near λ = 1.5 almost no bank is needed, but a hand-fed batch firebox rarely holds that ratio. A bank of about 4 m with a primary and secondary air damper is the likely next paper design. It adds water volume, mass and pressure drop. Flooded, 4 m of 22.1 mm bore holds about 1.5 L, which would take the heated section to about 8.5 L, over the 8 L limit in R7, so the next iteration must shorten the firebox coil, use a smaller bank tube or revisit R7, and check R6 and R11 again.
+
+Even at 65 %, wood use is 4.44 kg/m² at 15 cm. R4 (4 kg/m²) needs about 72 % fuel-to-steam efficiency at the current steam demand, so R4 will stay not met unless steam per square meter also falls, for example through less skirt leakage.
 
 **Economizer.** With a log mean temperature difference of 434 K and U = 25 W/(m² K), the economizer needs 0.22 m² of tube; 8 m of 12.7 mm tube gives 0.32 m². The flue gas holds 9.6 % water vapor by volume, so its dew point is about 45 °C. The cold end of the economizer, fed at 15 °C, will run wet with acidic condensate, which confirms the stainless tube and the condensate drain.
 
@@ -133,7 +152,7 @@ The coil bore is 22.1 mm. At 30 kg/h the mass flux is 21.7 kg/(m² s) and dry st
 | **Header pressure** | **3,281 Pa (0.033 bar gauge)** |
 | **Coil inlet pressure** | **11,018 Pa (0.110 bar gauge)** |
 
-The 1 m water seal (hot water, 958 kg/m³) opens at 9,402 Pa (0.094 bar gauge), which leaves 6,121 Pa of margin at the header, so steam goes to the hood in normal use and vents only if the hose or hood blocks. The coil inlet sits 10 % above the R6 limit of 0.1 bar. A slightly larger tube, a shorter coil or a lower hose drop would close the gap.
+The 1 m water seal (hot water, 958 kg/m³) opens at 9,402 Pa (0.094 bar gauge), which leaves 6,121 Pa of margin at the header, so steam goes to the hood in normal use and vents only if the hose or hood blocks. Amish decided on 2026-09-25 to redefine R6 as 0.1 bar gauge at the header, where the vent limit applies, and 0.15 bar gauge at the coil inlet. Both are met: 0.033 bar at the header and 0.110 bar at the coil inlet.
 
 **Flow stability.** A single coil fed by a positive-displacement diaphragm pump is not prone to the parallel-channel or Ledinegg instabilities of multi-tube boilers, and 15 K of inlet subcooling helps. At this low mass flux the flow will be stratified or wavy in the helix, so the top of the tube will dry out before the outlet and run hotter than the 110 °C wall assumed. At 0.07 MPa hoop stress this does not threaten the tube, but it will speed scaling.
 
@@ -143,7 +162,7 @@ The 1 m water seal (hot water, 958 kg/m³) opens at 9,402 Pa (0.094 bar gauge), 
 
 **Dry coil and refeed.** The coil tube weighs 14.3 kg. If it runs dry it approaches the 520 °C firebox gas temperature and stores 3.00 MJ, enough to flash 1.29 kg of feed water. If the pump restarts and that happens over 30 s, the steam flow is 155 kg/h, 5.2 times the design flow, and the coil drop would scale to about 2.1 bar. The open vent and the 15 psi relief valve are sized for 30 kg/h, not for this event. The tube itself is not at risk from pressure: hoop stress is 0.074 MPa in normal use and 2.0 MPa at the pump's 3 bar shut-off, against a yield strength of roughly 100 MPa for 316 at 700 °C (typical handbook value). The hazard is steam and scalding water thrown from joints and the hose, which is why the coil outlet alarm and the rule never to refeed a hot, dry coil stay essential.
 
-**Relief valve.** Napier's formula, with 10 % accumulation over a 15 psi (1.034 bar) set pressure and a derated coefficient of 0.878, needs a 30.2 mm² orifice (6.2 mm) for 30 kg/h and 157 mm² (14.1 mm) for the 155 kg/h refeed flash. A 3/4 in Section IV valve such as the one in the BOM should cover both, but its rated capacity must be confirmed from the maker's table. R9 asks for a set pressure of "1 bar (15 psi) or less". The lowest common certified steam safety valve is set at 15 psi, which is 1.03 bar, so R9 as written cannot be met to the letter with a standard part. A wording fix is proposed in the review note.
+**Relief valve.** Napier's formula, with 10 % accumulation over a 15 psi (1.034 bar) set pressure and a derated coefficient of 0.878, needs a 30.2 mm² orifice (6.2 mm) for 30 kg/h and 157 mm² (14.1 mm) for the 155 kg/h refeed flash. The maker's capacity table for the Watts Series 315 gives 375 lb/h (170 kg/h) for the 3/4 in valve at 15 psi, which covers the refeed flash with about 10 % margin. On 2026-09-25 Amish decided to reword R9 to "15 psi (1.03 bar) or less", the lowest standard certified set pressure, and to size the valve for the refeed flash as well as for 30 kg/h (STR-DDR-002). R9 is met on paper; the capacity must be confirmed for the valve actually bought.
 
 ## 7. Mass, envelope and cost
 
@@ -166,9 +185,9 @@ The 1 m water seal (hot water, 958 kg/m³) opens at 9,402 Pa (0.094 bar gauge), 
 | Instruments, alarms, safety kit | 8.0 kg |
 | **Total** | **536 kg** |
 
-The loaded mass is 536 kg against the 500 kg target. Towing with the tank and seal pot drained brings it to 402 kg. A castable refractory lining would raise the firebox from 98 kg to 301 kg, so the fiber lining is needed for R11. Overall width is 1.48 m against 1.5 m. The chimney outlet is 2.40 m above ground, and one fill of the tank lasts 4.17 h.
+The loaded mass is 536 kg with a full tank. Amish decided on 2026-09-25 that R11 applies as towed, with the tank and seal pot drained and filled on site, which gives 402 kg against 500 kg. A castable refractory lining would raise the firebox from 98 kg to 301 kg, so the fiber lining is needed for R11. Overall width is 1.48 m against 1.5 m. The chimney outlet is 2.40 m above ground, and one fill of the tank lasts 4.17 h.
 
-The priced BOM (`bom/bom.csv`, 16 lines) totals $1,915.00, which is $115 over the $1,800 budget and leaves no contingency. Only the relief valve price was checked against a live listing; the rest are indicative.
+The priced BOM (`bom/bom.csv`, 16 lines) totals $1,915.00. Amish raised the budget from $1,800 to $2,200 on 2026-09-25 (STR-DDR-002), which leaves $285, about 15 %, as contingency. Only the relief valve price was checked against a live listing; the rest are indicative.
 
 ## 8. Results against requirements
 
@@ -176,22 +195,23 @@ The priced BOM (`bom/bom.csv`, 16 lines) totals $1,915.00, which is $115 over th
 
 | ID | Requirement | Calculated value | Target | Status |
 | --- | --- | --- | --- | --- |
-| R2 | Treatment rate at 15 cm, two hoods | 1.88 m²/h | 2 m²/h or more | Not met |
-| R2 | Treatment rate at 5 cm, two hoods | 3.41 m²/h | 5 m²/h or more | Not met |
 | R4 | Wood per m² at 15 cm | 5.4 kg/m² | 4 kg/m² or less | Not met |
 | R5 | Fuel to steam efficiency | 54 % | 65 % or more | Not met |
-| R6 | Highest normal steam-side pressure (coil inlet); open vent | 0.110 bar gauge; vent cannot be isolated | 0.1 bar gauge or less | Not met (10 % over) |
-| R11 | Loaded mass, full tank | 536 kg | 500 kg or less | Not met |
-| R12 | Parts cost | $1,915 | $1,800 or less | Not met |
-| R9 | Certified relief valve, capacity and set pressure | 15 psi (1.03 bar) valve; 6.2 mm orifice needed at 30 kg/h | 1 bar (15 psi) or less, full capacity | At risk |
+| R2 | Treatment rate at 15 cm, two hoods | 1.88 m²/h | 1.85 m²/h or more (about 1.9) | At risk (thin margin) |
+| R2 | Treatment rate at 5 cm, two hoods | 3.41 m²/h | 3.4 m²/h or more | At risk (thin margin) |
 | R11 | Overall width | 1.48 m | 1.5 m or less | At risk (thin margin) |
 | R1 | Soil at 70 °C for 20 to 30 min at 15 cm over 80 % of the footprint | Front to 16.5 cm holds 70 °C at 15 cm for 25 min in the 1D model; skirt leakage and permeability not quantified | 70 °C, 20 to 30 min | Not verifiable at TRL 3 |
 | R3 | Steam output | 30 kg/h with firebox gas at 520 °C and 40.7 kW firing | 30 kg/h or more | Met |
+| R6 | Normal pressure at the header; open vent | 0.033 bar gauge; vent cannot be isolated | 0.1 bar gauge or less | Met |
+| R6 | Normal pressure at the coil inlet | 0.110 bar gauge | 0.15 bar gauge or less | Met |
 | R7 | Water in heated section, flooded | 7.0 L | 8 L or less | Met |
 | R8 | Steaming per fill | 4.2 h | 3 h or more | Met |
+| R9 | Certified relief valve, set pressure and capacity | 15 psi (1.03 bar) set; rated 170 kg/h against a 155 kg/h refeed flash | 15 psi (1.03 bar) or less; capacity for the flash | Met |
 | R10 | Chimney outlet, spark arrestor mesh, hood handles | 2.4 m, 6 mm mesh, hood outer skin 23 °C | 2.2 m, 6 mm, 60 °C | Met |
+| R11 | Mass as towed, tank and seal pot drained | 402 kg (536 kg full) | 500 kg or less | Met |
+| R12 | Parts cost | $1,915 | $2,200 or less | Met |
 
-Summary: 7 not met (R2 twice, R4, R5, R6, R11 mass, R12), 2 at risk (R9, R11 width), 1 not verifiable at TRL 3 (R1), 4 met (R3, R7, R8, R10).
+Summary: 2 not met (R4, R5), 3 at risk (R2 twice, R11 width), 1 not verifiable at TRL 3 (R1), 9 met (R3, R6 twice, R7, R8, R9, R10, R11 mass, R12). In version 0.1, against the earlier targets, 7 were not met, 2 at risk, 1 not verifiable and 4 met.
 
 ## 9. Limits of this note
 

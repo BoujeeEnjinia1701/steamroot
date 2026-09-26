@@ -3,7 +3,7 @@ doc_id: STR-DDR-001
 title: SteamRoot TRL 2 review decisions
 project: SteamRoot
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record the decisions Amish made on the TRL 2 review items, and the items that remain open
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items 1 to 6); items 7 to 11 remain proposed
+- **Status:** accepted (items 1 to 6); items 10 and 11 decided in STR-DDR-002; item 7 is an open prerequisite; items 8 and 9 remain proposed
 
 ## Context
 
@@ -52,8 +56,8 @@ The TRL 2 review also recommended a written ruling from the local boiler authori
 | 7 | Written ruling from the local boiler authority on an open-vented, fired monotube coil | Approved as a prerequisite; not yet obtained. Blocks detail design and any build. |
 | 8 | Which jurisdiction is "home" and which authority to ask | Proposed, awaiting Amish (Amish to name it). |
 | 9 | The named market garden and nursery (first co-design partners) | Proposed, awaiting Amish. No partner is named. |
-| 10 | Wood only, no liquid fuel backup (design choice in STR-PRC-001 not listed in the review) | Proposed, awaiting Amish. |
-| 11 | New items raised by the TRL 3 calculation (CAL-001): requirement gaps on R2, R4, R5, R6, R11 and R12, relief valve wording for R9, and the lining and hose-coupling choices | Proposed, awaiting Amish. See `docs/REVIEW.md`, session 2026-09-25. |
+| 10 | Wood only, no liquid fuel backup (design choice in STR-PRC-001 not listed in the review) | Decided by Amish, 2026-09-25: go with recommendation. Wood only. See STR-DDR-002. |
+| 11 | New items raised by the TRL 3 calculation (CAL-001): requirement gaps on R2, R4, R5, R6, R11 and R12, relief valve wording for R9, and the lining and hose-coupling choices | Decided by Amish, 2026-09-25: go with recommendation. See STR-DDR-002 for each item and what changed. |
 
 ## Consequences
 

@@ -1,4 +1,4 @@
-# Card metadata consumed by https://amishchadha.com
+# Card metadata consumed by https://designmolecule.com
 name: SteamRoot
 slug: steamroot
 area: Agriculture
@@ -9,6 +9,7 @@ trl_evidence:
   - docs/02-concept.md
   - docs/03-requirements.md
   - docs/decisions/0001-trl2-review-decisions.md
+  - docs/decisions/0002-recommendations-accepted.md
   - docs/04-calcs/01-sizing.md
   - docs/04-calcs/sizing.py
   - cad/src/model.py
@@ -22,7 +23,7 @@ pitch: >-
   Low-pressure, biomass-fired steam generator with a flue-gas economizer and a steam-hood trailer for soil pasteurization, operated near atmospheric pressure to stay out of pressure vessel code.
 problem: >-
   Herbicide-free weed and pathogen control by steaming soil works, but the portable boilers that do it are inefficient and diesel-fired.
-budget_usd: 1800           # raised from 1500 by Amish, 2026-09-25 (STR-DDR-001)
+budget_usd: 2200           # raised from 1500 to 1800 (STR-DDR-001), then to 2200 (STR-DDR-002), by Amish, 2026-09-25
 difficulty: 5  # 1 easiest, 5 hardest
 hero_image: media/hero.png
 licenses:

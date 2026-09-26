@@ -100,14 +100,14 @@ Decided by Amish, 2026-09-25, going with the recommendation (STR-DDR-001): open-
 1. **Regulatory ruling** from the local boiler authority: approved, not obtained. Open prerequisite.
 2. Which jurisdiction is "home" and which authority to ask.
 3. The named market garden and nursery (no partner is named).
-4. Wood only, no liquid fuel backup (from STR-PRC-001; not in the TRL 2 review list).
-5. How to close R5 and R4: options are (a) a convective evaporator bank in the flue before the economizer, (b) controlled primary and secondary air to reach λ near 1.5, (c) a combustion air preheater (about 62 % alone), or (d) relax R5 to about 55 % and R4 to about 5.5 kg/m². Recommendation: study (a) with (b) at the next paper step, and keep the targets for now.
-6. How to treat R2: (a) accept 1.9 m²/h at 15 cm and restate the 5 cm target at about 3.4 m²/h; (b) a third hood (helps 5 cm only, to 4.43 m²/h); (c) raise steam output, which needs a bigger firebox. Recommendation: (a) until soil tests exist.
-7. R6: accept 0.11 bar at the coil inlet (the header is at 0.03 bar) or reduce coil drop with a shorter coil or larger tube. Recommendation: redefine R6 as 0.1 bar at the header and 0.15 bar at the coil inlet, because the vent limit applies at the header.
-8. R9 wording: change "1 bar (15 psi) or less" to "15 psi (1.03 bar) or less", the lowest standard certified set pressure. Also size the valve for the dry-coil refeed flash (about 14 mm orifice), not only for 30 kg/h. Recommendation: both.
-9. R11 mass: (a) tow with the tank and seal pot drained (402 kg) and fill on site; (b) a 100 L tank (3.3 h per fill); (c) raise the limit to 550 kg. Recommendation: (a), written into the requirement as "500 kg or less as towed, with the tank drained".
-10. R12 cost: $1,915 is $115 over the new $1,800 budget with no contingency. Options: (a) raise the budget to about $2,200 for 15 % contingency; (b) keep $1,800 and cut, for example one hood; (c) accept. Recommendation: (a). `budget_usd` stays at 1800.
-11. Design details raised at TRL 3: fiber lining instead of castable (recommended, for mass); one hose moved between hoods with a steam-rated coupling instead of two hoses (recommended, for cost).
+4. Wood only, no liquid fuel backup (from STR-PRC-001; not in the TRL 2 review list). **Decided by Amish, 2026-09-25: go with recommendation** (STR-DDR-002).
+5. How to close R5 and R4: options are (a) a convective evaporator bank in the flue before the economizer, (b) controlled primary and secondary air to reach λ near 1.5, (c) a combustion air preheater (about 62 % alone), or (d) relax R5 to about 55 % and R4 to about 5.5 kg/m². Recommendation: study (a) with (b) at the next paper step, and keep the targets for now. **Decided by Amish, 2026-09-25: go with recommendation** (STR-DDR-002).
+6. How to treat R2: (a) accept 1.9 m²/h at 15 cm and restate the 5 cm target at about 3.4 m²/h; (b) a third hood (helps 5 cm only, to 4.43 m²/h); (c) raise steam output, which needs a bigger firebox. Recommendation: (a) until soil tests exist. **Decided by Amish, 2026-09-25: go with recommendation** (STR-DDR-002).
+7. R6: accept 0.11 bar at the coil inlet (the header is at 0.03 bar) or reduce coil drop with a shorter coil or larger tube. Recommendation: redefine R6 as 0.1 bar at the header and 0.15 bar at the coil inlet, because the vent limit applies at the header. **Decided by Amish, 2026-09-25: go with recommendation** (STR-DDR-002).
+8. R9 wording: change "1 bar (15 psi) or less" to "15 psi (1.03 bar) or less", the lowest standard certified set pressure. Also size the valve for the dry-coil refeed flash (about 14 mm orifice), not only for 30 kg/h. Recommendation: both. **Decided by Amish, 2026-09-25: go with recommendation** (STR-DDR-002).
+9. R11 mass: (a) tow with the tank and seal pot drained (402 kg) and fill on site; (b) a 100 L tank (3.3 h per fill); (c) raise the limit to 550 kg. Recommendation: (a), written into the requirement as "500 kg or less as towed, with the tank drained". **Decided by Amish, 2026-09-25: go with recommendation** (STR-DDR-002).
+10. R12 cost: $1,915 is $115 over the new $1,800 budget with no contingency. Options: (a) raise the budget to about $2,200 for 15 % contingency; (b) keep $1,800 and cut, for example one hood; (c) accept. Recommendation: (a). `budget_usd` stays at 1800. **Decided by Amish, 2026-09-25: go with recommendation** (STR-DDR-002).
+11. Design details raised at TRL 3: fiber lining instead of castable (recommended, for mass); one hose moved between hoods with a steam-rated coupling instead of two hoses (recommended, for cost). **Decided by Amish, 2026-09-25: go with recommendation** (STR-DDR-002).
 
 ### Safety concerns
 
@@ -127,3 +127,52 @@ Decided by Amish, 2026-09-25, going with the recommendation (STR-DDR-001): open-
 ### Recommended next step
 
 Obtain the written ruling from the local boiler authority, and have Amish decide items 5 to 11 above. After that, a second paper iteration at TRL 3 (a revised coil and flue layout to address R5 and R4, and restated R2, R6, R9 and R11) is the right next step. **TRL 4 is on hold by Amish's instruction.** For the record only, TRL 4 would need: the regulatory ruling in hand; a lab test article of the coil, header and water seal; a test plan and report (TST, `environment: lab`) for steam output, efficiency, pressure at the coil inlet and header, dry-coil alarm response and relief valve capacity; soil permeability and skirt leakage tests with the hood; and build log entries. None of this has been started.
+
+## Session 2026-09-25: recommendations accepted
+
+Authority: on 2026-09-25 Amish wrote "i accept all your recommendations, go with them across all repos." Every open item with a recommendation is now **Decided by Amish, 2026-09-25: go with recommendation**, recorded in STR-DDR-002 (`docs/decisions/0002-recommendations-accepted.md`). Items without a recommendation stay open.
+
+### Decisions applied and what changed
+
+| Item | Decision | Before | After |
+| --- | --- | --- | --- |
+| R12 budget | Raise to about $2,200 for 15 % contingency | `budget_usd` 1800; $1,915 BOM, $115 over | `budget_usd` 2200; $285 contingency; met |
+| R2 rate | Accept the two-hood rate until soil tests exist | Targets 2 and 5 m²/h; not met | Targets 1.85 (about 1.9) and 3.4 m²/h; 1.88 and 3.41 m²/h; at risk |
+| R6 pressure | 0.1 bar at the header, 0.15 bar at the coil inlet | 0.110 bar against 0.1 at the inlet; not met | Header 0.033, inlet 0.110 bar; met |
+| R9 relief valve | Word as 15 psi (1.03 bar) or less; size for the refeed flash | At risk; capacity unconfirmed | Watts Series 315, 3/4 in, 375 lb/h (170 kg/h) against a 155 kg/h flash; met on paper; valve unchanged |
+| R11 mass | 500 kg or less as towed, tank drained | 536 kg full; not met | 402 kg as towed; met (width 1.48 m still at risk) |
+| R5 and R4 | Keep targets; study an evaporator bank with controlled air | No study | CAL-001 section 4: about 3.3 m of 25.4 mm tube reaches 65 % at λ = 2.0; R4 needs about 72 %; both still not met |
+| Firebox lining | Ceramic fiber | Proposed | Decided; no geometry change |
+| Hose | One hose moved between hoods | Proposed | Decided; no BOM change |
+| Fuel | Wood only | Proposed | Decided |
+
+Files changed: `project.yaml` (budget), `README.md` (budget, status line, new write-up sections), STR-PRB-001 v0.4, STR-PRC-001 v0.4, STR-REQ-001 v0.4, STR-CAL-001 v0.2 and `sizing.py`, STR-DDR-001 v0.2, new STR-DDR-002 v0.1, `bom/bom.csv` and `bom/bom-notes.md` (notes only; total unchanged at $1,915), drawing STR-DWG-002 Rev P1 to P2 (notes only; geometry unchanged), concept media key figures (towed mass). All PDFs, drawings and media were regenerated.
+
+### Requirement status (STR-CAL-001 v0.2), not met first
+
+| ID | Result | Target | Status |
+| --- | --- | --- | --- |
+| R4 | 5.4 kg/m² at 15 cm | 4 kg/m² | Not met |
+| R5 | 53.5 % | 65 % | Not met |
+| R2 | 1.88 m²/h at 15 cm; 3.41 m²/h at 5 cm | 1.85 and 3.4 m²/h | At risk (thin margin) |
+| R11 | 1.48 m width | 1.5 m | At risk |
+| R1 | Holds 70 °C at 15 cm in the 1D model if the front reaches 16.5 cm | 70 °C, 20 to 30 min | Not verifiable at TRL 3 |
+| R3, R6, R7, R8, R9, R10, R11 mass, R12 | 30 kg/h; header 0.033 and inlet 0.110 bar; 7.0 L; 4.2 h; 170 kg/h valve; 2.4 m chimney; 402 kg towed; $1,915 | | Met |
+
+Counts: 2 not met, 3 at risk, 1 not verifiable at TRL 3, 9 met (15 checks on 12 requirements). Before: 7 not met, 2 at risk, 1 not verifiable, 4 met.
+
+### Items still awaiting Amish
+
+1. Written ruling from the local boiler authority: approved, not obtained. Open prerequisite for any detail design or build.
+2. Which jurisdiction is "home" and which authority to ask (no recommendation).
+3. The named market garden and nursery (no recommendation).
+
+### Cross-repo actions
+
+None. No SteamRoot decision needs a change in another repo.
+
+### Notes
+
+- The evaporator bank is not yet in the model. About 4 m of bank tube would add about 1.5 L of water and take the heated section to about 8.5 L, over R7's 8 L, so the next paper iteration must resolve R7 together with R5, R6 and R11.
+- `README.md` now has the Concept rationale, Burning platform, Where it could be used and What sparked the idea sections, with cited figures (Oerke 2006, FiBL 2025, the US 2016 critical use exemption rule, UNEP 2014).
+- **TRL 4 remains on hold** by Amish's instruction. Decided items that need TRL 4 work (measured efficiency, soil permeability and skirt tests for R1 and R2, capacity check of the valve actually bought) are recorded as decided but on hold. Nothing was built, bought or tested.
