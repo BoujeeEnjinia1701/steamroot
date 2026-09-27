@@ -176,3 +176,47 @@ None. No SteamRoot decision needs a change in another repo.
 - The evaporator bank is not yet in the model. About 4 m of bank tube would add about 1.5 L of water and take the heated section to about 8.5 L, over R7's 8 L, so the next paper iteration must resolve R7 together with R5, R6 and R11.
 - `README.md` now has the Concept rationale, Burning platform, Where it could be used and What sparked the idea sections, with cited figures (Oerke 2006, FiBL 2025, the US 2016 critical use exemption rule, UNEP 2014).
 - **TRL 4 remains on hold** by Amish's instruction. Decided items that need TRL 4 work (measured efficiency, soil permeability and skirt tests for R1 and R2, capacity check of the valve actually bought) are recorded as decided but on hold. Nothing was built, bought or tested.
+
+## Session 2026-09-26: product appearance model and photoreal renders
+
+Amish chose this repo for the first batch of product renders on 2026-09-26. This session added an appearance model for photoreal renders. It changes no design figure, requirement, BOM line or calculation.
+
+### What was done
+
+- New `cad/src/product_model.py`: `product_parts()` returns 104 named parts (75 shell, 8 internal, 18 accessory, 3 context), each with colour, material, BOM line, group and exploded offset. It also defines `TITLE` and `RENDER_VIEWS` (hero, exploded and a detail view of the generator on its trailer without the person, the ground or the hoods). Every shape is valid and tessellates at the export tolerance.
+- `README.md`: the hero image now points to `media/render-hero.png`, and the links line starts with the exploded render. The render files are produced separately by the portfolio render pipeline.
+
+### What the appearance model adds
+
+- Filleted firebox, economizer, drum, hood and enclosure edges; angle-iron bands at the firebox top and bottom and a base flange under the economizer, read as seams.
+- Firebox door with a ceramic glass window onto a glowing fire bed, a wood charge and the coil; hinges, latch with a hardwood grip, and a slotted air damper plate with a knob.
+- Economizer access panel with eight bolts, a raised STEAMROOT mark, condensate drain valve with a lever, and an internal tube bank for the exploded view.
+- Stainless chimney with a base collar and joint band, spark arrestor cage with a 6 mm mesh screen, and a conical rain cap.
+- Teal water-seal pot with deck flange and level sight tube, DN50 header with end flange, vent pipe with an open top cap, diverter valve with lever and steam quick coupling, bronze relief valve with test lever and set-pressure tag, and a 0 to 1 bar gauge on a siphon.
+- Labels as thin raised parts: "HOT SURFACE / DO NOT TOUCH" on the firebox, "OPEN VENT / 0.1 BAR MAX / NEVER PLUG" on the seal pot, and "HOT STEAM" on each hood.
+- Feed drum with rolling hoops, filler cap, level sight tube and two fabric ratchet straps on a saddle cradle; pump and alarm enclosure with a lid, screws, a lit running indicator, an alarm indicator and a buzzer grille.
+- Trailer detail: perimeter frame with crossmembers and stake pockets, deck plate, leaf springs and hangers, coupling head and lever, jockey wheel jack, teal mudguards, tail lights and side reflectors, treaded tyres, and rims with hubs and wheel nuts.
+- Aluminum steam hoods with stiffening beads, round handles on standoffs, galvanized skirts, inlet couplings and teal accent bands.
+- Context: a gravel pad under the trailer, a soil bed under the hoods, and the shared clay mannequin (1.75 m, standing pose) at the firebox, facing the door.
+
+### Differences from model.py (Proposed, awaiting Amish)
+
+All main dimensions and interfaces come from `PARAMS` in `model.py`, and the coil geometry is used unchanged. These appearance choices differ from the massing model:
+
+1. **Door opening in the firebox.** The massing shell is a closed box behind the door. The appearance model cuts a 300 x 240 mm opening in the shell and lining behind the door so the window shows the fire. Recommendation: add the opening to `model.py` at the next model revision, since a real firebox needs it.
+2. **Header support mast and stay.** `model.py` shows the header carried only by the coil outlet pipe. The appearance model adds a 50 mm square mast from the deck to the header underside and a stay to the seal pot. Recommendation: accept as a placeholder and size the support at detail design.
+3. **Economizer to coil jumper.** The coil inlet in `model.py` ends beside the economizer box. The appearance model adds a short jumper into the economizer +X face. Recommendation: add it to `model.py`.
+4. **Feed lines.** Drum to pump and pump to economizer lines are drawn as indicative 16 mm hoses; `model.py` has none. Recommendation: accept as indicative routing.
+5. **Steam hose routing.** The hose starts and ends at the `model.py` points (diverter coupling and first hood inlet) but runs as a smooth drooping curve instead of the square polyline. Recommendation: accept; `model.py` already calls the routing indicative.
+6. **Items drawn that the BOM lists as not drawn.** The pressure gauge (item 14) and the alarm indicators and buzzer (item 16) are shown on the header and the pump enclosure. The battery (item 13) is still not drawn. Recommendation: accept; no BOM change.
+7. **Appearance additions with no BOM line of their own.** Mudguards, tail lights, reflectors, leaf springs and the jockey wheel are shown as part of the used trailer (item 1); drum straps are shown with the drum (item 3). Recommendation: accept; they come with a used trailer or cost a few dollars.
+8. **Air damper height.** The damper plate sits about 15 mm lower than the `model.py` box so it clears the door. Recommendation: accept.
+9. **Hoods and hose in the accessory group.** This keeps them out of the detail view so the generator can fill the frame; they still appear in the hero and exploded views.
+
+### Status
+
+This is an appearance model only: no tolerances, no fabrication detail, labelled CONCEPT, NOT FOR FABRICATION. `trl` stays 3 in `project.yaml`, and TRL 4 remains on hold by Amish's instruction. The written ruling from the local boiler authority is still an open prerequisite for any detail design or build.
+
+### Safety
+
+The renders show hot surfaces and a pressure-limiting vent. The labels in the model repeat the Safety section: the water seal and vent must never be plugged or valved off, and the firebox, flue, header and hoods are burn hazards in use.
