@@ -18,7 +18,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "cad" / "src"))
-from model import PARAMS as GEO  # noqa: E402  (shared geometry parameters, mm)
+from model import PARAMS as GEO, derived  # noqa: E402  (shared geometry parameters, mm)
+DGEO = derived(GEO)
 
 SIGMA = 5.670e-8   # W/(m2 K4)
 G = 9.81           # m/s2
@@ -67,8 +68,11 @@ A = {
     "m_trailer": 160.0, "m_grate_door": 25.0, "rho_st": 7850.0, "rho_lining": 128.0, "rho_castable": 2000.0,
     "m_tank_empty": 8.0, "m_pump": 2.0, "m_battery": 6.0, "m_hose_per_m": 0.9, "m_header_etc": 18.0,
     "m_instr_safety": 8.0, "m_hood_extra": 3.0,
+    "m_construction": 41.0,      # skids, header post, pot stay and foot plate, saddles, coil brackets, grate stand,
+                                 # gland plates, damper, feed lines, vent line and discharge (37.4 kg from model
+                                 # volumes, python cad/src/model.py --mass) plus the roof frame and unions (STR-DDR-003)
     # Budget
-    "budget_usd": 2200.0,        # raised from 1800 by Amish, 2026-09-25 (STR-DDR-002)
+    "budget_usd": 2200.0,        # value-engineering target (a hypothetical control target, not a limit); STR-DDR-002
 }
 
 
@@ -300,7 +304,7 @@ def run(a=A, geo=GEO, verbose=False):
         x = (i + 0.5) / n
         rho_h += 1 / (x / a["rho_g"] + (1 - x) / a["rho_l"]) / n
     dp_grav = rho_h * G * height
-    riser = (geo["header_z"] - (geo["deck_z"] + geo["deck_t"] + geo["fb_h"])) / 1000
+    riser = (geo["header_z"] - DGEO["coil_top"]) / 1000            # coil top to the header (STR-DDR-003)
     dp_riser = f_darcy(Re_g) * curv / Di * Gm**2 / (2 * a["rho_g"]) * (riser + 0.6)
     dp_coil = dp_fric + dp_acc + dp_grav + dp_riser
     Ah = math.pi * a["hose_bore"]**2 / 4
@@ -352,10 +356,10 @@ def run(a=A, geo=GEO, verbose=False):
     el, ew, eh = geo["eco_l"] / 1000, geo["eco_w"] / 1000, geo["eco_h"] / 1000
     m_eco = (2 * (el * ew + el * eh + ew * eh)) * 0.002 * a["rho_st"] + \
         a["rho_ss"] * math.pi / 4 * ((geo["eco_tube_od"] / 1000)**2 - Di_e**2) * geo["eco_tube_len"] / 1000
-    ch_len = (geo["chimney_top"] - geo["cap_h"] - (geo["deck_z"] + geo["deck_t"] + geo["fb_h"] + geo["eco_h"])) / 1000
+    ch_len = (geo["chimney_top"] - geo["cap_h"] + 50 - (DGEO["lid_top"])) / 1000
     m_ch = math.pi * geo["chimney_d"] / 1000 * ch_len * 0.0008 * a["rho_ss"] + 3.0
     m_water = geo["tank_volume_l"] * 1.0                             # cold water, 1 kg/L
-    seal_water = math.pi / 4 * ((geo["seal_pot_od"] - 6) / 1000)**2 * (geo["seal_depth"] / 1000 + 0.05) * 1000
+    seal_water = math.pi / 4 * ((geo["seal_pot_od"] - 6) / 1000)**2 * (DGEO["water_line"] - DGEO["pot_bot"] - 6) / 1000 * 1000
     mass = {
         "Trailer (tare, assumed)": a["m_trailer"],
         "Firebox (shell, fiber lining, grate, door)": m_fb,
@@ -370,6 +374,7 @@ def run(a=A, geo=GEO, verbose=False):
         "Steam hose": a["m_hose_per_m"] * geo["hose_len"] / 1000,
         f"Hoods, {int(geo['n_hoods'])} off": m_hood * geo["n_hoods"],
         "Instruments, alarms, safety kit": a["m_instr_safety"],
+        "Supports and lines added for construction": a["m_construction"],
     }
     r["mass"] = mass
     r["m_total"] = sum(mass.values())
@@ -423,8 +428,9 @@ def run(a=A, geo=GEO, verbose=False):
         ("R11", "Mass as towed, tank and seal pot drained", f"{r['m_empty_tank']:.0f} kg ({r['m_total']:.0f} kg full)",
          "500 kg or less", status(r["m_empty_tank"], 500, False)),
         ("R11", "Overall width", f"{r['width']:.2f} m", "1.5 m or less", status(r["width"], 1.5, False, band=0.02)),
-        ("R12", "Parts cost", f"${r['cost']:,.0f}", f"${a['budget_usd']:,.0f} or less",
-         status(r["cost"], a["budget_usd"], False, band=0.02)),
+        ("R12", "Parts cost against the value-engineering target", f"${r['cost']:,.0f}", f"${a['budget_usd']:,.0f}",
+         (f"over the target by ${r['cost'] - a['budget_usd']:,.0f}" if r["cost"] > a["budget_usd"]
+          else f"under the target by ${a['budget_usd'] - r['cost']:,.0f}")),
     ]
     r["req"] = req
 
@@ -501,8 +507,10 @@ def run(a=A, geo=GEO, verbose=False):
     say(f"  loaded mass {r['m_total']:.0f} kg; with tank and seal drained {r['m_empty_tank']:.0f} kg; "
         f"castable firebox would weigh {m_fb_castable:.0f} kg instead of {m_fb:.0f} kg")
     say(f"  width {r['width']:.2f} m; chimney outlet {r['chimney_top']:.2f} m; run per fill {r['run_h']:.2f} h")
-    say(f"  BOM total ${r['cost']:,.2f} against budget ${a['budget_usd']:,.0f} "
-        f"(difference ${a['budget_usd']-r['cost']:,.2f})")
+    say(f"  BOM total ${r['cost']:,.2f}; value-engineering target ${a['budget_usd']:,.0f} "
+        f"({'over' if r['cost'] > a['budget_usd'] else 'under'} by ${abs(a['budget_usd']-r['cost']):,.2f})")
+    say(f"  water seal: dip leg {DGEO['dip']:.0f} mm below the static water line, annulus rise {DGEO['rise']:.0f} mm, "
+        f"effective head {DGEO['dip'] + DGEO['rise']:.0f} mm")
     say("\nG. Requirement status")
     for rid, what, val, tgt, st in req:
         say(f"  {rid:4s} {st:24s} {what}: {val} (target {tgt})")

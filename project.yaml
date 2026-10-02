@@ -13,6 +13,9 @@ trl_evidence:
   - docs/decisions/0002-recommendations-accepted.md
   - docs/04-calcs/01-sizing.md
   - docs/04-calcs/sizing.py
+  - docs/decisions/0003-design-for-construction.md
+  - docs/05-build-plan.md
+  - docs/06-design-decisions.md
   - cad/src/model.py
   - cad/step/steamroot.step
   - cad/stl/steamroot.stl
@@ -20,11 +23,12 @@ trl_evidence:
   - cad/drawings/STR-DWG-002.pdf
   - bom/bom.csv
 shortlisted: true
+design_state: constructable   # STANDARDS section 18; made constructable in STR-DDR-003 (2026-10-01)
 pitch: >-
   Low-pressure, biomass-fired steam generator with a flue-gas economizer and a steam-hood trailer for soil pasteurization, operated near atmospheric pressure to stay out of pressure vessel code.
 problem: >-
   Herbicide-free weed and pathogen control by steaming soil works, but the portable boilers that do it are inefficient and diesel-fired.
-budget_usd: 2200           # raised from 1500 to 1800 (STR-DDR-001), then to 2200 (STR-DDR-002), by Amish, 2026-09-25
+budget_usd: 2200           # value-engineering target, not a limit (Amish, 2026-10-01); set by Amish 2026-09-25 (STR-DDR-002); estimated cost USD 2,275
 difficulty: 5  # 1 easiest, 5 hardest
 hero_image: media/hero.png
 licenses:

@@ -2,13 +2,13 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386352583.svg)](https://zenodo.org/badge/latestdoi/1386352583) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/steamroot/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/steamroot/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/steamroot/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/steamroot)
 
-**Area:** Agriculture · **TRL:** 3 of 9 (analytical proof of concept on paper) · **Prototype budget:** $2,200 USD · **Difficulty:** 5 of 5
+**Area:** Agriculture · **TRL:** 3 of 9 (analytical proof of concept on paper) · **Value-engineering target:** USD 2,200 (estimated cost USD 2,275) · **Difficulty:** 5 of 5
 
 Low-pressure, biomass-fired steam generator with a flue-gas economizer and a steam-hood trailer for soil pasteurization, operated near atmospheric pressure to stay out of pressure vessel code.
 
 ![SteamRoot: towable wood-fired soil steamer that never holds pressure, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement STR-DWG-002 (PDF)](cad/drawings/STR-DWG-002.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement STR-DWG-002 (PDF)](cad/drawings/STR-DWG-002.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -59,7 +59,7 @@ Low-pressure, biomass-fired steam generator with a flue-gas economizer and a ste
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
-TRL 3 status (paper only): the sizing note [STR-CAL-001](docs/04-calcs/01-sizing.md) finds 30 kg/h of steam at a header pressure of about 0.03 bar with 7 L of water in the heated section, about 1.9 m²/h treated at 15 cm with two hoods, 402 kg as towed with the tank drained, and $1,915 in parts against a $2,200 budget. It still misses the efficiency targets: about 54 % fuel-to-steam against 65 %, and 5.4 kg of wood per m² against 4. A paper study of an evaporator bank in the flue with controlled air is the next step ([STR-DDR-002](docs/decisions/0002-recommendations-accepted.md)). A written ruling from the local boiler authority is an open prerequisite before any detail design or build. TRL 4 work is on hold.
+TRL 3 status (paper only): the sizing note [STR-CAL-001](docs/04-calcs/01-sizing.md) finds 30 kg/h of steam at a header pressure of about 0.03 bar with 7 L of water in the heated section, about 1.9 m²/h treated at 15 cm with two hoods and 468 kg as towed with the tank drained. Value-engineering target: USD 2,200. Estimated cost of the constructable design: USD 2,275 (USD 75 over the target). It still misses the efficiency targets: about 51 % fuel-to-steam against 65 %, and 5.6 kg of wood per m² against 4. A paper study of an evaporator bank in the flue with controlled air is the next step ([STR-DDR-002](docs/decisions/0002-recommendations-accepted.md)). A written ruling from the local boiler authority is an open prerequisite before any detail design or build. TRL 4 work is on hold.
 
 ## Key components
 
@@ -72,6 +72,12 @@ TRL 3 status (paper only): the sizing note [STR-CAL-001](docs/04-calcs/01-sizing
 - Thermocouples
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+
+## Building the prototype
+
+![SteamRoot prototype: every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
+
+The [prototype build plan](docs/05-build-plan.md) (STR-BLD-001) shows, in pictures, how to make each of the 28 components and put them together in twenty steps; nothing has been built, and nothing may be until the local boiler authority has given its written ruling. The firebox, roof, skids, brackets, grate stand, door, economizer, header, post and seal pot are cut and welded from mild steel and stainless sheet, tube and pipe; the coil is wound from one length of stainless tube on a former; the hoods are folded and riveted. Writing the plan made the design buildable: the firebox grew to 1 m so the door and fire sit below the coil, the roof now bolts on so the coil can be fitted, the seal pot's dip leg was shortened so the seal still blows at 0.094 bar, and supports, glands, feed lines and a vent line were added (STR-DDR-003, open for Amish's review). Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not; open decisions are in the [design decisions register](docs/06-design-decisions.md).
 
 ## Safety
 

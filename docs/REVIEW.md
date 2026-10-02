@@ -226,3 +226,59 @@ The renders show hot surfaces and a pressure-limiting vent. The labels in the mo
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-10-01: kit 1.7.0, constructable design and prototype build plan
+
+Authority: Amish approved the build plan format on 2026-09-30 and asked for it across all repos, with outstanding decisions kept in a separate design decisions register; on 2026-09-30 he wrote "If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations"; on 2026-10-01 he set budgets as value-engineering targets. TRL stays 3; nothing was built, bought or tested.
+
+### What was done
+
+- Kit 1.7.0 installed (`.kit/`, `.claude/commands/`); `CLAUDE.md` matches `.kit/CLAUDE.md`.
+- `cad/src/model.py` rewritten as a constructable model: every component keyed and modelled as made or bought, with fixings, and 93 build123d constructability checks (`python cad/src/model.py --check`), all passing, including the order in which the coil goes into the firebox. `--mass` prints the parts added for construction.
+- `docs/decisions/0003-design-for-construction.md` (STR-DDR-003 v0.1, Draft): every design change with its reason, made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review.
+- `docs/05-build-plan.md` (STR-BLD-001 v0.1): the illustrated build plan. `cad/src/build_plan_media.py` draws the overview, 21 making sketches (`cad/drawings/STR-DWG-101` to `121`), 10 joint close-ups, 20 step pictures and the 12 V wiring diagram (`docs/05-build-plan/`).
+- `docs/06-design-decisions.md` (STR-DEC-001 v0.1): 11 open decisions, 8 items to confirm when parts are bought, the value engineering section and the decisions made.
+- `bom/bom.csv`: lines 5, 6 and 8 respecified, lines 17 to 21 added; `docs/04-calcs/sizing.py` and STR-CAL-001 v0.3 rerun for the new geometry; STR-REQ-001 v0.5 and STR-PRC-001 v0.5 updated; STR-DWG-002 Rev P3; STEP, STL and concept media regenerated; `project.yaml` (`design_state: constructable`, new evidence); `README.md` (links, "Building the prototype").
+
+### Design changes made for construction (STR-DDR-003)
+
+1. C1 Firebox 1000 mm tall (was 650 mm) with the coil above the fire: door opening 300 x 240 mm, grate on a stand with an ash pit, air inlet and slide damper below the coil; 280 mm of fire space.
+2. C2 Three stainless coil brackets welded to the shell through the lining.
+3. C3 Bolted roof on an angle frame; the coil goes in from the top and its tails slide out through wall slots closed by gland plates with rope packing; unions outside; separate outlet pipe; the inlet jumper rerouted so nothing crosses.
+4. C4 Economizer as a bolted box on studs with a serpentine tube bank (7.3 m, bent on a standard 38 mm radius) on support bars, a bolted lid carrying the chimney spigot, and bulkhead unions.
+5. C5 Firebox skids welded under the firebox and bolted into the trailer side rails, with a 50 mm air gap.
+6. C6 Seal pot on a foot plate; dip leg 890 mm below the static mark so the seal still blows at 1.0 m of water (0.094 bar); pot top raised; header lowered to 1550 mm.
+7. C7 Header post with saddle and U-bolts; pot stay.
+8. C8 Diverter at the back of the header with a vent line into the vent pipe.
+9. C9 Relief valve on a socket with a discharge pipe to 2.3 m and a stay.
+10. C10 Hose routed clear of the trailer to a coupling on the hood.
+11. C11 Hood riser, flange and hung manifold; skirt riveted round the outside.
+12. C12 Drum saddles, ratchet straps, suction hose and stainless feed line with clips.
+13. C13 Pump and alarm box with battery and controller.
+14. C14 Door with board plug, hinges and latch; damper slide in guides.
+
+### Key results (STR-CAL-001 v0.3)
+
+- Efficiency 51.4 % (was 53.5 %) and wood 5.6 kg/m² at 15 cm (was 5.4): **R5 and R4 still not met**, gaps about 2 points wider because the taller firebox loses 3.5 kW through its walls (was 2.6 kW).
+- Coil inlet 0.108 bar, header 0.033 bar, seal limit 0.094 bar: R6 met. Water in the heated section 6.9 L: R7 met.
+- Towed mass 468 kg (602 kg full): R11 mass met with 32 kg to spare; width 1.48 m at risk as before.
+- Value-engineering target: USD 2,200. Estimated cost of the constructable design: USD 2,275 (USD 75 over the target).
+- Status counts: 2 not met (R4, R5), 3 at risk, 1 not verifiable at TRL 3, 8 met; R12 USD 75 over the target.
+
+### Proposed, awaiting Amish
+
+All in the register (`docs/06-design-decisions.md`): accept STR-DDR-003; how to recover the efficiency lost to the taller firebox (A1); a seal pot overflow at the static mark (A2, a safety case change); relief discharge up or down (A3); plus the open items carried over (boiler authority ruling, jurisdiction, partners, evaporator bank, seal freezing, hood stowage, hood ballast).
+
+### Safety concerns
+
+- The boiler authority ruling is still the gating prerequisite: build plan safety stop S1.
+- C6 corrects a real flaw: as drawn, a 1 m dip leg would have let the header reach about 0.11 bar and pushed seal water into the vent. The corrected geometry keeps 0.094 bar.
+- The build plan adds stops for welding, ceramic fibre handling, cold pressure tests, never firing a dry coil and never refeeding a hot, dry coil.
+
+### Stale media (made on Amish's Mac, not regenerated here)
+
+`media/render-hero.png`, `media/render-exploded.png`, `media/render-detail.png`, `media/card.png` and `media/social-preview.png`, and the appearance model `cad/src/product_model.py`, show the concept: a 650 mm firebox with the coil round the fire, no skids or roof frame, the header at 1.6 m and the seal pot through the deck. They are stale and need updating.
+
+### Recommended next step
+
+Amish to review STR-DDR-003 and the register. Then the second paper iteration at TRL 3 (evaporator bank, controlled air and firebox shape, decisions 4 and 5). TRL 4 stays on hold.

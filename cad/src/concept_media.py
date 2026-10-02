@@ -11,18 +11,23 @@ sys.path.insert(0, str(ROOT / ".kit"))
 sys.path.insert(0, str(ROOT / "cad" / "src"))
 sys.path.insert(0, str(ROOT / "docs" / "04-calcs"))
 from concept import Part, render_all  # noqa: E402
-from model import build_parts  # noqa: E402
+from model import build_components, coil_display, GROUP_ORDER  # noqa: E402
+from build123d import Compound  # noqa: E402
 from sizing import run  # noqa: E402
 
-g = build_parts()
+C = build_components()
+C["coil"] = C["coil"]._replace(shape=coil_display())   # same centreline; the swept helix takes minutes to tessellate
+g = {grp: Compound(children=[c.shape for c in C.values() if c.group == grp]) for grp in GROUP_ORDER}
 c = run()
 fb = c["fb"]
 
 STYLE = [  # (model part name, label, color, BOM item, exploded offset in mm)
     ("Trailer frame and drawbar", "Trailer frame and drawbar", "#4B5563", 1, (0, 0, -380)),
     ("Wheels", "Wheels", "#1F2937", 2, (0, 0, -760)),
+    ("Firebox skids", "Firebox skids", "#1D4ED8", 17, (0, 0, -150)),
     ("Feed water tank, 125 L", "Feed water tank, 125 L", "#2563EB", 3, (-350, 0, 250)),
-    ("Feed pump", "Feed pump", "#7C3AED", 4, (-200, 500, 150)),
+    ("Feed pump", "Pump and alarm box", "#7C3AED", 4, (-200, 500, 150)),
+    ("Feed lines", "Feed lines", "#A855F7", 19, (-350, 0, 450)),
     ("Firebox, fiber lined", "Firebox, fiber lined", "#9A3412", 5, (0, -700, 0)),
     ("Monotube steam coil", "Monotube steam coil", "#B87333", 6, (0, 0, 0)),
     ("Flue-gas economizer", "Flue-gas economizer", "#D4A017", 7, (0, 0, 700)),
