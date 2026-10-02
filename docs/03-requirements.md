@@ -3,9 +3,9 @@ doc_id: STR-REQ-001
 title: SteamRoot requirements
 project: SteamRoot
 doc_type: Requirements
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: TRL 3 status updated for the constructable design (STR-DDR-003, STR-CAL-001 v0.3); R12 reported against the value-engineering target
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "R4 to be restated after the evaporator bank study and R5 study to keep R7 (decided 2026-10-02); authority named; no status changed"
 ---
 
 # SteamRoot requirements
@@ -44,8 +48,8 @@ These requirements were checked by calculation at TRL 3 in STR-CAL-001 v0.3 (`do
 | R1 | Pasteurize soil to working depth | Soil at 70 °C (158 °F) or more for 20 to 30 min at 10 to 15 cm depth across at least 80 % of the hood footprint | Heat balance calculation; later thermocouple probes at 15 cm | Not verifiable at TRL 3 (1D model holds 70 °C at 15 cm if the front reaches 16.5 cm) |
 | R2 | Treat beds at a useful rate | About 1.9 m²/h (1.85 m²/h or more) at 15 cm depth; 3.4 m²/h or more at 5 cm depth (weed seed bank only), with two hoods used alternately. Restated from 2 and 5 m²/h until soil tests exist (decided by Amish, 2026-09-25, STR-DDR-002) | Calculation from steam output, steam per m² and hood cycle | At risk (thin margin): 1.88 m²/h at 15 cm, 3.41 m²/h at 5 cm |
 | R3 | Generate enough steam | 30 kg/h or more of saturated steam, continuous, from one firebox | Heat transfer and combustion calculation | Met: 30 kg/h at 40.7 kW firing |
-| R4 | Limit fuel use | 4 kg or less of wood at 20 % moisture (wet basis; about 14.5 MJ/kg lower heating value) per m² at 15 cm depth. Target kept (decided by Amish, 2026-09-25) | Energy balance calculation | Not met: 5.6 kg/m² (4.4 kg/m² even at 65 % efficiency; about 72 % needed) |
-| R5 | Use biomass efficiently | 65 % or more of fuel energy delivered as steam, with the economizer. Target kept; a convective evaporator bank with controlled air is under study (decided by Amish, 2026-09-25) | Energy balance calculation; later flue temperature and fuel weighing | Not met: 51 % (study in STR-CAL-001, section 4: 65 % needs about 4.3 m of evaporator bank at λ = 2.0, or about 1.3 m at λ = 1.5) |
+| R4 | Limit fuel use | 4 kg or less of wood at 20 % moisture (wet basis; about 14.5 MJ/kg lower heating value) per m² at 15 cm depth. Target kept (decided by Amish, 2026-09-25); to be restated after the evaporator bank study, since even 65 % efficiency leaves it short (decided 2026-10-02) | Energy balance calculation | Not met: 5.6 kg/m² (4.4 kg/m² even at 65 % efficiency; about 72 % needed) |
+| R5 | Use biomass efficiently | 65 % or more of fuel energy delivered as steam, with the economizer. Target kept; a convective evaporator bank with controlled air is under study (decided by Amish, 2026-09-25), to be sized in the next paper iteration with primary and secondary air dampers and without relaxing R7 (decided 2026-10-02) | Energy balance calculation; later flue temperature and fuel weighing | Not met: 51 % (study in STR-CAL-001, section 4: 65 % needs about 4.3 m of evaporator bank at λ = 2.0, or about 1.3 m at λ = 1.5) |
 | R6 | Stay near atmospheric pressure | Normal working pressure 0.1 bar gauge (1.5 psi) or less at the steam header, where the vent limit applies, and 0.15 bar gauge (2.2 psi) or less at the coil inlet; an open vent to atmosphere that cannot be closed or isolated (redefined by Amish, 2026-09-25) | Pressure drop calculation; design review | Met: header 0.033 bar, coil inlet 0.108 bar; open vent met by design |
 | R7 | Keep stored energy low | 8 L or less of water in the heated section; no closed steam drum | Volume calculation from the coil geometry | Met: 6.9 L flooded |
 | R8 | Run between refills | 3 h or more of steaming per feed water fill | Tank volume and steam rate | Met: 4.2 h |
@@ -60,7 +64,7 @@ These requirements were checked by calculation at TRL 3 in STR-CAL-001 v0.3 (`do
 - Specific heat of dry mineral soil 0.84 kJ/(kg K), of water 4.18 kJ/(kg K).
 - 70 °C for 30 minutes is widely used as a soil pasteurization target for most weed seeds and fungal pathogens. Some hard-seeded weeds and heat-tolerant viruses need higher temperatures; this is accepted.
 - Wood at 20 % moisture (wet basis) has a lower heating value of about 14.5 MJ/kg for a typical hardwood analysis. Earlier versions quoted about 16 MJ/kg, which was too high.
-- Pressure thresholds for boiler and pressure vessel rules vary by jurisdiction. R6 and R9 are set to be well below common low-pressure thresholds, but compliance must be confirmed locally. The written ruling from the local boiler authority is an open prerequisite.
+- Pressure thresholds for boiler and pressure vessel rules vary by jurisdiction. R6 and R9 are set to be well below common low-pressure thresholds, but compliance must be confirmed locally. The written ruling from the local boiler authority, the Texas Department of Licensing and Regulation's boiler program (Amish's home jurisdiction is Texas, decided 2026-10-02), is an open prerequisite.
 - R11 assumes the machine is towed with the feed tank and seal pot drained and filled from a water supply at the site. Towing full puts it at about 602 kg.
 - The R9 capacity check uses the maker's published capacity for the Watts Series 315, 3/4 in, 15 psi valve (375 lb/h); it must be confirmed for the valve actually bought.
 - The R2 treatment rate assumes two hoods used alternately, a 25-minute hold, 2 minutes to reset a hood and 1 minute of vented steam each time the hose is moved.

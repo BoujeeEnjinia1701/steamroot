@@ -1,5 +1,52 @@
 # Review note: SteamRoot
 
+## Session 2026-10-02: open decisions decided by Amish
+
+Amish wrote on 2026-10-02: "i approve your recommendations for all 555 open decisions." Every open decision in this repo's register was decided as recommended and moved to "Decisions made" in `docs/06-design-decisions.md`, dated 2026-10-02.
+
+### Decisions recorded
+
+11 decisions recorded (register items 1 to 11). The register's "Open decisions" section now reads: "None. All open decisions were decided on 2026-10-02."
+
+### Documents changed
+
+- `docs/06-design-decisions.md` v0.2
+- `docs/decisions/0003-design-for-construction.md` v0.2
+- `docs/decisions/0001-trl2-review-decisions.md` v0.3
+- `docs/decisions/0002-recommendations-accepted.md` v0.2
+- `docs/03-requirements.md` v0.6
+- `docs/02-concept.md` v0.6
+- `docs/01-problem.md` v0.5
+- `docs/05-build-plan.md` v0.2
+- `README.md` (DDR-003 status; not a controlled document)
+
+PDFs re-rendered with `python3 .kit/render.py`. The CAD model, BOM quantities and prices, and pictures were not changed.
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 1 (documents): Obtain the written ruling (see decision 2) and review the design against it before any purchase or build; record any stricter requirement it sets as a new decision.
+2. Decision 2 (documents): Write to the Texas Department of Licensing and Regulation's boiler program for the ruling on an open-vented, fired monotube coil, with the design precis and drawing attached.
+3. Decision 4 (calculations): In the next paper iteration, size the evaporator bank with primary and secondary air dampers in `docs/04-calcs/sizing.py` so the heated water stays at 8 L or less (smaller-bore bank tube or fewer firebox turns), reshape the firebox in the same study, and propose a restated R4.
+4. Decision 4 (model): Add the evaporator bank and air dampers to `cad/src/model.py` once sized, and check R6, R7 and R11.
+5. Decision 6 (model): Add the seal pot overflow branch at the static water mark and its pipe down to ground level at the back of the trailer, away from the operator's side, to `cad/src/model.py`, and rerun the constructability checks.
+6. Decision 6 (drawings): Regenerate the water-seal pot making sketch (STR-DWG-116) and STR-DWG-002 with the overflow branch and pipe.
+7. Decision 6 (build plan pictures and renders): Add the overflow to the seal pot section 3.17, step 15 and joint 7 pictures of STR-BLD-001, and to the S4 check.
+8. Decision 6 (BOM): Add the overflow branch, pipe and clips to the header and water-seal BOM line and price them.
+9. Decision 6 (calculations): Check in STR-CAL-001 that the overflow sets the seal depth so the pot cannot exceed the 0.094 bar limit, including the 110 mm rise outside the dip leg.
+10. Decision 8 (documents): Add the seal pot draining and ice check to the operator instructions when they are written.
+11. Decision 10 (build plan pictures and renders): Update `cad/src/product_model.py` to the constructable design (1000 mm firebox with the coil above the fire, skids, header at 1.55 m on a post, seal pot on the deck) and regenerate `media/render-*.png`, `media/card.png` and `media/social-preview.png` on Amish's Mac.
+12. Decision 11 (model): Size the hood handles and their standoffs in `cad/src/model.py` to carry ballast weights, and note the ballast load in the hood section of STR-BLD-001.
+13. Decision 11 (documents): When TRL 4 is opened, include skirt leakage measured at the hood edge in the soil test plan.
+
+### Points found in the review
+
+- R4 (4 kg wood per m²) needs about 72 % efficiency (STR-CAL-001 section 4), so the evaporator bank study aimed at R5's 65 % cannot close R4; the register treats them as closing together.
+- The evaporator bank length moved from about 3.3 m (STR-DDR-002, item 1) to about 4.3 m (STR-CAL-001 v0.3) after the taller firebox; STR-DDR-002 still quotes the old figure.
+- The seal pot overflow (item 6) and the freezing rule (item 8) both protect the water seal, which is the pressure limit for the whole machine; they should be read together as one safety question rather than as an option and an operating rule.
+- Item 10 is listed last although every other build item depends on it; it should sit first in the register as in the other repos.
+
+TRL 4 remains on hold by Amish's instruction.
+
 ## Session 2026-09-24: /populate to a strong TRL 2
 
 ### What was done

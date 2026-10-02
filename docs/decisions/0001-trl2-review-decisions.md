@@ -3,9 +3,9 @@ doc_id: STR-DDR-001
 title: SteamRoot TRL 2 review decisions
 project: SteamRoot
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Items 8 and 9 decided by Amish on 2026-10-02; item 7 gate confirmed (STR-DEC-001, items 1 to 3)"
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items 1 to 6); items 10 and 11 decided in STR-DDR-002; item 7 is an open prerequisite; items 8 and 9 remain proposed
+- **Status:** accepted (items 1 to 6); items 10 and 11 decided in STR-DDR-002; item 7 is an open prerequisite; items 8 and 9 remained proposed at this record and were decided by Amish on 2026-10-02 (STR-DEC-001, items 2 and 3): "i approve your recommendations for all 555 open decisions."
 
 ## Context
 
@@ -53,9 +57,9 @@ The TRL 2 review also recommended a written ruling from the local boiler authori
 
 | # | Item | Status |
 | --- | --- | --- |
-| 7 | Written ruling from the local boiler authority on an open-vented, fired monotube coil | Approved as a prerequisite; not yet obtained. Blocks detail design and any build. |
-| 8 | Which jurisdiction is "home" and which authority to ask | Proposed, awaiting Amish (Amish to name it). |
-| 9 | The named market garden and nursery (first co-design partners) | Proposed, awaiting Amish. No partner is named. |
+| 7 | Written ruling from the local boiler authority on an open-vented, fired monotube coil | Approved as a prerequisite; not yet obtained. Blocks detail design and any build. Confirmed by Amish on 2026-10-02 (STR-DEC-001, item 1): the design is reviewed against the ruling and anything stricter is adopted. |
+| 8 | Which jurisdiction is "home" and which authority to ask | Decided by Amish, 2026-10-02 (STR-DEC-001, item 2): Texas; the ruling is asked of the Texas Department of Licensing and Regulation's boiler program. |
+| 9 | The named market garden and nursery (first co-design partners) | Decided by Amish, 2026-10-02 (STR-DEC-001, item 3): one market garden and one nursery within driving distance of Irving that already steam, solarize or chemically treat soil, found through Texas A&M AgriLife Extension; none is named or agreed yet. |
 | 10 | Wood only, no liquid fuel backup (design choice in STR-PRC-001 not listed in the review) | Decided by Amish, 2026-09-25: go with recommendation. Wood only. See STR-DDR-002. |
 | 11 | New items raised by the TRL 3 calculation (CAL-001): requirement gaps on R2, R4, R5, R6, R11 and R12, relief valve wording for R9, and the lining and hose-coupling choices | Decided by Amish, 2026-09-25: go with recommendation. See STR-DDR-002 for each item and what changed. |
 

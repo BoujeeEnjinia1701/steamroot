@@ -3,9 +3,9 @@ doc_id: STR-DDR-003
 title: SteamRoot design for construction
 project: SteamRoot
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,14 +13,18 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Changes that make the concept physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Accepted by Amish on 2026-10-02 (Tables 1 to 3); seal pot overflow accepted but not yet modelled; record stays Draft"
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** Draft. The changes in Tables 1 and 2 were made under Amish's 2026-09-30 instruction to make the design physically buildable; they are open for his review. The items in Table 3 are Proposed, awaiting Amish.
+- **Status:** accepted. The changes in Tables 1 and 2 were made under Amish's 2026-09-30 instruction to make the design physically buildable. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This covers every change in Tables 1 and 2 and the recommendations in Table 3 (A1 to A3), recorded in the design decisions register (STR-DEC-001, items 5 to 7 and 10). The seal pot overflow (A2) is accepted as a decision but is not yet in the model. The record stays Draft.
 
-> **Safety:** Changes C6, C8 and C9 touch the open vent, the water seal and the relief valve. Each keeps the safety case of STR-PRC-001 as it stands (an open vent that cannot be isolated, a 0.094 bar seal limit, a certified 15 psi relief valve rated 170 kg/h); none changes it. The written ruling from the local boiler authority is still an open prerequisite for any build, and its ruling overrides this record if it is stricter.
+> **Safety:** Changes C6, C8 and C9 touch the open vent, the water seal and the relief valve. Each keeps the safety case of STR-PRC-001 as it stands (an open vent that cannot be isolated, a 0.094 bar seal limit, a certified 15 psi relief valve rated 170 kg/h); none changes it. The written ruling from the local boiler authority (the Texas Department of Licensing and Regulation's boiler program, decided 2026-10-02) is still an open prerequisite for any build, and its ruling overrides this record if it is stricter.
 
 ## Context
 
@@ -60,17 +64,17 @@ The changes keep what SteamRoot does: an open-vented, wood-fired monotube coil m
 | Drawings | STR-DWG-002 Rev P3; making sketches STR-DWG-101 to 121 added. | Follows the model. |
 | Documents | STR-CAL-001 v0.3, STR-REQ-001 v0.5 and STR-PRC-001 v0.5 updated for the figures above. No requirement changed status. | Follows the model. |
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Proposed, then accepted by Amish as recommended on 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | The taller firebox costs about 2 points of efficiency. | (a) accept for the first prototype; (b) 75 mm lining with the box made 50 mm larger each way, which brings efficiency back to about 53.8 % for about 8 kg more; (c) fold the firebox shape into the R5 evaporator bank study (STR-DDR-002, item 1), which reshapes the flue anyway. | (c), keeping (a) for now. |
-| A2 | The seal pot level rises as steam condenses in it and falls as it boils off; an overfilled pot raises the seal limit. | (a) an overflow pipe at the static water mark, draining to the ground; (b) a level mark and top-up by hand only, as now. | (a): it fixes the seal depth so it cannot be overfilled. It is a change to the safety case, so it is proposed, not made. |
-| A3 | The relief valve discharge now goes up to 2.3 m. | (a) keep it, as modelled; (b) discharge down to the ground at the front of the trailer. | (a), subject to the boiler authority's ruling. |
+| A1 | The taller firebox costs about 2 points of efficiency. | (a) accept for the first prototype; (b) 75 mm lining with the box made 50 mm larger each way, which brings efficiency back to about 53.8 % for about 8 kg more; (c) fold the firebox shape into the R5 evaporator bank study (STR-DDR-002, item 1), which reshapes the flue anyway. | (c), keeping (a) for now. Accepted 2026-10-02. |
+| A2 | The seal pot level rises as steam condenses in it and falls as it boils off; an overfilled pot raises the seal limit. | (a) an overflow pipe at the static water mark, draining to the ground; (b) a level mark and top-up by hand only, as now. | (a): it fixes the seal depth so it cannot be overfilled. It is a change to the safety case, so it is proposed, not made. Accepted 2026-10-02: the overflow is piped down to ground level at the back of the trailer, away from the operator's side. It is to be added to the model and build plan (follow-up). |
+| A3 | The relief valve discharge now goes up to 2.3 m. | (a) keep it, as modelled; (b) discharge down to the ground at the front of the trailer. | (a), subject to the boiler authority's ruling. Accepted 2026-10-02, subject to the authority's ruling. |
 
 ## Consequences
 
-- `design_state: constructable` in `project.yaml`. The build plan STR-BLD-001 (`docs/05-build-plan.md`) shows every component and step in pictures drawn from the model (`cad/src/build_plan_media.py`). Open decisions are in the design decisions register, STR-DEC-001 (`docs/06-design-decisions.md`).
+- `design_state: constructable` in `project.yaml`. The build plan STR-BLD-001 (`docs/05-build-plan.md`) shows every component and step in pictures drawn from the model (`cad/src/build_plan_media.py`). Decisions are recorded in the design decisions register, STR-DEC-001 (`docs/06-design-decisions.md`), which accepted this record on 2026-10-02.
 - Requirement status is unchanged in kind: 2 not met (R4, R5), 3 at risk (R2 twice, R11 width), 1 not verifiable at TRL 3 (R1), 8 met; R12 is reported against the value-engineering target, USD 75 over (STR-CAL-001 v0.3).
 - The photoreal renders (`media/render-*.png`), `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the concept: a 650 mm firebox with the coil round the fire, no skids, the header at 1.6 m and the seal pot through the deck. They need updating on Amish's Mac, where Blender is.
 - The trailer is bought used. Its side rails must be checked for the skid bolts when it is chosen; the drawings assume 80 mm rails.

@@ -3,9 +3,9 @@ doc_id: STR-PRC-001
 title: SteamRoot design precis
 project: SteamRoot
 doc_type: Design precis
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,11 +29,15 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Figures and description updated for the constructable design (STR-DDR-003, STR-CAL-001 v0.3); cost against the value-engineering target; build plan and decisions register linked
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Decisions of 2026-10-02: authority named, first co-design partner route, seal pot overflow and freezing rule, hoods on a second vehicle, evaporator bank study scope, hood ballast from TRL 4 tests"
 ---
 
 # SteamRoot design precis
 
-SteamRoot is a towable, wood-fired steam generator that never holds pressure. A pump pushes water once through a large-bore stainless coil above the fire, the steam flows at close to atmospheric pressure through a hose to one of two insulated hoods pressed onto the soil, and a flue-gas economizer preheats the feed water. The TRL 3 calculation (STR-CAL-001) confirms the core safety idea on paper: 30 kg/h of steam with under 7 L of water in the heated section and a header pressure of about 0.03 bar. With the requirements as restated by Amish on 2026-09-25 (STR-DDR-002), the concept still misses two efficiency targets: about 51 % fuel-to-steam efficiency (target 65 %) and 5.6 kg of wood per m² at 15 cm (target 4). It treats about 1.9 m²/h at 15 cm with two hoods and weighs 468 kg as towed with the tank drained. Value-engineering target: USD 2,200. Estimated cost of the constructable design: USD 2,275 (USD 75 over the target). The design was made constructable on 2026-10-01 (STR-DDR-003, open for Amish's review); the prototype build plan is [docs/05-build-plan.md](05-build-plan.md) and open decisions are in [docs/06-design-decisions.md](06-design-decisions.md).
+SteamRoot is a towable, wood-fired steam generator that never holds pressure. A pump pushes water once through a large-bore stainless coil above the fire, the steam flows at close to atmospheric pressure through a hose to one of two insulated hoods pressed onto the soil, and a flue-gas economizer preheats the feed water. The TRL 3 calculation (STR-CAL-001) confirms the core safety idea on paper: 30 kg/h of steam with under 7 L of water in the heated section and a header pressure of about 0.03 bar. With the requirements as restated by Amish on 2026-09-25 (STR-DDR-002), the concept still misses two efficiency targets: about 51 % fuel-to-steam efficiency (target 65 %) and 5.6 kg of wood per m² at 15 cm (target 4). It treats about 1.9 m²/h at 15 cm with two hoods and weighs 468 kg as towed with the tank drained. Value-engineering target: USD 2,200. Estimated cost of the constructable design: USD 2,275 (USD 75 over the target). The design was made constructable on 2026-10-01 (STR-DDR-003, accepted by Amish on 2026-10-02); the prototype build plan is [docs/05-build-plan.md](05-build-plan.md) and open decisions are in [docs/06-design-decisions.md](06-design-decisions.md).
 
 > **Safety:** SteamRoot is a concept for review, not a design to build. It combines open fire, carbon monoxide, and steam that causes severe burns in under a second. Local boiler and pressure vessel rules may apply even at low pressure. **A written ruling from the local boiler authority is an open prerequisite:** Amish approved getting it before TRL 3 detail work, and it has not been obtained. See the Safety section before any further work.
 
@@ -46,7 +50,7 @@ SteamRoot is a towable, wood-fired steam generator that never holds pressure. A 
 1. **Feed.** A 12 V diaphragm pump draws water from a 125 L tank and meters 0.5 L/min (30 kg/h) into the economizer at a fixed rate. A float switch warns when the tank runs low.
 2. **Preheat.** The economizer coil sits in the flue gas above the firebox and warms the feed water from about 15 °C to about 85 °C.
 3. **Boil.** The warm water enters the bottom of a monotube coil that sits above the fire bed inside the fiber-lined firebox, on three brackets, with the door, grate and air inlet below it. It boils as it rises through 11 turns and leaves the top of the coil as steam. The coil holds under 6 L of water. A thermocouple on the coil outlet sounds an alarm if the outlet overheats, which is the sign of a coil running dry.
-4. **Vent and separate.** The coil discharges into a steam header 1.55 m above the ground. The header is always open to the atmosphere through a water-seal pot: a dip leg reaches 890 mm below the water line, and the water it displaces rises 110 mm outside it, so steam can only build about 0.094 bar gauge (1 m of water) before it bubbles through the seal and out of a vent pipe that ends 2.3 m above the ground, above head height. The seal cannot stick or be adjusted, and it is never valved off. A certified relief valve on the header is the second line of protection.
+4. **Vent and separate.** The coil discharges into a steam header 1.55 m above the ground. The header is always open to the atmosphere through a water-seal pot: a dip leg reaches 890 mm below the water line, and the water it displaces rises 110 mm outside it, so steam can only build about 0.094 bar gauge (1 m of water) before it bubbles through the seal and out of a vent pipe that ends 2.3 m above the ground, above head height. An overflow at the static water mark, piped down to ground level at the back of the trailer away from the operator's side, stops the pot being overfilled (decided by Amish, 2026-10-02). The seal cannot stick or be adjusted, and it is never valved off. A certified relief valve on the header is the second line of protection.
 5. **Deliver.** Steam flows through a 6 m, 25 mm steam hose to a hood. A three-way diverter at the header sends steam to the hose or to the vent and has no closed position.
 6. **Pasteurize.** Each hood is a 1.2 x 1.0 m insulated open-bottom pan with a 60 mm soil skirt. Steam from a perforated manifold condenses in the soil and drives a hot front downward. While one hood heats, the other holds its soil at temperature. To change over, the operator diverts steam to the vent, moves the hose coupling to the other hood and diverts steam back.
 
@@ -70,7 +74,7 @@ Item numbers match the exploded view, the general arrangement drawing STR-DWG-00
 | 6 | Monotube steam coil | 316 stainless tube, 25.4 mm OD x 1.65 mm wall, 14.5 m in 11 turns on 420 mm | Decided by Amish, 2026-09-25 |
 | 7 | Flue-gas economizer | 8 m of 12.7 mm stainless tube in a box above the firebox, with condensate drain | Flue condensate is acidic (dew point about 45 °C) |
 | 8 | Chimney and spark arrestor | 150 mm flue, outlet 2.4 m above ground, 6 mm mesh | Keeps flue gas above head height |
-| 9 | Steam header and water-seal vent | DN50 header at 1.55 m on a post, 114 mm seal pot with a 1 m effective seal, vent to 2.3 m, three-way diverter with a vent line, quick coupling | Primary pressure limit. Decided by Amish, 2026-09-25 |
+| 9 | Steam header and water-seal vent | DN50 header at 1.55 m on a post, 114 mm seal pot with a 1 m effective seal and an overflow at the static water mark, vent to 2.3 m, three-way diverter with a vent line, quick coupling | Primary pressure limit. Decided by Amish, 2026-09-25 |
 | 10 | Certified relief valve | ASME Section IV steam safety valve, 15 psi (1.03 bar) set, 3/4 in, rated 170 kg/h (375 lb/h) | Secondary protection only; sized for the dry-coil refeed flash (decided by Amish, 2026-09-25) |
 | 11 | Steam hose | EPDM saturated-steam hose, 25 mm bore, 6 m, ground-joint couplings, whip checks | Steam rated, not hot-water rated |
 | 12 | Steam hoods (2) | 1.2 x 1.0 x 0.25 m aluminum double-skin pans, 40 mm mineral wool, soil skirt, handles on standoffs | Two hoods used alternately. Decided by Amish, 2026-09-25 |
@@ -134,9 +138,9 @@ The second gap is steam per square meter. Soil behind the steam front sits at 10
 
 SteamRoot is the highest-risk concept in the portfolio. Every later stage must keep this section and extend it.
 
-> **Safety: regulatory ruling first.** A written ruling from the local boiler authority on this open-vented, fired monotube coil is an open prerequisite. No detail design, build or firing may happen before it, and its ruling overrides this document if it is stricter.
+> **Safety: regulatory ruling first.** A written ruling from the local boiler authority (the Texas Department of Licensing and Regulation's boiler program; Amish's home jurisdiction is Texas) on this open-vented, fired monotube coil is an open prerequisite. No detail design, build or firing may happen before it, and its ruling overrides this document if it is stricter.
 
-> **Safety: never sealed.** The steam side must always be open to the atmosphere through the water-seal vent. Never fit a valve, cap or plug that can isolate the coil or header from the vent. Keep the seal pot filled to its mark; an empty seal pot is an open vent, but an overfilled or frozen one raises the relief pressure. Never plug, adjust or remove the relief valve. A sealed coil or tank over a fire can rupture violently.
+> **Safety: never sealed.** The steam side must always be open to the atmosphere through the water-seal vent. Never fit a valve, cap or plug that can isolate the coil or header from the vent. Keep the seal pot filled to its mark; an empty seal pot is an open vent, but an overfilled or frozen one raises the relief pressure. The overflow at the static water mark prevents overfilling. Drain the pot through its valve after every day of use and whenever frost is forecast, and before lighting check that the pot is free of ice and filled to its mark (decided by Amish, 2026-10-02). Never plug, adjust or remove the relief valve. A sealed coil or tank over a fire can rupture violently.
 
 > **Safety: certified relief valve.** Fit only a certified, code-stamped steam safety valve sized for the full steam output. It is a second line of protection behind the open vent, not a replacement for it. Test it by its lever as the maker directs.
 
@@ -153,17 +157,16 @@ SteamRoot is the highest-risk concept in the portfolio. Every later stage must k
 > **Safety: hot surfaces and water quality.** The firebox skin reaches about 100 °C, and the chimney, economizer, header, seal pot and hood inner skin reach burn temperatures. Use rain water or softened water to limit scale in the coil; scale raises tube temperature and can block the coil.
 
 - **Soil biology.** Steaming kills beneficial organisms as well as pests, and the soil behind the steam front reaches 100 °C. Overheating soil can release manganese and ammonium that harm seedlings. Do not steam longer than needed.
-- **Towing.** Tow only with the fire out, the tank and seal pot drained, and the hoods strapped down. Towing with a full tank puts the mass at about 602 kg, over the 500 kg limit in R11.
+- **Towing.** Tow only with the fire out and the tank and seal pot drained; the two hoods ride on a second vehicle (decided by Amish, 2026-10-02). Towing with a full tank puts the mass at about 602 kg, over the 500 kg limit in R11.
 
 ## Open questions
 
 These are tracked, with options and recommendations, in the design decisions register STR-DEC-001 ([docs/06-design-decisions.md](06-design-decisions.md)).
 
-- Regulatory status of an open-vented, fired monotube coil in Amish's home jurisdiction. Open prerequisite; gates all further work.
-- R5 and R4: decided by Amish, 2026-09-25, to study a convective evaporator bank with controlled primary and secondary air and keep the targets. The first paper study is in STR-CAL-001; the next iteration must add the bank to the model and check R6, R7 and R11.
-- What soil permeability and skirt leakage do real beds show, and does the hood need ballast? This decides R1 and R2 and cannot be settled on paper.
-- Where do two hoods ride during towing? The deck behind the firebox is too short for them.
-- How is the seal pot level kept up as steam condenses in it and bubbles through it, and how is it protected from freezing?
+- Regulatory status of an open-vented, fired monotube coil in Amish's home jurisdiction, Texas: the written ruling is asked of the Texas Department of Licensing and Regulation's boiler program. Open prerequisite; gates all further work.
+- First co-design partners (decided 2026-10-02): one market garden and one nursery within driving distance of Irving that already steam, solarize or chemically treat soil, found through Texas A&M AgriLife Extension's horticulture contacts. None is named or agreed yet.
+- R5 and R4: decided by Amish, 2026-09-25, to study a convective evaporator bank with controlled primary and secondary air and keep the targets. The first paper study is in STR-CAL-001; the next iteration must add the bank to the model and check R6, R7 and R11. Decided 2026-10-02: size the bank with primary and secondary air dampers so the heated water stays at 8 L or less without relaxing R7, reshape the firebox inside the same study, and plan to restate R4, since even 65 % efficiency leaves it short.
+- What soil permeability and skirt leakage do real beds show, and does the hood need ballast? This decides R1 and R2 and cannot be settled on paper. Decided 2026-10-02: ballast, skirt depth or steam rate are chosen from TRL 4 soil tests that measure leakage at the hood edge, and the hood handles are sized to take ballast weights.
 - How much does starting soil moisture change steam demand? Wet soil needs more energy but conducts heat better.
 
 Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html). General arrangement: [STR-DWG-002](../cad/drawings/STR-DWG-002.pdf).

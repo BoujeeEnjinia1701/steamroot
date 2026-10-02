@@ -3,9 +3,9 @@ doc_id: STR-DDR-002
 title: SteamRoot recommendations accepted
 project: SteamRoot
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record the TRL 3 review recommendations accepted by Amish, what changed in the repo, and the items still open
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Items 10 to 12 decided by Amish on 2026-10-02 (STR-DEC-001, items 1 to 3); the ruling is still to be obtained"
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items 1 to 9); items 10 to 12 remain open
+- **Status:** accepted (items 1 to 9); items 10 to 12 remained open at this record and were decided by Amish on 2026-10-02 (STR-DEC-001, items 1 to 3): "i approve your recommendations for all 555 open decisions." The ruling of item 10 is still to be obtained.
 
 ## Context
 
@@ -44,13 +48,13 @@ The TRL 3 review note (`docs/REVIEW.md`, session 2026-09-25) and STR-DDR-001 lef
 
 ## Items still open
 
-*Table 2. Items that stay open.*
+*Table 2. Items left open at this record; decided on 2026-10-02.*
 
 | # | Item | Status |
 | --- | --- | --- |
-| 10 | Written ruling from the local boiler authority | Approved as a prerequisite; not obtained. It cannot be obtained in a documentation session. Blocks detail design and any build. |
-| 11 | Which jurisdiction is "home" and which authority to ask | Proposed, awaiting Amish (no recommendation; Amish to name it). |
-| 12 | The named market garden and nursery (first co-design partners) | Proposed, awaiting Amish (no recommendation). |
+| 10 | Written ruling from the local boiler authority | Approved as a prerequisite; not obtained. Blocks detail design and any build. Confirmed by Amish on 2026-10-02 (STR-DEC-001, item 1): the design is reviewed against the ruling and anything stricter is adopted. |
+| 11 | Which jurisdiction is "home" and which authority to ask | Decided by Amish, 2026-10-02 (STR-DEC-001, item 2): Texas; the ruling is asked of the Texas Department of Licensing and Regulation's boiler program. |
+| 12 | The named market garden and nursery (first co-design partners) | Decided by Amish, 2026-10-02 (STR-DEC-001, item 3): one market garden and one nursery within driving distance of Irving that already steam, solarize or chemically treat soil, found through Texas A&M AgriLife Extension; none is named or agreed yet. |
 
 ## Consequences
 

@@ -3,9 +3,9 @@ doc_id: STR-PRB-001
 title: SteamRoot problem statement
 project: SteamRoot
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Partners and authority answered by Amish's 2026-10-02 decisions"
 ---
 
 # SteamRoot problem statement
@@ -84,6 +88,6 @@ Soil solarization (clear plastic in hot weather) and anaerobic soil disinfestati
 
 ## Decisions and open questions
 
-- First users: one market garden and one nursery. Decided by Amish, 2026-09-25 (STR-DDR-001). The named partners are not chosen: Proposed, awaiting Amish.
-- First jurisdiction for the regulatory check: Amish's home jurisdiction. Decided by Amish, 2026-09-25. Which jurisdiction and which authority to ask: Proposed, awaiting Amish.
+- First users: one market garden and one nursery. Decided by Amish, 2026-09-25 (STR-DDR-001). Decided by Amish, 2026-10-02: one market garden and one nursery within driving distance of Irving that already steam, solarize or chemically treat soil, found through Texas A&M AgriLife Extension's horticulture contacts. None is named or agreed yet.
+- First jurisdiction for the regulatory check: Amish's home jurisdiction. Decided by Amish, 2026-09-25. Decided by Amish, 2026-10-02: Texas; the ruling is asked of the Texas Department of Licensing and Regulation's boiler program.
 - **Open prerequisite:** a written ruling from the local boiler authority on whether an open-vented, fired monotube coil is exempt from boiler and pressure vessel rules. Amish approved getting it before TRL 3 detail work. It has not been obtained, so TRL 3 was limited to paper calculations and preliminary drawings.

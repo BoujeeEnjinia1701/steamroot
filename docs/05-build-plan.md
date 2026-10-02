@@ -3,9 +3,9 @@ doc_id: STR-BLD-001
 title: SteamRoot prototype build plan
 project: SteamRoot
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: First build plan, with pictures by component and step; design made constructable (STR-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "STR-DDR-003 recorded as accepted; safety stops from Amish's 2026-10-02 decisions: authority named in S1, ice check in S4, hoods on a second vehicle in S9, seal pot draining rule S10"
 ---
 
 # SteamRoot prototype build plan
@@ -31,7 +35,7 @@ The prototype is a small wood-fired steam generator on a used single-axle traile
 
 ## 2. What changed to make it buildable
 
-The concept showed what SteamRoot does; some of its parts could not be made, fixed or put together as drawn. Each change below keeps what the machine does, and all of them are recorded in decision record STR-DDR-003, open for Amish's review.
+The concept showed what SteamRoot does; some of its parts could not be made, fixed or put together as drawn. Each change below keeps what the machine does, and all of them are recorded in decision record STR-DDR-003, accepted by Amish on 2026-10-02.
 
 *Table 1. Changes from the concept.*
 
@@ -679,15 +683,16 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 
 Stop at each point. Carry on only when everything listed is true.
 
-- **S1. Before anything is bought or built.** A written ruling from the local boiler authority on this open-vented, wood-fired monotube coil is in hand, and the design has been checked against it. Its ruling overrides this plan where it is stricter.
+- **S1. Before anything is bought or built.** A written ruling from the local boiler authority (the Texas Department of Licensing and Regulation's boiler program) on this open-vented, wood-fired monotube coil is in hand, and the design has been checked against it. Its ruling overrides this plan where it is stricter.
 - **S2. Before welding, grinding or cutting fibre.** Hot work area clear of anything that burns, extinguisher at hand, welding screen up. Cut ceramic fibre with a knife, damp, never with a power saw; wear a P2 (FFP2) mask, gloves and long sleeves, and vacuum, never sweep. Never weld galvanised steel.
 - **S3. Before any water goes into the coil or economizer.** Every joint is made up; the coil and economizer have passed their 3 bar cold tests; the seal pot branch is open (no test plug left in).
-- **S4. Before the seal pot is put in service.** The vent is open from the pot to its outlet at 2.3 m; the diverter cannot stop with both outlets shut; nothing on the steam side can isolate the coil from the vent; the relief valve is fitted upright with its discharge pipe open to 2.3 m; the pot is filled to the mark.
+- **S4. Before the seal pot is put in service.** The vent is open from the pot to its outlet at 2.3 m; the diverter cannot stop with both outlets shut; nothing on the steam side can isolate the coil from the vent; the relief valve is fitted upright with its discharge pipe open to 2.3 m; the pot is free of ice and filled to the mark.
 - **S5. Before the first fire.** All first checks up to "Run per fill" in section 5 pass, except the ones that need fire. The machine stands on bare ground or gravel, clear of dry vegetation, outdoors, with no fire ban and no high wind. Extinguisher and water at hand; the operator wears a personal carbon monoxide alarm, heat-resistant gloves, a face shield, long sleeves and closed boots; bystanders, children and animals at least 5 m away. The feed pump is running and water flows before the fire is lit: never fire a dry coil.
 - **S6. Before steam goes to a hood.** The diverter is set to the vent; the hose and whip checks are inspected; the hood is set on the soil with its skirt pressed in. Keep hands and feet clear of the skirt and the vent outlet.
 - **S7. Before lifting a hood or moving the hose.** Steam has been diverted to the vent for at least one minute.
 - **S8. After any alarm.** Close the air damper. Never restart the feed into a hot, dry coil: let the fire die and the coil cool first.
-- **S9. Before towing.** The fire is out and cold; the drum and seal pot are drained; the hoods are off the trailer; the lights work.
+- **S9. Before towing.** The fire is out and cold; the drum and seal pot are drained; the hoods are off the trailer and ride on a second vehicle; the lights work.
+- **S10. After every day of use and whenever frost is forecast.** The seal pot is drained through its valve.
 
 ## 7. Tools, skills and workspace
 

@@ -3,9 +3,9 @@ doc_id: STR-DEC-001
 title: SteamRoot design decisions register
 project: SteamRoot
 doc_type: Design decisions register
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Register opened with the open decisions from the review notes, the decision records and the build plan work; budget treated as a value-engineering target
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Amish approved the recommendations for all eleven open decisions on 2026-10-02 (STR-DDR-003 accepted); moved to decisions made"
 ---
 
 # SteamRoot design decisions register
@@ -23,19 +27,7 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-| # | Decision needed | Options | Recommendation | Affects in the build | Source |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Written ruling from the local boiler authority on an open-vented, fired monotube coil | Obtain it before any purchase or build (approved by Amish, 2026-09-25, as a prerequisite; not yet obtained) | Obtain it first; review the design against it | Everything: build plan safety stop S1 | STR-DDR-001, item 7; STR-DDR-002, item 10 |
-| 2 | Which jurisdiction is "home" and which authority to ask | Amish to name them | None (Amish's choice) | Decides who gives ruling 1 | STR-DDR-002, item 11 |
-| 3 | The named market garden and nursery (first co-design partners) | Amish to name them | None (Amish's choice) | Not part of the build; sets the soil for the first tests | STR-DDR-002, item 12 |
-| 4 | How to close R5 (65 % efficiency) and R4 (4 kg wood per m²): add the evaporator bank and controlled primary and secondary air to the model | Bank of about 4.3 m of 25.4 mm tube in the flue at λ = 2.0, or 1.3 m at λ = 1.5 (STR-CAL-001 v0.3, Table 5a); each must keep R7 (8 L) | Next paper iteration, together with 5 | Firebox roof, flue and economizer; not in this prototype | STR-DDR-002, item 1 |
-| 5 | Efficiency lost to the taller firebox (51.4 %, was 53.5 %) | (a) accept for the first prototype; (b) 75 mm lining with the box 50 mm larger each way (about 53.8 %, about 8 kg more); (c) fold the firebox shape into the evaporator bank study (4) | (c), keeping (a) for now | Firebox shell and lining sizes | STR-DDR-003, A1 |
-| 6 | Seal pot level: condensate raises it, boiling lowers it; overfilling raises the seal limit | (a) an overflow pipe at the static water mark, draining to the ground; (b) level mark and top-up by hand only, as now | (a); it changes the safety case, so it needs Amish's approval | Seal pot (one more branch) | STR-DDR-003, A2; STR-PRC-001 open questions |
-| 7 | Relief valve discharge direction | (a) up to 2.3 m beside the vent, as modelled; (b) down to the ground at the front of the trailer | (a), subject to ruling 1 | Discharge pipe and stay | STR-DDR-003, A3 |
-| 8 | Seal pot freezing | (a) drain the pot after every day of use and in frost, through its drain valve; (b) insulate and trace-heat it | (a) | None (operating rule) | STR-PRC-001 open questions |
-| 9 | Where the two hoods ride when towing (the deck has no room for them) | (a) carried on a second vehicle; (b) a rack over the feed drum (about 15 kg more and higher centre of mass); (c) hung on the trailer sides (width over 1.5 m) | (a) for the prototype | Not part of the trailer build | STR-PRC-001 open questions |
-| 10 | Accept the design for construction (changes C1 to C14: taller firebox with the coil above the fire, bolted roof, coil brackets and glands, economizer layout, skids, seal pot and dip leg, header post, vent line, relief discharge, hose, hood, drum and feed details) | (a) accept as made; (b) accept with changes | (a); the changes were made under Amish's 2026-09-30 instruction to make the design physically buildable and are open for his review | The whole build plan follows them | STR-DDR-003 |
-| 11 | Hood ballast and real soil behaviour (skirt leakage, permeability, starting moisture) | Decide after soil tests at TRL 4: ballast weights on the hood, a deeper skirt, or lower steam rate in fine soils | Decide from TRL 4 tests (TRL 4 is on hold) | Hood handles could carry ballast; nothing built now | STR-CAL-001, section 2; STR-PRC-001 open questions |
+None. All open decisions were decided on 2026-10-02.
 
 ## To confirm when parts are bought
 
@@ -66,3 +58,14 @@ Value-engineering target: USD 2,200 (a hypothetical control target, not a limit)
 | 2026-09-25 | Wood only, no liquid fuel backup | Amish: go with recommendation | STR-DDR-001, item 10; STR-DDR-002, item 9 |
 | 2026-09-25 | Keep the R5 and R4 targets and study an evaporator bank with controlled air; R2 restated to about 1.9 and 3.4 m²/h; R6 split into 0.1 bar at the header and 0.15 bar at the coil inlet; R9 worded as 15 psi (1.03 bar) or less and sized for the refeed flash; R11 as towed with the drum drained; budget USD 2,200; fibre lining; one hose moved between the hoods | Amish: "i accept all your recommendations, go with them across all repos." | STR-DDR-002, items 1 to 8 |
 | 2026-10-01 | The budget is a value-engineering target, not a limit; cost is reported over or under it | Amish: "the budgets are a hypothethical control target to ensure we are thinking along a value engineering lens. its ok to ensure wording reflects that the hypothesis budget was x - the real cost being accrued is y" | This register; STR-CAL-001 v0.3 |
+| 2026-10-02 | The written ruling stays the gate: it is obtained before any purchase or build, the design is reviewed against it, and anything stricter it requires is adopted (the ruling itself is not yet obtained) | Amish: "i approve your recommendations for all 555 open decisions." | STR-DDR-001, item 7; STR-DDR-002, item 10 |
+| 2026-10-02 | Home jurisdiction: Texas. The written ruling is asked of the Texas Department of Licensing and Regulation's boiler program | Amish: "i approve your recommendations for all 555 open decisions." | STR-DDR-002, item 11 |
+| 2026-10-02 | First co-design partners: one market garden and one nursery within driving distance of Irving that already steam, solarize or chemically treat soil, found through Texas A&M AgriLife Extension's horticulture contacts (none is named or agreed yet) | Amish: "i approve your recommendations for all 555 open decisions." | STR-DDR-002, item 12 |
+| 2026-10-02 | In the next paper iteration, size the evaporator bank with primary and secondary air dampers so the heated water stays at 8 L or less (smaller-bore bank tube or fewer firebox turns), without relaxing R7; plan to restate R4, since even 65 % efficiency leaves it short (about 72 % needed) | Amish: "i approve your recommendations for all 555 open decisions." | STR-DDR-002, item 1 |
+| 2026-10-02 | Option (c), keeping (a) for now: the taller firebox's 51.4 % is accepted for the first prototype, and the firebox is reshaped inside the evaporator bank study | Amish: "i approve your recommendations for all 555 open decisions." | STR-DDR-003, A1 |
+| 2026-10-02 | Seal pot overflow at the static water mark, piped down to ground level at the back of the trailer away from the operator's side | Amish: "i approve your recommendations for all 555 open decisions." | STR-DDR-003, A2; STR-PRC-001 open questions |
+| 2026-10-02 | Relief valve discharge kept rising to 2.3 m beside the vent, with its low-point drain, subject to the authority's ruling | Amish: "i approve your recommendations for all 555 open decisions." | STR-DDR-003, A3 |
+| 2026-10-02 | Seal pot drained through its valve after every day of use and whenever frost is forecast; a pre-start check that the pot is free of ice and filled to its mark | Amish: "i approve your recommendations for all 555 open decisions." | STR-PRC-001 open questions |
+| 2026-10-02 | The two hoods ride on a second vehicle for the prototype | Amish: "i approve your recommendations for all 555 open decisions." | STR-PRC-001 open questions |
+| 2026-10-02 | Design for construction accepted: changes C1 to C14 of STR-DDR-003 as made, with the seal pot overflow decided separately (item 6) | Amish: "i approve your recommendations for all 555 open decisions." | STR-DDR-003 |
+| 2026-10-02 | Hood ballast, skirt depth or steam rate decided from TRL 4 soil tests, with skirt leakage measured at the hood edge; the hood handles are sized to take ballast weights so no redesign is needed later | Amish: "i approve your recommendations for all 555 open decisions." | STR-CAL-001, section 2; STR-PRC-001 open questions |
