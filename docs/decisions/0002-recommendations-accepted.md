@@ -3,7 +3,7 @@ doc_id: STR-DDR-002
 title: SteamRoot recommendations accepted
 project: SteamRoot
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Items 10 to 12 decided by Amish on 2026-10-02 (STR-DEC-001, items 1 to 3); the ruling is still to be obtained"
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Item 1 consequence updated: evaporator bank now in the model within R7 (STR-CAL-001 v0.4)"
 ---
 
 # 0002: Recommendations accepted
@@ -60,6 +64,6 @@ The TRL 3 review note (`docs/REVIEW.md`, session 2026-09-25) and STR-DDR-001 lef
 
 - Requirement status (STR-CAL-001 v0.2, 15 checks): 2 not met (R4, R5), 3 at risk (R2 at 15 cm and at 5 cm, R11 width), 1 not verifiable at TRL 3 (R1), 9 met. Before these decisions: 7 not met, 2 at risk, 1 not verifiable, 4 met.
 - Documents bumped: STR-PRB-001 v0.4, STR-PRC-001 v0.4, STR-REQ-001 v0.4, STR-CAL-001 v0.2, STR-DDR-001 v0.2. Drawing STR-DWG-002 moved to Rev P2 for note changes (relief valve rating, towed mass, R6 limits); geometry is unchanged.
-- The evaporator bank is not yet in the model. Adding about 4 m of tube would add about 1.5 L of water and take the heated section to about 8.5 L, over the 8 L limit in R7, so the next paper iteration must resolve that together with R6 and R11.
+- The evaporator bank was added to the model on 2026-10-02: 6.4 m of 15.88 mm tube with one coil turn fewer keeps the heated section at 7.3 L, inside R7, with R6 met and R11 mass at risk (STR-CAL-001 v0.4).
 - TRL 4 work that these decisions point to (measuring efficiency, soil tests that would settle R2, confirming the valve capacity on a bought unit) is decided but on hold, because TRL 4 is on hold by Amish's instruction.
 - Cross-repo actions: none.

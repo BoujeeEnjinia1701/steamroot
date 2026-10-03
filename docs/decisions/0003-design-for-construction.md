@@ -3,7 +3,7 @@ doc_id: STR-DDR-003
 title: SteamRoot design for construction
 project: SteamRoot
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,12 +17,16 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Accepted by Amish on 2026-10-02 (Tables 1 to 3); seal pot overflow accepted but not yet modelled; record stays Draft"
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "A1 and A2 carried into the model: firebox reshaped to 960 mm inside the evaporator bank study; seal pot overflow with a 350 mm loop seal modelled and checked (STR-CAL-001 v0.4)"
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** accepted. The changes in Tables 1 and 2 were made under Amish's 2026-09-30 instruction to make the design physically buildable. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This covers every change in Tables 1 and 2 and the recommendations in Table 3 (A1 to A3), recorded in the design decisions register (STR-DEC-001, items 5 to 7 and 10). The seal pot overflow (A2) is accepted as a decision but is not yet in the model. The record stays Draft.
+- **Status:** accepted. The changes in Tables 1 and 2 were made under Amish's 2026-09-30 instruction to make the design physically buildable. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This covers every change in Tables 1 and 2 and the recommendations in Table 3 (A1 to A3), recorded in the design decisions register (STR-DEC-001, items 5 to 7 and 10). The seal pot overflow (A2) was added to the model on 2026-10-02 with a 350 mm loop seal; with the overflow the seal limit is 0.084 bar (STR-CAL-001 v0.4). For A1, the evaporator bank study reshaped the firebox to 960 mm with one coil turn fewer. The record stays Draft.
 
 > **Safety:** Changes C6, C8 and C9 touch the open vent, the water seal and the relief valve. Each keeps the safety case of STR-PRC-001 as it stands (an open vent that cannot be isolated, a 0.094 bar seal limit, a certified 15 psi relief valve rated 170 kg/h); none changes it. The written ruling from the local boiler authority (the Texas Department of Licensing and Regulation's boiler program, decided 2026-10-02) is still an open prerequisite for any build, and its ruling overrides this record if it is stricter.
 
@@ -76,5 +80,5 @@ The changes keep what SteamRoot does: an open-vented, wood-fired monotube coil m
 
 - `design_state: constructable` in `project.yaml`. The build plan STR-BLD-001 (`docs/05-build-plan.md`) shows every component and step in pictures drawn from the model (`cad/src/build_plan_media.py`). Decisions are recorded in the design decisions register, STR-DEC-001 (`docs/06-design-decisions.md`), which accepted this record on 2026-10-02.
 - Requirement status is unchanged in kind: 2 not met (R4, R5), 3 at risk (R2 twice, R11 width), 1 not verifiable at TRL 3 (R1), 8 met; R12 is reported against the value-engineering target, USD 75 over (STR-CAL-001 v0.3).
-- The photoreal renders (`media/render-*.png`), `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the concept: a 650 mm firebox with the coil round the fire, no skids, the header at 1.6 m and the seal pot through the deck. They need updating on Amish's Mac, where Blender is.
+- The appearance model `cad/src/product_model.py` was brought into line with the constructable design on 2026-10-02 and its render scenes exported. The photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` are rendered from those scenes on Amish's Mac, where Blender is.
 - The trailer is bought used. Its side rails must be checked for the skid bolts when it is chosen; the drawings assume 80 mm rails.

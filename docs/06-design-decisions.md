@@ -3,7 +3,7 @@ doc_id: STR-DEC-001
 title: SteamRoot design decisions register
 project: SteamRoot
 doc_type: Design decisions register
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Amish approved the recommendations for all eleven open decisions on 2026-10-02 (STR-DDR-003 accepted); moved to decisions made"
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Approved decisions carried into the design (STR-CAL-001 v0.4); value engineering restated at USD 2,600; two new proposals opened: R4 restatement and the R11 mass basis"
 ---
 
 # SteamRoot design decisions register
@@ -27,13 +31,18 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-None. All open decisions were decided on 2026-10-02.
+The eleven decisions of the 2026-10-02 sign-off are made. Carrying them into the design raised two new questions, proposed here and awaiting Amish.
+
+| # | Question | Options | Recommendation | Source |
+| --- | --- | --- | --- | --- |
+| 12 | Restate R4 (wood per m² at 15 cm), as planned on 2026-10-02. With the bank and dampers the design uses 4.2 kg/m² (4.7 kg/m² with the dampers open); 4 kg/m² needs about 72 % efficiency. | (a) 4.5 kg/m² or less with the dampers set; (b) 5.0 kg/m² or less, which also covers open dampers; (c) keep 4 kg/m² and seek the rest in lower steam demand | (a): met with 7 % margin and still rewards air control. Proposed, awaiting Amish | STR-CAL-001 v0.4, section 4 |
+| 13 | R11 is now at risk at 499 kg as towed, because the bank, overflow and steel handles added 36 kg. The hoods ride on a second vehicle for the prototype (decided 2026-10-02). | (a) count R11 without the hoods, as they are towed: 437 kg; (b) keep the hoods in R11 and save mass elsewhere (lighter bank box, aluminium skids); (c) restate R11 | (a), since it follows the decision already made; record it in STR-REQ-001. Proposed, awaiting Amish | STR-CAL-001 v0.4, section 7 |
 
 ## To confirm when parts are bought
 
 | # | What to confirm | Why it matters | Source |
 | --- | --- | --- | --- |
-| 1 | The used trailer: rated 750 kg or more, axle rated for the 602 kg full mass, and side rails that take an M12 bolt 40 mm in from the deck edge (80 mm rails assumed) | The skids bolt into the side rails; the full machine weighs 602 kg on site | STR-DDR-003, C5; STR-CAL-001 |
+| 1 | The used trailer: rated 750 kg or more, axle rated for the 633 kg full mass, and side rails that take an M12 bolt 40 mm in from the deck edge (80 mm rails assumed) | The skids bolt into the side rails; the full machine weighs 602 kg on site | STR-DDR-003, C5; STR-CAL-001 |
 | 2 | The relief valve's rated capacity, 375 lb/h (170 kg/h) or more at 15 psi, on the valve actually bought, with its code stamp | R9 is met only on the maker's table | STR-DDR-002, item 4 |
 | 3 | The three-way diverter cannot stop in a position that closes both outlets, and is rated for saturated steam | The open vent must never be isolated | STR-PRC-001; STR-DDR-003, C8 |
 | 4 | The steam hose and couplings are rated for saturated steam (not hot water), with whip checks | Burn hazard at the hose | BOM line 11 |
@@ -44,11 +53,12 @@ None. All open decisions were decided on 2026-10-02.
 
 ## Value engineering
 
-Value-engineering target: USD 2,200 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 2,275 (USD 75 over the target). Main cost drivers and savings worth trying:
+Value-engineering target: USD 2,200 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 2,600 (USD 400 over the target). Main cost drivers and savings worth trying:
 
-- The largest lines are the firebox (USD 260), the stainless coil (USD 235), the used trailer (USD 200), the steam hose (USD 180), the two hoods (USD 280 together) and the header and water-seal assembly (USD 150).
+- The largest lines are the two hoods (USD 310 together), the firebox (USD 265), the header and water-seal assembly with its overflow (USD 220), the stainless coil (USD 215), the used trailer (USD 200), the evaporator bank (USD 190) and the steam hose (USD 180).
+- Carrying the 2026-10-02 decisions into the design added USD 325: the evaporator bank (USD 190), the seal pot overflow (USD 70), the bank link and reducing unions (USD 45), ballast-rated hood handles (USD 30), the secondary damper and fixings (USD 10 net), less USD 20 for one coil turn fewer.
 - Making the design constructable added USD 360: the taller firebox and longer coil (USD 55), steelwork for the skids, post, stay and saddles (USD 70), firebox internals and glands (USD 50), feed lines and stainless fittings (USD 95), the relief discharge and vent line (USD 45) and fixings and straps (USD 45).
-- Savings worth trying: copper instead of stainless for the cold feed line from the pump (about USD 20; the economizer and jumper stay stainless); offcut or reclaimed steel for the skids, post and stand; buying the stainless fittings from one supplier as a kit; a used trailer that already has cross members for the skids. The safety parts (relief valve, diverter, hose, seal and vent) are not candidates for savings.
+- Savings worth trying: copper instead of stainless for the cold feed line from the pump (about USD 20; the economizer and jumper stay stainless); offcut or reclaimed steel for the skids, post and stand; buying the stainless fittings from one supplier as a kit; a used trailer that already has cross members for the skids; welded rather than seamless 316 tube for the bank (already assumed); a bank box with 1.5 mm walls. The safety parts (relief valve, diverter, hose, seal and vent) are not candidates for savings.
 
 ## Decisions made
 

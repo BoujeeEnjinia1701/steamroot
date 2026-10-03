@@ -9,8 +9,11 @@ aluminum steam hoods with stiffening beads and handles, HOT and pressure labels,
 pad, and the shared clay mannequin standing at the firebox for scale.
 APPEARANCE MODEL ONLY: no tolerances, no fabrication detail. CONCEPT, NOT FOR FABRICATION.
 
-Every main dimension and interface comes from PARAMS in model.py (coil, header, seal pot, vent, relief
-valve, diverter, hose ends, hood manifold inlets). Axes as model.py: X along the trailer (drawbar at -X,
+Every main dimension and interface comes from PARAMS and derived() in model.py: the 960 mm firebox on its
+skids with the coil above the fire, the evaporator bank box and economizer above it, the header at 1.55 m on
+its post, the seal pot standing on the deck with its overflow to the ground behind the trailer, the
+primary and secondary air dampers, the feed lines, and the hood handles on foot plates (updated 2026-10-02
+to the constructable design, STR-DDR-003, and the decisions of that day). Axes as model.py: X along the trailer (drawbar at -X,
 steam hoods at +X), Y across (front is -Y), Z up from the ground. Units: millimeters.
 
     from product_model import product_parts
@@ -26,7 +29,7 @@ sys.path.insert(0, str(HERE.parents[1] / ".kit"))
 
 from build123d import (Align, Axis, Box, Circle, Compound, Cone, Cylinder, Plane, Pos, RegularPolygon,  # noqa: E402
                        Rot, Sphere, Spline, Text, Torus, extrude, fillet, sweep)
-from model import PARAMS, build_parts, _tube_along  # noqa: E402
+from model import PARAMS, GROUP_ORDER, build_components, derived, fuse, _tube_along  # noqa: E402
 
 TITLE = "SteamRoot: towable wood-fired soil steamer that never holds pressure"
 
@@ -36,7 +39,8 @@ RENDER_VIEWS = [
              "trailer at left with the operator at the firebox, two steam hoods on the soil bed at right"},
     {"name": "exploded", "groups": ["shell", "internal", "accessory"], "explode": True, "el": 28, "az": -55,
      "note": "Exploded view from the front right and above (about 28 deg elevation): trailer and wheels, feed "
-             "drum and pump, firebox opened to show the lining, fire bed and monotube coil, economizer, chimney, "
+             "drum and pump, firebox opened to show the lining, fire bed and monotube coil, evaporator bank box, "
+             "economizer, chimney, "
              "steam header with water-seal pot and relief valve, hose and the two steam hoods"},
     {"name": "detail", "groups": ["shell", "internal"], "explode": False, "el": 22, "az": -35,
      "note": "Detail render from the front right and slightly above (about 22 deg elevation): the steam "
@@ -176,7 +180,9 @@ def _wheel(p, side):
 
 def product_parts(P=PARAMS):
     p = P
-    m = build_parts(p)
+    D = derived(p)
+    CM = build_components(p)
+    m = {g: fuse([c.shape for c in CM.values() if c.group == g]) for g in GROUP_ORDER}
     out = []
 
     def add(name, shape, color, material, bom, group, explode):
@@ -214,7 +220,6 @@ def product_parts(P=PARAMS):
     deck = Pos(0, 0, deck_top - 5) * Box(DL, DW, 10)
     deck = _fillet_try(deck, deck.edges().filter_by(Axis.Z), [20.0, 10.0])
     deck = _fillet_try(deck, deck.faces().sort_by(Axis.Z)[-1].edges(), [3.0, 1.5])
-    deck -= Pos(730, -217, deck_top - 5) * Cylinder(p["seal_pot_od"] / 2 + 8, 12)   # pass-through for the seal pot
     add("Trailer deck plate", deck, C_DECK, "metal", 1, "shell", E_FRAME)
 
     axle = _cyl_y(30, DW + 2 * p["wheel_gap"], p["axle_x"], 0, p["wheel_r"])
@@ -352,32 +357,28 @@ def product_parts(P=PARAMS):
         g_ = Pos(ex + 40 + 12 * k, fy - 1, deck_top + 80) * Box(6, 3, 40)
         grill = g_ if grill is None else grill + g_
     add("Alarm buzzer grille", grill, C_DARK, "plastic", 16, "shell", E_PUMP)
-    # feed lines: drum to pump, pump to economizer inlet (indicative)
-    eco_top = deck_top + p["fb_h"] + p["eco_h"]
-    ecx0 = p["fb_x"] - p["eco_l"] / 2
-    feed1 = _tube_along([(p["tank_x"] + 150, p["tank_l"] / 2 + 10, tz - 180), (p["tank_x"] + 150, 380, tz - 180),
-                         (ex - 110, 380, tz - 180)], 16)
-    feed2 = _tube_along([(ex + 110, 380, deck_top + 120), (ex + 180, 380, deck_top + 120),
-                         (ex + 180, 150, deck_top + 120), (ex + 180, 150, eco_top - 60),
-                         (ecx0, 150, eco_top - 60)], 16)
-    add("Feed lines", feed1 + feed2, C_HOSE, "rubber", 4, "shell", (-150, 300, 150))
+    # feed lines, economizer to bank link and coil inlet jumper: exactly as model.py
+    add("Suction hose, feed line, bank link and coil jumper", fuse([CM["feed"].shape, CM["clips"].shape, CM["jumper"].shape, CM["bk_link"].shape]),
+        C_STAINLESS, "metal", 19, "shell", (-150, 300, 150))
 
     # ------------------------------------------------------------------ 5 firebox
     L, Wd, Hh = p["fb_l"], p["fb_w"], p["fb_h"]
     t = p["fb_shell_t"] + p["fb_lining_t"]
     fx = p["fb_x"]
-    fbz = deck_top + Hh / 2
+    fb0 = D["fb_z0"]                                   # firebox floor on the skids
+    fbz = fb0 + Hh / 2
     door_x0, door_x1 = fx - 190, fx + 190
-    door_z0, door_z1 = deck_top + 130, deck_top + 430
+    door_z0 = D["F"] + p["door_open"][2] - p["door_lap"]
+    door_z1 = D["F"] + p["door_open"][2] + p["door_open"][1] + p["door_lap"]
     open_box = Pos(fx, -Wd / 2 + t / 2, (door_z0 + door_z1) / 2) * Box(300, t + 20, 240)
     E_FB = (0, -700, 0)
     outer = Pos(fx, 0, fbz) * Box(L, Wd, Hh)
     outer = _fillet_try(outer, outer.edges().filter_by(Axis.Z), [14.0, 8.0])
     shell = outer - Pos(fx, 0, fbz) * Box(L - 2 * p["fb_shell_t"], Wd - 2 * p["fb_shell_t"], Hh - 2 * p["fb_shell_t"])
-    shell -= Pos(fx, 0, deck_top + Hh - t / 2) * Cylinder(p["chimney_d"] / 2, t + 2)
+    shell -= Pos(fx, 0, fb0 + Hh - t / 2) * Cylinder(p["chimney_d"] / 2, t + 2)
     shell -= open_box
     # angle-iron bands top and bottom (weld seams read as parting lines)
-    for zb in (deck_top + 20, deck_top + Hh - 20):
+    for zb in (fb0 + 20, fb0 + Hh - 20):
         band = Pos(fx, 0, zb) * Box(L + 12, Wd + 12, 40) - Pos(fx, 0, zb) * Box(L - 2, Wd - 2, 42)
         band = _fillet_try(band, band.edges().filter_by(Axis.Z), [18.0, 10.0])
         shell += band
@@ -385,11 +386,16 @@ def product_parts(P=PARAMS):
     add("Firebox shell (high-temperature black)", shell, C_FIREBOX, "painted", 5, "shell", E_FB)
     lining = Pos(fx, 0, fbz) * (Box(L - 2 * p["fb_shell_t"], Wd - 2 * p["fb_shell_t"], Hh - 2 * p["fb_shell_t"])
                                 - Box(L - 2 * t, Wd - 2 * t, Hh - 2 * t))
-    lining -= Pos(fx, 0, deck_top + Hh - t / 2) * Cylinder(p["chimney_d"] / 2, t + 2)
+    lining -= Pos(fx, 0, fb0 + Hh - t / 2) * Cylinder(p["chimney_d"] / 2, t + 2)
     lining -= open_box
     add("Ceramic fiber lining", lining, C_LINING, "paper", 5, "internal", (0, 0, 0))
-    add("Cast grate", _grate(p, deck_top), C_GRATE, "metal", 5, "internal", (0, 0, 0))
-    floor_in = deck_top + t
+    add("Cast grate", _grate(p, fb0), C_GRATE, "metal", 5, "internal", (0, 0, 0))
+    skids = None
+    for xs in (fx - p["skid_dx"], fx + p["skid_dx"]):
+        sk_ = Pos(xs, 0, deck_top + p["skid"] / 2) * Box(p["skid"], DW, p["skid"])
+        skids = sk_ if skids is None else skids + sk_
+    add("Firebox skids", skids, C_FRAME, "painted", 17, "shell", (0, 0, -150))
+    floor_in = D["F"]
     bed_z = floor_in + p["grate_z"] + 10
     embers = Pos(fx, 0, bed_z + 12) * Box(L - 2 * t - 120, Wd - 2 * t - 140, 24)
     embers = _fillet_try(embers, embers.edges(), [10.0, 5.0])
@@ -424,44 +430,58 @@ def product_parts(P=PARAMS):
     grip = Pos(door_x1 - 40, -Wd / 2 - 45, dz - 70) * Cylinder(14, 80)
     grip = _fillet_try(grip, grip.edges(), [5.0, 3.0])
     add("Latch grip (hardwood)", grip, "#8B5E3C", "wood", 5, "shell", E_DOOR)
-    # air damper: slotted slide plate under the door (model.py envelope)
-    dmp_z = deck_top + 95
+    # primary air damper: slotted slide plate under the door (model.py position)
+    dmp_z = D["F"] + p["air_open"][2] + p["air_open"][1] / 2
     dmp = Pos(fx, -Wd / 2 - 5, dmp_z) * Box(160, 10, 60)
     dmp = _fillet_try(dmp, dmp.edges().filter_by(Axis.Y), [8.0, 4.0])
     for k in range(-2, 3):
         dmp -= Pos(fx + 28 * k, -Wd / 2 - 5, dmp_z) * Box(12, 14, 36)
     dknob = _cyl_y(10, 20, fx + 70, -Wd / 2 - 20, dmp_z)
-    add("Air damper plate", dmp, C_GRATE, "metal", 5, "shell", E_FB)
-    add("Air damper knob", dknob, C_ACCENT, "plastic", 5, "shell", E_FB)
+    add("Primary air damper plate", dmp, C_GRATE, "metal", 5, "shell", E_FB)
+    add("Primary air damper knob", dknob, C_ACCENT, "plastic", 5, "shell", E_FB)
+    # secondary air damper slide on the door, above the window line (model.py position)
+    s2w, s2h, s2b = p["air2_open"]
+    d2z = D["F"] + s2b + s2h / 2
+    d2 = Pos(fx, -Wd / 2 - 24, d2z) * Box(s2w + 40, 6, 50)
+    d2 = _fillet_try(d2, d2.edges().filter_by(Axis.Y), [6.0, 3.0])
+    add("Secondary air damper slide", d2, C_GRATE, "metal", 5, "shell", E_DOOR)
+    add("Secondary air damper knob", _cyl_y(8, 16, fx - s2w / 2 - 5, -Wd / 2 - 43, d2z), C_ACCENT, "plastic", 5, "shell", E_DOOR)
     # HOT label above the door
-    pl, tx = _label_front(["HOT SURFACE", "DO NOT TOUCH"], 250, 90, fx, -Wd / 2, deck_top + 530, 22)
+    pl, tx = _label_front(["HOT SURFACE", "DO NOT TOUCH"], 250, 90, fx, -Wd / 2, door_z1 + 120, 22)
     add("HOT label plate (firebox)", pl, C_WARN, "painted", 5, "shell", E_FB)
     add("HOT label text (firebox)", tx, C_INK, "plastic", 5, "shell", E_FB)
     # pipe glands where the coil ends leave the +X wall
     gl = None
     r_ = p["coil_mean_d"] / 2
-    cz0 = floor_in + p["coil_z0"] + p["tube_od"] / 2
-    ztop = cz0 + p["coil_pitch"] * p["coil_turns"]
+    cz0 = D["cz0"]
+    ztop = D["coil_top"]
     for zz, rr in ((cz0, 22), (ztop, 28)):
         g_ = _cyl_x(rr, 16, fx + L / 2 + 8, 0, zz) - _cyl_x(p["tube_od"] / 2 * 0.6 if zz == cz0 else p["tube_od"] / 2, 20, fx + L / 2 + 8, 0, zz)
         gl = g_ if gl is None else gl + g_
     add("Pipe glands", gl, C_STAINLESS, "metal", 5, "shell", E_FB)
 
-    # ------------------------------------------------------------------ 6 coil (exactly model.py) and jumper
+    # ------------------------------------------------------------------ 6 coil (exactly model.py)
     add("Monotube steam coil (316 stainless)", m["Monotube steam coil"], C_STAINLESS, "metal", 6, "internal", (0, 0, 800))
-    xin = fx + L / 2 + 30
-    jumper = _tube_along([(xin, 0, deck_top + Hh + 60), (xin, 0, deck_top + Hh + 110),
-                          (fx + p["eco_l"] / 2 - 5, 0, deck_top + Hh + 110)], p["tube_od"] * 0.6)
-    add("Economizer to coil jumper", jumper, C_STAINLESS, "metal", 7, "shell", (0, 0, 800))
+
+    # ------------------------------------------------------------------ 22 evaporator bank box (model.py envelope)
+    E_BK = (0, 0, 1150)
+    bz0, bh = D["bk_z0"], p["bk_h"]
+    bkc = Pos(fx, 0, bz0 + bh / 2) * Box(L, Wd, bh)
+    bkc = _fillet_try(bkc, bkc.edges().filter_by(Axis.Z), [14.0, 8.0])
+    bkc -= Pos(fx, 0, bz0 + bh / 2) * Box(L - 4, Wd - 4, bh + 2)
+    bkc += Pos(fx, 0, bz0 + bh - 1) * Box(L, Wd, 2)
+    bkc += Pos(fx, 0, bz0 + 12.5) * Box(L + 50, Wd + 50, 25) - Pos(fx, 0, bz0 + 12.5) * Box(L - 2, Wd - 2, 27)
+    add("Evaporator bank box", bkc, C_FIREBOX, "painted", 22, "shell", E_BK)
+    add("Evaporator bank (316 stainless)", CM["bk_bank"].shape, C_STAINLESS, "metal", 22, "internal", E_BK)
 
     # ------------------------------------------------------------------ 7 economizer
     E_ECO = (0, 0, 1450)
-    ez = deck_top + Hh + p["eco_h"] / 2
+    ez = D["eco_floor"] + p["eco_h"] / 2
     ebox = Pos(fx, 0, ez) * Box(p["eco_l"], p["eco_w"], p["eco_h"])
     ebox = _fillet_try(ebox, ebox.edges().filter_by(Axis.Z), [16.0, 8.0])
     ebox = _fillet_try(ebox, ebox.faces().sort_by(Axis.Z)[-1].edges(), [8.0, 4.0])
     add("Economizer casing", ebox, "#9AA1A9", "metal", 7, "shell", E_ECO)
-    fl = Pos(fx, 0, deck_top + Hh + 6) * Box(p["eco_l"] + 30, p["eco_w"] + 30, 12)
+    fl = Pos(fx, 0, D["eco_z0"] + 3) * Box(p["eco_l"] + 30, p["eco_w"] + 30, 6)
     fl = _fillet_try(fl, fl.edges().filter_by(Axis.Z), [18.0, 10.0])
     add("Economizer base flange", fl, C_FRAME, "painted", 7, "shell", (0, 0, 1150))
     ey0 = -p["eco_w"] / 2
@@ -482,15 +502,15 @@ def product_parts(P=PARAMS):
             tb = _cyl_x(p["eco_tube_od"] / 2, p["eco_l"] - 60, fx, -150 + 100 * j, ez - 90 + 60 * i)
             bank = tb if bank is None else bank + tb
     add("Economizer tube bank", bank, "#C7A36A", "metal", 7, "internal", (0, 0, 1150))
-    drain = _cyl_x(10, 60, fx - p["eco_l"] / 2 - 30, 0, deck_top + Hh + 30)
-    drain += _cyl_x(16, 30, fx - p["eco_l"] / 2 - 55, 0, deck_top + Hh + 30)
+    drain = _cyl_x(10, 60, fx - p["eco_l"] / 2 - 30, 0, D["eco_floor"] + 24)
+    drain += _cyl_x(16, 30, fx - p["eco_l"] / 2 - 55, 0, D["eco_floor"] + 24)
     add("Condensate drain valve", drain, C_BRONZE, "metal", 7, "shell", E_ECO)
-    dlever = Pos(fx - p["eco_l"] / 2 - 55, -30, deck_top + Hh + 52) * Box(14, 70, 8)
+    dlever = Pos(fx - p["eco_l"] / 2 - 55, -30, D["eco_floor"] + 46) * Box(14, 70, 8)
     add("Drain valve lever", dlever, C_ACCENT, "painted", 7, "shell", E_ECO)
 
     # ------------------------------------------------------------------ 8 chimney and spark arrestor
     E_CH = (0, 0, 1900)
-    cb = deck_top + Hh + p["eco_h"]
+    cb = D["eco_top"]
     ch_top = p["chimney_top"] - p["cap_h"]
     ch_len = ch_top - cb
     rch = p["chimney_d"] / 2
@@ -521,23 +541,26 @@ def product_parts(P=PARAMS):
     header = _fillet_try(header, header.edges(), [3.0, 1.5])
     add("Steam header, DN50", header, C_STAINLESS, "metal", 9, "shell", E_HDR)
     pot_y = -p["header_len"] / 2 - p["seal_pot_od"] / 2 - 10
-    pot_top = hz + 60
-    pot_bot = hz - p["seal_depth"] - 150
+    pot_top = D["pot_top"]
+    pot_bot = D["pot_bot"]
     rp = p["seal_pot_od"] / 2
     pot = Pos(hx, pot_y, (pot_top + pot_bot) / 2) * Cylinder(rp, pot_top - pot_bot)
     pot = _fillet_try(pot, pot.edges(), [8.0, 4.0])
-    for zz in (pot_top - 40, deck_top + 60):
+    for zz in (pot_top - 40, pot_bot + 50):
         pot += Pos(hx, pot_y, zz) * Cylinder(rp + 6, 16)
-    add("Water-seal pot, 1 m dip leg", pot, C_ACCENT, "painted", 9, "shell", E_HDR)
-    flange = Pos(hx, pot_y, deck_top + 4) * (Cylinder(rp + 30, 8) - Cylinder(rp, 10))
-    add("Seal pot deck flange", flange, C_STAINLESS, "metal", 9, "shell", E_FRAME)
+    add("Water-seal pot on the deck, 890 mm dip leg", pot, C_ACCENT, "painted", 9, "shell", E_HDR)
+    foot = Pos(hx, pot_y, deck_top + 5) * Box(p["foot"][0], p["foot"][0], p["foot"][1])
+    add("Seal pot foot plate", foot, C_FRAME, "painted", 17, "shell", E_HDR)
+    add("Seal pot overflow with loop seal (galvanized)", fuse([CM["overflow"].shape, CM["ovf_stay"].shape, CM["ovf_clip"].shape]),
+        C_GALV, "metal", 9, "shell", (450, -650, 0))
     sy_ = pot_y - rp - 16
-    stube = Pos(hx + 30, sy_, hz - 380) * (Cylinder(9, 700) - Cylinder(6.5, 702))
+    sz_ = D["water_line"] - 250
+    stube = Pos(hx + 30, sy_, sz_) * (Cylinder(9, 700) - Cylinder(6.5, 702))
     add("Seal level sight tube", stube, C_WATER, "clear", 9, "shell", E_HDR)
-    swater = Pos(hx + 30, sy_, hz - 380 - 350 + 260) * Cylinder(6, 520)
+    swater = Pos(hx + 30, sy_, (sz_ - 340 + D["water_line"]) / 2) * Cylinder(6, D["water_line"] - sz_ + 340)
     add("Seal water column", swater, "#60A5FA", "clear", 9, "internal", E_HDR)
     sfit = None
-    for zz in (hz - 380 - 360, hz - 380 + 360):
+    for zz in (sz_ - 360, sz_ + 360):
         f_ = Pos(hx + 30, sy_, zz) * Cylinder(13, 22) + Pos(hx + 15, sy_ + 8, zz) * Box(30, 16, 12)
         sfit = f_ if sfit is None else sfit + f_
     add("Sight tube valves", sfit, C_BRONZE, "metal", 9, "shell", E_HDR)
@@ -547,24 +570,18 @@ def product_parts(P=PARAMS):
         - Pos(hx, pot_y, p["vent_top"] - 30) * Cylinder(p["vent_od"] / 2, 30)
     add("Vent pipe, DN32, to 2.3 m", link + vent, C_STAINLESS, "metal", 9, "shell", E_HDR)
     # diverter: body, lever and quick coupling (outlet face at the model's hose start)
-    dvx = hx + ho + 60
-    dv = Pos(dvx, 0, hz) * Box(90, 70, 70)
+    dvy = D["div_y"]                                   # diverter on the back end of the header, as model.py
+    dv = Pos(hx, dvy, hz) * Box(70, 90, 70)
     dv = _fillet_try(dv, dv.edges(), [12.0, 8.0, 4.0])
-    dv += _cyl_x(ho, 30, dvx - 45 - 10, 0, hz)
     add("Three-way diverter valve", dv, C_BRONZE, "metal", 9, "shell", E_HDR)
-    dl = Pos(dvx, 0, hz + 40) * Cylinder(10, 12) + Pos(dvx - 60, 0, hz + 50) * Rot(0, 10, 0) * Box(140, 18, 10)
+    dl = Pos(hx, dvy, hz + 40) * Cylinder(10, 12) + Pos(hx + 45, dvy, hz + 50) * Rot(0, -10, 0) * Box(110, 18, 10)
     dl = _fillet_try(dl, dl.edges().filter_by(Axis.Z), [4.0, 2.0])
     add("Diverter lever", dl, C_ACCENT, "painted", 9, "shell", E_HDR)
-    qc = _cyl_x(26, 20, dvx + 55, 0, hz) + _cyl_x(22, 16, dvx + 73, 0, hz)
+    add("Diverter vent line", CM["vent_line"].shape, C_STAINLESS, "metal", 20, "shell", E_HDR)
+    qc = _cyl_x(22, 40, hx + 55, dvy, hz)
     add("Steam quick coupling", qc, C_STAINLESS, "metal", 9, "shell", E_HDR)
-    # support mast from the deck to the header (appearance addition)
-    mast_y = 100.0
-    mast = Pos(hx, mast_y, (deck_top + hz - ho) / 2) * Box(50, 50, hz - ho - deck_top)
-    mast = _fillet_try(mast, mast.edges().filter_by(Axis.Z), [5.0, 3.0])
-    mast += Pos(hx, mast_y, deck_top + 6) * Box(140, 140, 12)
-    mast += Pos(hx, mast_y, hz - ho - 8) * Box(80, 80, 16)
-    stay = Pos(hx, (mast_y + pot_y) / 2, deck_top + 560) * Box(24, abs(mast_y - pot_y) - rp, 24)
-    add("Header support mast", mast + stay, C_FRAME, "painted", 9, "shell", E_HDR)
+    # header post and pot stay, exactly as model.py
+    add("Header post and pot stay", fuse([CM["post"].shape, CM["stay"].shape]), C_FRAME, "painted", 17, "shell", E_HDR)
     # pressure gauge on a siphon (BOM 14), dial facing -Y
     gy = -60.0
     gz = hz + 140
@@ -602,7 +619,8 @@ def product_parts(P=PARAMS):
 
     # ------------------------------------------------------------------ 10 relief valve
     E_RV = (450, -150, 650)
-    rv_y = p["header_len"] / 2 - 50
+    rv_y = 60.0                                        # as model.py
+    add("Relief discharge pipe to 2.3 m", CM["discharge"].shape, C_STAINLESS, "metal", 20, "shell", E_RV)
     rvb = Pos(hx, rv_y, hz + 90) * Cylinder(p["relief_d"] / 2, 120)
     rvb = _fillet_try(rvb, rvb.faces().sort_by(Axis.Z)[-1].edges(), [10.0, 5.0])
     rvb += Pos(hx, rv_y, hz + 38) * extrude(RegularPolygon(26, 6), amount=16, both=True)
@@ -641,12 +659,15 @@ def product_parts(P=PARAMS):
         add(f"Steam hood {i + 1} inlet coupling", inl, C_STAINLESS, "metal", 12, "accessory", e)
         inlets.append((ix, 0, hh + 80))
         hdl = None
-        for sy in (1, -1):
+        hts = p["handle_tube"][0]
+        fpw, fpt = p["handle_foot"]
+        for sy in (1, -1):                                 # 30 mm square bar on standoffs and foot plates (ballast rated)
             yy = sy * (hw / 2 + 60)
-            bar = _cyl_x(15, 900, cx, yy, hh - 60)
-            bar = _fillet_try(bar, bar.edges(), [8.0, 4.0])
+            bar = Pos(cx, yy, hh - 60) * Box(900, hts, hts)
+            bar = _fillet_try(bar, bar.edges().filter_by(Axis.X), [4.0, 2.0])
             for sx in (-400, 400):
-                bar += Pos(cx + sx, sy * (hw / 2 + 30), hh - 60) * Rot(90, 0, 0) * Cylinder(12, 60)
+                bar += Pos(cx + sx, sy * (hw / 2 + (fpt + 60 - hts / 2) / 2), hh - 60) * Box(30, 60 - hts / 2 - fpt + 1, 30)
+                bar += Pos(cx + sx, sy * (hw / 2 + fpt / 2), hh - 60) * Box(fpw, fpt, fpw)
             hdl = bar if hdl is None else hdl + bar
         add(f"Steam hood {i + 1} handles", hdl, C_DARK, "painted", 12, "accessory", e)
         pl, tx = _label_front(["HOT STEAM"], 220, 60, cx + 250, -hw / 2, 110, 24)
@@ -656,9 +677,9 @@ def product_parts(P=PARAMS):
             C_ACCENT, "painted", 12, "accessory", e)
 
     # 11 hose: smooth run from the diverter coupling (model start point) to the first hood inlet (model end point)
-    hs = (dvx + 45, 0, hz)
+    hs = (hx + 75, dvy, hz)
     mi = inlets[0]
-    pts = [hs, (hs[0] + 140, -20, hz - 40), (hs[0] + 260, -90, hz - 420), (hs[0] + 330, -150, 700),
+    pts = [hs, (hs[0] + 140, dvy, hz - 40), (hs[0] + 260, dvy - 40, hz - 420), (hs[0] + 330, dvy - 120, 700),
            (hs[0] + 420, -160, 420), (mi[0] - 180, -110, 470), (mi[0] - 30, -20, 470), (mi[0], 0, mi[2] + 60),
            (mi[0], 0, mi[2])]
     try:
@@ -670,7 +691,7 @@ def product_parts(P=PARAMS):
     except Exception:
         hose = m["Steam hose"]
     add("Steam hose, EPDM 25 mm", hose, C_HOSE, "rubber", 11, "accessory", (500, -150, 150))
-    ferr = _cyl_x(p["hose_od"] / 2 + 5, 50, hs[0] + 22, 0, hz) + Pos(mi[0], 0, mi[2] + 25) * Cylinder(p["hose_od"] / 2 + 5, 50)
+    ferr = _cyl_x(p["hose_od"] / 2 + 5, 50, hs[0] + 22, dvy, hz) + Pos(mi[0], 0, mi[2] + 25) * Cylinder(p["hose_od"] / 2 + 5, 50)
     add("Hose ferrules", ferr, C_STAINLESS, "metal", 11, "accessory", (500, -150, 150))
 
     # ------------------------------------------------------------------ context: soil bed, gravel pad, operator

@@ -33,20 +33,30 @@ PARAMS = {
     # Firebox skids: 50 x 50 x 3 square tube across the deck, welded under the firebox
     "skid": 50.0, "skid_t": 3.0, "skid_dx": 250.0,
     # Firebox: 3 mm steel shell, 50 mm ceramic fibre lining. Made taller so the door and fire bed sit
-    # below the coil (STR-DDR-003, C1)
-    "fb_l": 700.0, "fb_w": 600.0, "fb_h": 1000.0, "fb_x": 250.0,
+    # below the coil (STR-DDR-003, C1); 40 mm lower again with one coil turn fewer (evaporator bank study,
+    # STR-CAL-001 v0.4, section 4)
+    "fb_l": 700.0, "fb_w": 600.0, "fb_h": 960.0, "fb_x": 250.0,
     "fb_shell_t": 3.0, "fb_lining_t": 50.0,
     "grate_z": 100.0,          # underside of the grate above the inside of the firebox floor
     "grate": (300.0, 20.0),    # cast grate size (square) and thickness
     "door_open": (300.0, 240.0, 130.0),     # opening width, height, bottom above the inside floor
     "door_lap": 20.0,
-    "air_open": (160.0, 60.0, 15.0),        # air inlet width, height, bottom above the inside floor
+    "air_open": (160.0, 60.0, 15.0),        # primary (under-grate) air inlet width, height, bottom above the inside floor
+    "air2_open": (150.0, 20.0, 330.0),      # secondary (over-fire) air slot in the door: width, height, bottom above the inside floor
     # Monotube coil: 316 stainless, 25.4 mm OD x 1.65 mm wall, above the fire bed
-    "coil_mean_d": 420.0, "tube_od": 25.4, "tube_wall": 1.65, "coil_turns": 11, "coil_pitch": 40.0,
+    "coil_mean_d": 420.0, "tube_od": 25.4, "tube_wall": 1.65, "coil_turns": 10, "coil_pitch": 40.0,
     "coil_z0": 400.0,          # underside of the coil above the inside of the firebox floor
     "bracket_deg": (90.0, 210.0, 330.0), "bracket_angle": (40.0, 5.0), "bracket_tip": 25.0,
     "gland_hole": 40.0, "gland_lift": 30.0, "gland_plate": (80.0, 100.0, 6.0), "frame_angle": (25.0, 3.0),
-    # Flue-gas economizer box on top of the firebox (serpentine of 12.7 mm x 1.2 mm stainless tube)
+    # Evaporator bank box between the firebox roof and the economizer (decided 2026-10-02, STR-DDR-002 item 1):
+    # 2 mm steel walls and top on a 25 x 25 x 3 angle frame bolted down with the roof, 25 mm fibre lining,
+    # and a serpentine of 15.88 mm x 1.24 mm 316 stainless tube (5/8 in x 0.049 in) in two layers of five runs
+    "bk_h": 170.0, "bk_shell_t": 2.0, "bk_lining_t": 25.0,
+    "bk_tube_od": 15.88, "bk_tube_wall": 1.24, "bk_pitch": 95.25, "bk_runs": 5, "bk_layers": 2,
+    "bk_y0": -152.4,           # y of the inlet and outlet runs (the same y as the economizer outlet)
+    "bk_z1": 45.0, "bk_dz": 60.0,  # bottom layer centre above the roof plate; layer spacing
+    "bk_apex": 290.0,          # bend apexes at fb_x +/- this; 47.6 mm centreline bend radius (standard 5/8 in bender)
+    # Flue-gas economizer box on top of the bank box (serpentine of 12.7 mm x 1.2 mm stainless tube)
     "eco_l": 520.0, "eco_w": 460.0, "eco_h": 260.0, "eco_tube_od": 12.7, "eco_tube_wall": 1.2, "eco_tube_len": 7300.0,
     "eco_flange": 30.0, "eco_layers": ((212.0, 6), (136.0, 6), (60.0, 5)),   # (tube centre above the box floor, passes)
     "eco_pitch": 76.2,         # run spacing and layer spacing: 38 mm centreline bend radius, a standard hand bender
@@ -54,7 +64,10 @@ PARAMS = {
     "chimney_d": 150.0, "chimney_top": 2400.0, "cap_h": 120.0, "spigot_h": 60.0,
     # Steam header (DN50), water-seal pot, vent pipe, diverter, post
     "header_od": 60.3, "header_len": 300.0, "header_z": 1550.0, "header_dx": 130.0,
-    "seal_depth": 1000.0,      # effective seal head (0.094 bar); the dip leg is shorter, see derived()
+    "seal_depth": 1000.0,      # dip leg depth plus annulus rise without the overflow; the overflow at the static
+                               # water mark removes the rise, so the seal blows at the dip leg depth (STR-CAL-001, section 6)
+    "ovf_od": 26.7, "ovf_trap": 350.0, "ovf_x": 1050.0, "ovf_end_z": 80.0,   # seal pot overflow: 3/4 in pipe, loop seal depth,
+                                                                                  # down-pipe x (behind the deck), open end height
     "seal_pot_od": 114.3, "dip_od": 42.2, "vent_od": 42.2, "vent_top": 2300.0, "seal_sump": 100.0,
     "relief_d": 70.0, "post": 50.0, "foot": (200.0, 10.0),
     # Steam hose, 25 mm bore, 6 m
@@ -62,6 +75,8 @@ PARAMS = {
     # Steam hoods (two, used alternately): open-bottom insulated pans
     "hood_l": 1200.0, "hood_w": 1000.0, "hood_h": 250.0, "hood_ins_t": 40.0, "hood_skin_t": 1.0,
     "skirt_depth": 60.0, "skirt_lap": 40.0, "skirt_t": 1.5,
+    "handle_tube": (30.0, 2.5), "handle_foot": (100.0, 3.0), "ballast_kg": 40.0,   # steel handle tube; standoff foot plates;
+                                                                                     # ballast per hood (four 10 kg weights)
     "hood_gap": 150.0, "hood_offset": 400.0, "n_hoods": 2,
 }
 
@@ -82,7 +97,11 @@ def derived(p=PARAMS):
     d["fb_y1"] = p["fb_w"] / 2
     d["cz0"] = d["F"] + p["coil_z0"] + p["tube_od"] / 2         # coil centreline, start of the helix
     d["coil_top"] = d["cz0"] + p["coil_pitch"] * p["coil_turns"]
-    d["eco_z0"] = d["fb_top"] + p["fb_shell_t"]               # underside of the economizer flange, on the roof plate
+    d["bk_z0"] = d["fb_top"] + p["fb_shell_t"]                # top of the roof plate: the bank box stands on it
+    d["bk_top"] = d["bk_z0"] + p["bk_h"]                       # top of the bank box top plate
+    d["bk_zb"] = d["bk_z0"] + p["bk_z1"]                       # bottom (outlet) layer centreline
+    d["bk_zt"] = d["bk_zb"] + p["bk_dz"]                       # top (inlet) layer centreline
+    d["eco_z0"] = d["bk_top"]                                  # underside of the economizer flange, on the bank box top
     d["eco_floor"] = d["eco_z0"] + 6.0
     d["eco_top"] = d["eco_floor"] + p["eco_h"]
     d["lid_top"] = d["eco_top"] + 2.0
@@ -103,6 +122,7 @@ def derived(p=PARAMS):
     d["pot_y"] = -p["header_len"] / 2 - p["seal_pot_od"] / 2 - 10
     d["div_y"] = p["header_len"] / 2 + 15 + 45
     d["vent_line_z"] = d["pot_top"] + 110.0
+    d["ovf_z"] = d["water_line"] + (p["ovf_od"] - 2 * 2.87) / 2   # overflow branch centre: its invert is the static water mark
     d["hood_x0"] = p["deck_l"] / 2 + p["hood_offset"]
     d["hood_cx"] = [d["hood_x0"] + p["hood_l"] / 2 + i * (p["hood_l"] + p["hood_gap"]) for i in range(int(p["n_hoods"]))]
     d["hood_inlet_x"] = [c - p["hood_l"] / 2 + 150 for c in d["hood_cx"]]
@@ -265,6 +285,39 @@ def eco_bank_points(p=PARAMS):
     return pts
 
 
+def bank_points(p=PARAMS):
+    """Centreline of the evaporator bank, inlet (top layer, +X wall) to outlet (bottom layer, +X wall)."""
+    D = derived(p)
+    fx = p["fb_x"]
+    xw = fx + p["fb_l"] / 2 + 15.0                          # tails end 15 mm outside the +X wall
+    a0, a1 = fx + p["bk_apex"], fx - p["bk_apex"]
+    ys = [p["bk_y0"] + k * p["bk_pitch"] for k in range(int(p["bk_runs"]))]
+    pts = []
+    for li in range(int(p["bk_layers"])):
+        z = D["bk_zt"] - li * p["bk_dz"]
+        yl = ys if li % 2 == 0 else ys[::-1]
+        start_plus = (li % 2 == 0)
+        for k, y in enumerate(yl):
+            plus_first = (k % 2 == 0) == start_plus
+            a, c = (a0, a1) if plus_first else (a1, a0)
+            if pts and abs(pts[-1][2] - z) > 1e-6:
+                pts.append((pts[-1][0], pts[-1][1], z))       # riser between layers at the -X end
+            pts.append((a, y, z))
+            pts.append((c, y, z))
+    pts[0] = (xw, pts[0][1], pts[0][2])
+    pts[-1] = (xw, pts[-1][1], pts[-1][2])
+    return pts
+
+
+def bank_length(p=PARAMS):
+    """Tube length of the bank (m): centreline with each square corner replaced by its bend."""
+    pts = bank_points(p)
+    L = sum(math.dist(a, c) for a, c in zip(pts[:-1], pts[1:]))
+    R = 47.6
+    n_bends = 2 * (int(p["bk_runs"]) - 1) * int(p["bk_layers"]) + 2 * (int(p["bk_layers"]) - 1)
+    return (L - n_bends * (2 - math.pi / 2) * R) / 1000
+
+
 def eco_ends(p=PARAMS):
     pts = eco_bank_points(p)
     return pts[0], pts[-1]
@@ -332,11 +385,11 @@ def build_components(p=PARAMS):
     ys_r = [-W / 2 - fa / 2 + i * (W + fa) / 3 for i in range(4)]
     for xr in xs_r:
         for yr in (-W / 2 - fa / 2, W / 2 + fa / 2):
-            rfix += bolt_z(xr, yr, top + sh, top - ft, 8)
+            rfix += bolt_z(xr, yr, top + sh + ft, top - ft, 8)
     for yr in ys_r[1:-1]:
         for xr in (fx - L / 2 - fa / 2, fx + L / 2 + fa / 2):
-            rfix += bolt_z(xr, yr, top + sh, top - ft, 8)
-    add("roof_bolts", "M8 roof bolts (14)", group(rfix), 21, "fixing", None)
+            rfix += bolt_z(xr, yr, top + sh + ft, top - ft, 8)
+    add("roof_bolts", "M8 roof bolts (14), through the bank box frame, roof and shell frame", group(rfix), 21, "fixing", None)
 
     # 18 coil brackets: 40 x 40 x 5 stainless angle, welded to the inside of the shell, through slots
     #    in the lining; each carries the lowest turn of the coil
@@ -396,7 +449,22 @@ def build_components(p=PARAMS):
     door += bx(fx - dw / 2 + 4, fx + dw / 2 - 4, yd, yd + t - 4, F + db + 4, F + db + dh - 4)     # board plug
     door += bx(fx - 60, fx + 60, yd - 3 - 30, yd - 3 - 20, (dz0 + dz1) / 2 - 8, (dz0 + dz1) / 2 + 8)   # handle bar
     door += fuse([bx(fx + sx_ * 60 - 8, fx + sx_ * 60 + 8, yd - 23, yd - 3, (dz0 + dz1) / 2 - 8, (dz0 + dz1) / 2 + 8) for sx_ in (-1, 1)])
+    s2w, s2h, s2b = p["air2_open"]
+    s2z0, s2z1 = F + s2b, F + s2b + s2h
+    door -= bx(fx - s2w / 2, fx + s2w / 2, yd - 4, yd + t, s2z0, s2z1)         # secondary air slot through plate and plug
     add("door", "Firebox door", door, 5, "made", "Firebox, fiber lined")
+    q0, q1 = s2z0 - 15, s2z1 + 15
+    damper2 = bx(fx - s2w / 2 - 20, fx + s2w / 2 + 20, yd - 6, yd - 3, q0, q1)
+    damper2 += ycyl(fx - s2w / 2 - 5, yd - 22, (q0 + q1) / 2, 8, 16)            # knob
+    add("damper2", "Secondary air damper slide", damper2, 5, "made", "Firebox, fiber lined")
+    g2 = []
+    for zg, sgn in ((q1, 1), (q0, -1)):
+        gz0, gz1 = (zg, zg + 6) if sgn > 0 else (zg - 6, zg)
+        g = bx(fx - s2w / 2 - 50, fx + s2w / 2 + 50, yd - 6, yd - 3, gz0, gz1)
+        g += bx(fx - s2w / 2 - 50, fx + s2w / 2 + 50, yd - 9, yd - 6, gz0, gz1)
+        g += bx(fx - s2w / 2 - 50, fx + s2w / 2 + 50, yd - 9, yd - 6, (gz0 - 6 if sgn > 0 else gz1), (gz0 if sgn > 0 else gz1 + 6))
+        g2.append(g)
+    add("guides2", "Secondary damper guides (2)", fuse(g2), 5, "made", "Firebox, fiber lined")
     hinges = []
     for zh_ in (dz0 + 40, dz1 - 40):
         hinges.append(zcyl(dx1 + 10, yd - 9, zh_ - 30, 8, 60))                   # knuckle on its pin
@@ -415,7 +483,7 @@ def build_components(p=PARAMS):
     pz0, pz1 = az0 - 20, az1 + 20
     damper = bx(fx - aw / 2 - 30, fx + aw / 2 + 30, yd - 6, yd - 3, pz0, pz1)
     damper += ycyl(fx - aw / 2 - 10, yd - 26, (pz0 + pz1) / 2, 10, 20)       # knob
-    add("damper", "Air damper slide", damper, 5, "made", "Firebox, fiber lined")
+    add("damper", "Primary air damper slide", damper, 5, "made", "Firebox, fiber lined")
     guides = []
     for zg, sgn in ((pz1, 1), (pz0, -1)):
         g = bx(fx - aw / 2 - 60, fx + aw / 2 + 60, yd - 3, yd, zg if sgn > 0 else zg - 6, zg + 6 if sgn > 0 else zg)
@@ -454,12 +522,57 @@ def build_components(p=PARAMS):
     add("glands", "Tube gland plates (2)", fuse(gl), 18, "made", "Firebox, fiber lined")
     add("gland_studs", "M6 gland studs and nuts (8)", group(gfix), 21, "fixing", None)
 
-    # 19 coil inlet jumper (12.7 mm stainless) from the coil inlet reducer up to the economizer outlet
+    # 22 evaporator bank box on the roof plate: 2 mm walls and top on a 25 x 25 x 3 angle frame that the
+    #    roof bolts clamp down, 25 mm fibre lining, a slot in the +X wall for the two tails (open at the
+    #    bottom so the box lowers over the bank) closed by a cover plate, and the bank on support bars
     e_in, e_out = eco_ends(p)
+    bt_, blt = p["bk_shell_t"], p["bk_lining_t"]
+    bz0, btop = D["bk_z0"], D["bk_top"]
+    bpts = bank_points(p)
+    bod = p["bk_tube_od"]
+    br = bod / 2
+    xw = fx + L / 2
+    slot = bx(xw - bt_ - blt - 1, xw + ft + 1, p["bk_y0"] - br - 1, p["bk_y0"] + br + 1, bz0 - 1, D["bk_zt"] + br + 1)
+    walls = bx(fx - L / 2, fx + L / 2, -W / 2, W / 2, bz0, btop) - bx(fx - L / 2 + bt_, fx + L / 2 - bt_, -W / 2 + bt_, W / 2 - bt_, bz0 - 1, btop - bt_)
+    walls -= zcyl(fx, 0, btop - bt_ - 1, p["chimney_d"] / 2, bt_ + 2)
+    bframe = bx(fx - L / 2 - fa, fx + L / 2 + fa, -W / 2 - fa, W / 2 + fa, bz0, bz0 + ft) - bx(fx - L / 2, fx + L / 2, -W / 2, W / 2, bz0 - 1, bz0 + ft + 1)
+    bframe += bx(fx - L / 2 - ft, fx + L / 2 + ft, -W / 2 - ft, W / 2 + ft, bz0 + ft, bz0 + fa) - bx(fx - L / 2, fx + L / 2, -W / 2, W / 2, bz0, bz0 + fa + 1)
+    bbox = walls + bframe - slot
+    add("bk_box", "Evaporator bank box", bbox, 22, "made", "Evaporator bank")
+    blin = bx(fx - L / 2 + bt_, fx + L / 2 - bt_, -W / 2 + bt_, W / 2 - bt_, bz0, btop - bt_) - bx(fx - L / 2 + bt_ + blt, fx + L / 2 - bt_ - blt, -W / 2 + bt_ + blt, W / 2 - bt_ - blt, bz0 - 1, btop - bt_ - blt)
+    blin -= zcyl(fx, 0, btop - bt_ - blt - 1, p["chimney_d"] / 2, blt + 2)
+    blin -= slot
+    add("bk_lining", "Bank box lining", blin, 22, "bought", "Evaporator bank")
+    add("bk_bank", "Evaporator bank tube", _tube_along(bpts, bod), 22, "made", "Evaporator bank")
+    sups = []
+    for dx in (-150, 150):
+        sups.append(bx(fx + dx - 3, fx + dx + 3, -W / 2 + bt_ + blt, W / 2 - bt_ - blt, bz0, D["bk_zb"] - br))       # stands on the roof plate
+        sups.append(bx(fx + dx - 3, fx + dx + 3, -W / 2 + bt_ + blt, W / 2 - bt_ - blt, D["bk_zb"] + br, D["bk_zt"] - br))  # spacer between layers
+    add("bk_sups", "Bank support bars (2) and spacers (2)", fuse(sups), 22, "made", "Evaporator bank")
+    # cover: a 3 mm plate on the wall above the frame, cranked out over the frame leg below
+    cov = bx(xw, xw + 3, p["bk_y0"] - 30, p["bk_y0"] + 30, bz0 + fa, D["bk_zt"] + 30)
+    cov += bx(xw + ft, xw + ft + 3, p["bk_y0"] - 30, p["bk_y0"] + 30, bz0 + ft, bz0 + fa + 8)
+    for z_ in (D["bk_zb"], D["bk_zt"]):
+        cov -= xcyl(xw - 1, p["bk_y0"], z_, br + 0.3, 5)
+    add("bk_cover", "Bank tail slot cover", cov, 22, "made", "Evaporator bank")
+    covfix = []
+    for z_, xh in ((bz0 + 14, xw + ft + 3), (D["bk_zt"] + 20, xw + 3)):
+        covfix += [xcyl(xw - bt_, p["bk_y0"] + 20, z_, 2.5, xh - xw + bt_), hexprism("x", xh, p["bk_y0"] + 20, z_, 8, 4)]
+    add("bk_cover_screws", "M5 cover screws (2)", group(covfix), 21, "fixing", None)
+    # unions on the two tails (5/8 to 1/2 in reducing), the economizer to bank link, and the jumper to the coil
+    ux0 = bpts[0][0]
+    unions = fuse([hexprism("x", ux0, p["bk_y0"], z_, 30, 25) for z_ in (D["bk_zt"], D["bk_zb"])])
+    ux1 = ux0 + 25
+    lx = fx + L / 2 + 70
+    link = _tube_along([(p["fb_x"] + p["eco_l"] / 2 + 20, e_out[1], e_out[2]), (lx, e_out[1], e_out[2]), (lx, e_out[1], D["bk_zt"]),
+                        (ux1, e_out[1], D["bk_zt"])], p["eco_tube_od"])
+    add("bk_link", "Economizer to bank link and unions", link + unions, 19, "bought", "Feed lines")
+
+    # 19 coil inlet jumper (12.7 mm stainless) from the coil inlet reducer up to the bank outlet union
     jx = x_out + 50
     red = hexprism("x", x_out + 10, 0, D["cz0"], 36, 25) + xcyl(x_out + 35, 0, D["cz0"], 12.0, 15)   # union and reducer
-    jumper = _tube_along([(jx, 0, D["cz0"]), (jx, e_out[1], D["cz0"]), (jx, e_out[1], e_out[2]),
-                          (p["fb_x"] + p["eco_l"] / 2 + 20, e_out[1], e_out[2])], p["eco_tube_od"])
+    jumper = _tube_along([(jx, 0, D["cz0"]), (jx, p["bk_y0"], D["cz0"]), (jx, p["bk_y0"], D["bk_zb"]),
+                          (ux1, p["bk_y0"], D["bk_zb"])], p["eco_tube_od"])
     add("jumper", "Coil inlet jumper and reducer", red + jumper, 19, "bought", "Feed lines")
 
     # 7 economizer: 2 mm steel box with a bolting flange on the roof, bolted lid with the chimney
@@ -559,6 +672,32 @@ def build_components(p=PARAMS):
     stay += zcyl(hx, py, zs - 20, pr + 3, 40) - zcyl(hx, py, zs - 21, pr, 42)
     add("stay", "Pot stay and clamp band", stay, 17, "made", "Steam header and water-seal vent")
 
+    # 9 seal pot overflow (decided 2026-10-02): 3/4 in pipe from a half coupling at the static water mark,
+    #   a 350 mm loop seal so vent back pressure cannot blow steam out of it, then across to the trailer
+    #   centreline behind the deck and down to 80 mm above the ground, away from the operator's side
+    oz = D["ovf_z"]
+    od_ = p["ovf_od"]
+    x1o = hx + pr + 60
+    crown = oz - 100
+    ubot = crown - p["ovf_trap"]
+    xo = p["ovf_x"]
+    ovf = _tube_along([(hx + pr, py, oz), (x1o, py, oz), (x1o, py, ubot), (x1o + 70, py, ubot), (x1o + 70, py, crown),
+                       (xo, py, crown), (xo, 0, crown), (xo, 0, p["ovf_end_z"])], od_)
+    ovf += zcyl(x1o + 35, py, ubot - od_ / 2 - 12, 9, 12)                        # trap drain plug under the U
+    add("overflow", "Seal pot overflow with loop seal", ovf, 9, "bought", "Steam header and water-seal vent")
+    tstay = bx(hx + pr + 3, x1o - od_ / 2, py - 20, py + 20, zs - 3, zs + 3)       # from the pot clamp band to the down-leg
+    add("ovf_stay", "Overflow trap stay", tstay, 17, "made", "Steam header and water-seal vent")
+    x_end = p["deck_l"] / 2
+    zc_ = p["deck_z"] + p["deck_t"] / 2
+    clip = bx(x_end, x_end + 6, -40, 40, zc_ - 30, zc_ + 30)                       # foot plate on the rear rail end
+    clip += bx(x_end + 6, xo - od_ / 2 - 3, -15, 15, zc_ - 3, zc_ + 3)              # arm
+    clip += zcyl(xo, 0, zc_ - 20, od_ / 2 + 3, 40) - zcyl(xo, 0, zc_ - 21, od_ / 2, 42)   # clamp band
+    add("ovf_clip", "Overflow rear clip", clip, 17, "made", "Steam header and water-seal vent")
+    ofix = []
+    for dy in (-25, 25):
+        ofix += bolt_x(dy, zc_, x_end - p["rail_w"], x_end + 6, 8)
+    add("ovf_bolts", "M8 overflow clip bolts (2)", group(ofix), 21, "fixing", None)
+
     # 9 diverter at the +Y end of the header: hose coupling to +X, vent line up and over to the vent
     dy_ = D["div_y"]
     nip = ycyl(hx, hl_ / 2, hz, 13.35, 15)
@@ -612,11 +751,19 @@ def build_components(p=PARAMS):
         man += zcyl(ix, 0, hh, 35, 3) - zcyl(ix, 0, hh - 1, 15, 5)                 # top flange
         man += zcyl(ix, 0, hh + 3, 20, 80)                                          # hose coupling
         add(f"manifold{n}", f"Hood {n} manifold and inlet", man, 12, "made", "Steam hoods (2)")
+        # handles sized to carry ballast weights (decided 2026-10-02): 30 x 30 x 2.5 steel tube on 30 mm square
+        # standoffs welded to 100 x 100 x 3 foot plates, through-bolted to a backing plate inside the hood
+        hts, htt = p["handle_tube"]
+        hfp, hft = p["handle_foot"]
         hd = []
         for sy_ in (1, -1):
-            hd.append(box(cx, sy_ * (hw / 2 + 60), hh - 60, 900, 30, 30))
+            yb = sy_ * (hw / 2 + 60)
+            hd.append(box(cx, yb, hh - 60, 900, hts, hts) - box(cx, yb, hh - 60, 902, hts - 2 * htt, hts - 2 * htt))
             for sx_ in (-400, 400):
-                hd.append(box(cx + sx_, sy_ * (hw / 2 + 30), hh - 60, 30, 60, 30))
+                y0_, y1_ = sorted((sy_ * (hw / 2 + hft), sy_ * (hw / 2 + 60 - hts / 2)))
+                hd.append(bx(cx + sx_ - 15, cx + sx_ + 15, y0_, y1_, hh - 75, hh - 45))
+                f0, f1 = sorted((sy_ * hw / 2, sy_ * (hw / 2 + hft)))
+                hd.append(bx(cx + sx_ - hfp / 2, cx + sx_ + hfp / 2, f0, f1, hh - 60 - hfp / 2, hh - 60 + hfp / 2))
         add(f"handles{n}", f"Hood {n} handles", fuse(hd), 12, "made", "Steam hoods (2)")
 
     # 3 feed tank on two saddles with two ratchet straps
@@ -666,8 +813,8 @@ def build_components(p=PARAMS):
     add("clips", "Feed line clips (2)", fuse(clips), 19, "made", "Feed lines")
 
     # drill the bolt and stud holes: each part loses the shanks of the fixings that pass through it
-    for k, f in (("skids", "skid_bolts"), ("shell", "roof_bolts"), ("roof", "roof_bolts"), ("eco_box", "eco_bolts"),
-                 ("eco_box", "lid_bolts"), ("eco_lid", "lid_bolts"), ("post", "post_bolts"), ("pot", "pot_bolts"),
+    for k, f in (("skids", "skid_bolts"), ("shell", "roof_bolts"), ("roof", "roof_bolts"), ("eco_box", "eco_bolts"), ("bk_box", "roof_bolts"), ("bk_box", "bk_cover_screws"), ("bk_cover", "bk_cover_screws"),
+                 ("eco_box", "lid_bolts"), ("eco_lid", "lid_bolts"), ("post", "post_bolts"), ("trailer", "ovf_bolts"), ("ovf_clip", "ovf_bolts"), ("pot", "pot_bolts"),
                  ("glands", "gland_studs"), ("saddles", "saddle_bolts")):
         C[k] = C[k]._replace(shape=C[k].shape - C[f].shape)
     return C
@@ -694,7 +841,7 @@ def coil_display(p=PARAMS, per_turn=24):
 
 
 GROUP_ORDER = ["Trailer frame and drawbar", "Wheels", "Firebox skids", "Feed water tank, 125 L", "Feed pump", "Feed lines",
-               "Firebox, fiber lined", "Monotube steam coil", "Flue-gas economizer", "Chimney and spark arrestor",
+               "Firebox, fiber lined", "Monotube steam coil", "Evaporator bank", "Flue-gas economizer", "Chimney and spark arrestor",
                "Steam header and water-seal vent", "Certified relief valve", "Steam hose", "Steam hoods (2)"]
 
 
@@ -716,9 +863,10 @@ def build(p=PARAMS):
 
 
 MAIN_PARTS = {  # file stem: component keys, for individual exports
-    "steamroot-firebox": ["skids", "shell", "roof", "board", "lining", "brackets", "stand", "grate", "door", "hinges", "latch", "damper", "guides", "glands"],
+    "steamroot-firebox": ["skids", "shell", "roof", "board", "lining", "brackets", "stand", "grate", "door", "hinges", "latch", "damper", "guides", "damper2", "guides2", "glands"],
+    "steamroot-bank": ["bk_box", "bk_lining", "bk_bank", "bk_sups", "bk_cover", "bk_link"],
     "steamroot-coil": ["coil", "outlet"],
-    "steamroot-header": ["post", "header", "pot", "stay", "diverter", "vent_line", "relief", "discharge"],
+    "steamroot-header": ["post", "header", "pot", "stay", "diverter", "vent_line", "relief", "discharge", "overflow", "ovf_stay", "ovf_clip"],
     "steamroot-hood": ["hood1", "skirt1", "manifold1", "handles1"],
 }
 
@@ -787,14 +935,35 @@ def checks(p=PARAMS):
     chk("Damper guides on the shell", S("guides"), S("shell"), "touch")
     chk("Damper slide in its guides", S("damper"), S("guides"), "touch")
     chk("Damper guides clear of the door", S("guides"), S("door"), 3.0)
-    chk("Economizer flange on the firebox roof", S("eco_box"), S("roof"), "touch")
+    chk("Secondary damper guides on the door", S("guides2"), S("door"), "touch")
+    chk("Secondary damper slide in its guides", S("damper2"), S("guides2"), "touch")
+    chk("Secondary damper slide on the door", S("damper2"), S("door"), "touch")
+    chk("Secondary damper clear of the door handle and latch", S("damper2") + S("guides2"), S("latch") + S("hinges"), 10.0)
+    chk("Secondary damper clear of the shell (door swings)", S("damper2") + S("guides2"), S("shell"), 3.0)
+    chk("Bank box frame on the roof", S("bk_box"), S("roof"), "touch")
+    chk("Bank box clear of the roof bolts (drilled)", S("bk_box"), S("roof_bolts"), "touch")
+    chk("Bank box lining inside the box", S("bk_lining"), S("bk_box"), "touch")
+    chk("Bank support bars on the roof plate", S("bk_sups"), S("roof"), "touch")
+    chk("Bank on its support bars", S("bk_bank"), S("bk_sups"), "touch")
+    chk("Bank clear of the box lining (1 mm round the tails in the slot)", S("bk_bank"), S("bk_lining"), 0.9)
+    chk("Bank tails clear in the wall slot", S("bk_bank"), S("bk_box"), 0.9)
+    chk("Bank tails through the slot cover (sliding fit)", S("bk_bank"), S("bk_cover"), 0.25)
+    chk("Slot cover on the bank box", S("bk_cover"), S("bk_box"), "touch")
+    chk("Bank clear of the roof (gas space)", S("bk_bank"), S("roof"), 25.0)
+    chk("Link and unions on the bank tails", S("bk_link"), S("bk_bank"), "touch")
+    chk("Link on the economizer outlet", S("bk_link"), S("eco_bank"), "touch")
+    chk("Link clear of the bank box", S("bk_link"), S("bk_box") + S("bk_cover_screws"), 5.0)
+    chk("Link clear of the seal pot and vent", S("bk_link"), S("pot"), 20.0)
+    chk("Link clear of the header and gauge", S("bk_link"), S("header"), 20.0)
+    chk("Jumper on the bank outlet union", S("jumper"), S("bk_link"), "touch")
+    chk("Jumper clear of the bank box frame", S("jumper"), S("bk_box") + S("roof_bolts"), 8.0)
+    chk("Economizer flange on the bank box", S("eco_box"), S("bk_box"), "touch")
     chk("Economizer flange clear of the roof bolts", S("eco_box"), S("roof_bolts"), 3.0)
     chk("Economizer lid on the box", S("eco_lid"), S("eco_box"), "touch")
     chk("Tube bank on its support bars", S("eco_bank"), S("eco_box"), "touch")
     chk("Tube bank clear of the lid", S("eco_bank"), S("eco_lid"), 20.0)
     chk("Chimney over the spigot", S("chimney"), S("eco_lid"), "touch")
     chk("Spark arrestor cap on the chimney", S("cap"), S("chimney"), "touch")
-    chk("Jumper on the economizer outlet", S("jumper"), S("eco_bank"), "touch")
     chk("Jumper on the coil inlet tail", S("jumper"), S("coil"), "touch")
     chk("Jumper union clear of the shell (spanner room)", S("jumper"), S("shell"), 8.0)
     chk("Jumper union clear of the gland plate", S("jumper"), S("glands") + S("gland_studs"), 3.0)
@@ -824,6 +993,15 @@ def checks(p=PARAMS):
     chk("Hose on the hood 1 coupling", S("hose"), S("manifold1"), "touch")
     chk("Hose clear of the trailer", S("hose"), S("trailer"), 30.0)
     chk("Hose clear of the discharge pipe", S("hose"), S("discharge"), 20.0)
+    chk("Overflow branch on the seal pot", S("overflow"), S("pot"), "touch")
+    chk("Overflow trap stay on the pot clamp band", S("ovf_stay"), S("stay"), "touch")
+    chk("Overflow trap stay on the down-leg", S("ovf_stay"), S("overflow"), "touch")
+    chk("Overflow rear clip on the trailer rail", S("ovf_clip"), S("trailer"), "touch")
+    chk("Overflow in its rear clip", S("ovf_clip"), S("overflow"), "touch")
+    chk("Overflow clear of the trailer deck", S("overflow"), S("trailer"), 20.0)
+    chk("Overflow clear of the header post and pot drain", S("overflow"), S("post") + S("stay"), 20.0)
+    chk("Overflow clear of the hose", S("overflow"), S("hose"), 50.0)
+    chk("Overflow clear of the relief discharge and vent line", S("overflow"), S("discharge") + S("vent_line") + S("diverter"), 20.0)
     for n in (1, 2):
         chk(f"Hood {n} skirt round the shell", S(f"skirt{n}"), S(f"hood{n}"), "touch")
         chk(f"Hood {n} manifold hung from the inner skin", S(f"manifold{n}"), S(f"hood{n}"), "touch")
@@ -841,6 +1019,7 @@ def checks(p=PARAMS):
     chk("Feed line clips on the shell", S("clips"), S("shell"), "touch")
     chk("Feed line in its clips", S("clips"), S("feed"), "touch")
     chk("Feed line clear of the economizer flange", S("feed"), S("eco_box"), 3.0)
+    chk("Feed line clear of the bank box frame", S("feed"), S("bk_box") + S("roof_bolts"), 3.0)
     chk("Skids clear of the drum saddles and pump box", S("skids"), S("saddles") + S("pbox"), 50.0)
     return rows
 
@@ -874,6 +1053,23 @@ def construction_masses(p=PARAMS):
         "Damper guides and slide": (C["guides"].shape.volume + C["damper"].shape.volume) * st,
         "Feed lines, jumper and clips": (C["feed"].shape.volume * 0.35 + C["jumper"].shape.volume * 0.35 + C["clips"].shape.volume) * ss,
         "Vent line and relief discharge": (C["vent_line"].shape.volume + C["discharge"].shape.volume) * 0.3 * st,
+        "Secondary air damper and guides": (C["guides2"].shape.volume + C["damper2"].shape.volume) * st,
+        "Seal pot overflow, trap stay and clip": (C["overflow"].shape.volume * 0.38 + C["ovf_stay"].shape.volume + C["ovf_clip"].shape.volume) * st,
+    }
+    return m
+
+
+def bank_masses(p=PARAMS):
+    """Masses (kg) of the evaporator bank parts, for STR-CAL-001 (python model.py --mass)."""
+    C = build_components(p)
+    st, ss = DENSITY["steel"], DENSITY["stainless"]
+    od, w = p["bk_tube_od"], p["bk_tube_wall"]
+    m = {
+        "Bank box, frame and cover": (C["bk_box"].shape.volume + C["bk_cover"].shape.volume) * st,
+        "Bank box lining (128 kg/m3)": C["bk_lining"].shape.volume * 0.128e-6,
+        "Bank tube": math.pi / 4 * (od ** 2 - (od - 2 * w) ** 2) * bank_length(p) * 1000 * ss,
+        "Bank supports": C["bk_sups"].shape.volume * st,
+        "Link and unions": C["bk_link"].shape.volume * 0.4 * ss,
     }
     return m
 
@@ -882,10 +1078,10 @@ if __name__ == "__main__":
     if "--check" in sys.argv:
         sys.exit(1 if print_checks() else 0)
     if "--mass" in sys.argv:
-        m = construction_masses()
-        for k, v in m.items():
-            print(f"  {k:36s} {v:6.1f} kg")
-        print(f"  {'total':36s} {sum(m.values()):6.1f} kg")
+        for m in (construction_masses(), bank_masses()):
+            for k, v in m.items():
+                print(f"  {k:38s} {v:6.1f} kg")
+            print(f"  {'total':38s} {sum(m.values()):6.1f} kg")
         sys.exit(0)
     from build123d import export_step, export_stl, Compound
     root = Path(__file__).resolve().parents[1]
@@ -911,4 +1107,6 @@ if __name__ == "__main__":
     pts = eco_bank_points()
     Lb = sum(math.dist(a, c) for a, c in zip(pts[:-1], pts[1:]))
     print(f"economizer serpentine centreline (square corners) {Lb/1000:.2f} m")
+    print(f"evaporator bank tube {bank_length():.2f} m; bank box {D['bk_z0']:.0f} to {D['bk_top']:.0f}; layers at {D['bk_zb']:.0f} and {D['bk_zt']:.0f}")
+    print(f"seal pot overflow centre at {D['ovf_z']:.0f} (invert at the static water mark {D['water_line']:.0f})")
     print_checks()

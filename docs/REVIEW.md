@@ -1,5 +1,60 @@
 # Review note: SteamRoot
 
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish approved on 2026-10-02 that the follow-up actions from the open-decision sign-off be carried out ("APPROVED CHANGES, COMPLETE THESE"), with the render scenes prepared for new photoreal renders. This section records each follow-up of the list below ("Follow-up actions to carry approved decisions into the design").
+
+### Approved follow-ups carried out
+
+1. Decision 1 (obtain the ruling and review the design against it): not done: outreach by Amish; the ruling is not yet obtained.
+2. Decision 2 (write to the Texas Department of Licensing and Regulation): not done: outreach by Amish.
+3. Decision 4 (size the evaporator bank with dampers, reshape the firebox, propose a restated R4): done. `docs/04-calcs/sizing.py` now runs a forward model of firebox, bank and economizer and a six-option study (STR-CAL-001 v0.4, section 4, Table 4). Chosen: 6.4 m of 15.88 x 1.24 mm 316 tube in two layers, coil cut from 11 to 10 turns, firebox reshaped from 1000 to 960 mm, excess air held near 1.5 by the primary and secondary dampers. Efficiency 68.9 % (61.3 % with dampers open), wood 4.18 kg/m², heated water 7.32 L. R4 restatement proposed (register item 12).
+4. Decision 4 (bank and dampers in the model; check R6, R7, R11): done. `cad/src/model.py`: bank box, lining, tube, supports, slot cover, economizer to bank link, rerouted jumper, secondary air slot and slide on the door, longer roof bolts. R6 met (bank inlet 0.128 bar), R7 met (7.3 L), R11 mass at risk (499 kg).
+5. Decision 6 (overflow in the model; constructability checks): done. Overflow from a half coupling at the static mark, 350 mm loop seal, trap stay, crossing to the trailer centre line behind the deck and down to 80 mm above the ground; rear clip on the rear rail. Constructability checks: 124 of 124 pass (was 93; 31 added for the new parts and clearances). STEP and STL regenerated, with a new `steamroot-bank` part file.
+6. Decision 6 (STR-DWG-116 and STR-DWG-002): done. STR-DWG-116 Rev P2; STR-DWG-002 Rev P4; new sketch STR-DWG-125 for the overflow.
+7. Decision 6 (seal pot section 3.17, step 15, joint 7, S4): done in STR-BLD-001 v0.3; joint 7 redrawn as a front cut through the pot and overflow.
+8. Decision 6 (overflow in the BOM, priced): done. BOM line 9 USD 150 to USD 220 (pipe, elbows, half coupling, plug, stay and clip; typical hardware store prices, not checked live).
+9. Decision 6 (overflow check in STR-CAL-001): done, section 5. With the overflow the annulus cannot rise, so the seal blows at the 890 mm dip leg depth: 0.084 bar, under the 0.094 bar limit whatever the fill; the 110 mm rise is removed. A loop seal (3.29 kPa) was needed because the refeed flash raises the pot head space by about 2.35 kPa and would otherwise blow steam out at ground level.
+10. Decision 8 (draining and ice check in the operator instructions): not done: the operator instructions are not yet written (TRL 4 work); the rule is in safety stops S4 and S10 of the build plan, now including the loop seal plug.
+11. Decision 10 (product model; renders, card and social preview on Amish's Mac): product model done; renders not done here. `cad/src/product_model.py` now takes the firebox on skids, coil, bank box, economizer and chimney heights, header post, pot on its foot plate, overflow, diverter position, discharge and vent line, dampers, feed lines and handles from `model.py`. Render scenes exported to `/home/claude/renders/steamroot` (hero, exploded, detail; one .npz and .json each plus `steamroot__jobs.json`). `media/render-*.png`, `media/card.png` and `media/social-preview.png` are to be rendered on Amish's Mac.
+12. Decision 11 (handles sized for ballast; ballast load in the hood section): done. Handles 30 x 30 x 2.5 steel tube on standoffs and 100 x 100 x 3 foot plates through-bolted to backing plates; 40 kg a hood at a load factor of 2 gives about 34 MPa (factor 7 on yield). Noted in STR-BLD-001 sections 3.20 and 3.29; new sketch STR-DWG-126.
+13. Decision 11 (skirt leakage in the TRL 4 soil test plan): not done: TRL 4 work, on hold.
+
+### Requirement status changes (STR-CAL-001 v0.4)
+
+- R4: not met (5.6 kg/m²) to at risk (4.2 kg/m² with the dampers set).
+- R5: not met (51 %) to met on paper (69 %), only while the dampers hold λ near 1.5.
+- R11 mass: met (468 kg) to at risk (499 kg towed with the hoods; 437 kg without).
+- Unchanged in kind: R6 met (header 0.033 bar, bank inlet 0.128 bar, seal 0.084 bar), R7 met (6.9 L to 7.3 L), R9 met (flash 155 to 138 kg/h, margin 10 % to 23 %), R2 and R11 width at risk, R1 not verifiable.
+- Cost: Value-engineering target: USD 2,200. Estimated cost of the constructable design: USD 2,600 (USD 400 over the target). Mass 633 kg full, 499 kg towed drained.
+
+### Documents changed and new versions
+
+- `cad/src/model.py` (bank, dampers, overflow, handles, 124 checks); `cad/step/`, `cad/stl/` regenerated
+- `docs/04-calcs/sizing.py`; `docs/04-calcs/01-sizing.md` STR-CAL-001 v0.4
+- `bom/bom.csv` (lines 1, 5, 6, 9, 12, 19, 21 revised; line 22 added); `bom/bom-notes.md`
+- `docs/03-requirements.md` STR-REQ-001 v0.7; `docs/02-concept.md` STR-PRC-001 v0.7; `docs/05-build-plan.md` STR-BLD-001 v0.3; `docs/06-design-decisions.md` STR-DEC-001 v0.3; `docs/decisions/0002-recommendations-accepted.md` STR-DDR-002 v0.3; `docs/decisions/0003-design-for-construction.md` STR-DDR-003 v0.3; `README.md`
+- Drawings: STR-DWG-002 Rev P4; STR-DWG-101, 104, 106, 107, 108, 110, 111, 116, 119 Rev P2; new STR-DWG-122 to 126; insets of 109, 112, 113, 120 and 121 regenerated
+- Pictures: overview, joints 1 to 10 (5, 7 and 9 changed), steps 1 to 20 (6, 10, 11, 15, 18 and 19 changed); concept media (hero, cutaway, exploded, flow, blueprint, `model.glb`). `cad/src/concept_media.py` now cuts the cutaway solid by solid (the coil compound needed about 5 GB in one boolean).
+- `cad/src/product_model.py`, `cad/src/sheets.py`, `cad/src/build_plan_media.py`
+
+### Proposed, awaiting Amish
+
+- Register item 12: restate R4 as 4.5 kg/m² or less at 15 cm with the dampers set (options 4.5, 5.0 or keep 4).
+- Register item 13: count R11 without the hoods, which ride on a second vehicle (437 kg), or save mass elsewhere.
+- The overflow's 350 mm loop seal is a detail the 2026-10-02 decision did not name; it keeps the decided overflow from venting steam at ground level during a refeed flash. It changes the safety case slightly and should be confirmed by Amish and put to the authority with the rest.
+- Appearance deviations in `product_model.py`: the cast grate is drawn as a bar grid sized to the lining rather than the 300 mm grate, and the door carries a ceramic glass window the made door does not have.
+
+### Safety notes
+
+- R5 now depends on the operator holding the dampers near λ = 1.5; less excess air also raises carbon monoxide, so the CO alarm rule stands.
+- Each start pushes about 0.3 L of seal water out of the overflow; the pot must be topped up to the mark before every start (S4) or the seal is shallower than drawn (safe direction, but the vent then opens earlier).
+- The overflow loop seal must be kept full and drained in frost (S4, S10).
+
+### Cross-repo actions
+
+None.
+
 ## Session 2026-10-02: open decisions decided by Amish
 
 Amish wrote on 2026-10-02: "i approve your recommendations for all 555 open decisions." Every open decision in this repo's register was decided as recommended and moved to "Decisions made" in `docs/06-design-decisions.md`, dated 2026-10-02.
@@ -329,3 +384,7 @@ All in the register (`docs/06-design-decisions.md`): accept STR-DDR-003; how to 
 ### Recommended next step
 
 Amish to review STR-DDR-003 and the register. Then the second paper iteration at TRL 3 (evaporator bank, controlled air and firebox shape, decisions 4 and 5). TRL 4 stays on hold.
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.
