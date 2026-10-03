@@ -3,9 +3,9 @@ doc_id: STR-DEC-001
 title: SteamRoot design decisions register
 project: SteamRoot
 doc_type: Design decisions register
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-03'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Approved decisions carried into the design (STR-CAL-001 v0.4); value engineering restated at USD 2,600; two new proposals opened: R4 restatement and the R11 mass basis"
+- version: "0.4"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: "Amish accepted the cost overrun against the value-engineering target on 2026-10-03; row added to decisions made; value engineering section updated"
 ---
 
 # SteamRoot design decisions register
@@ -55,6 +59,8 @@ The eleven decisions of the 2026-10-02 sign-off are made. Carrying them into the
 
 Value-engineering target: USD 2,200 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 2,600 (USD 400 over the target). Main cost drivers and savings worth trying:
 
+Amish accepted this overrun on 2026-10-03: the estimated cost of USD 2,600 against the USD 2,200 target (USD 400 over). Amish: "Cost over target - i accept all the cost variations and overruns". It stays reported against the target as an accepted overrun, and the savings below remain worth trying.
+
 - The largest lines are the two hoods (USD 310 together), the firebox (USD 265), the header and water-seal assembly with its overflow (USD 220), the stainless coil (USD 215), the used trailer (USD 200), the evaporator bank (USD 190) and the steam hose (USD 180).
 - Carrying the 2026-10-02 decisions into the design added USD 325: the evaporator bank (USD 190), the seal pot overflow (USD 70), the bank link and reducing unions (USD 45), ballast-rated hood handles (USD 30), the secondary damper and fixings (USD 10 net), less USD 20 for one coil turn fewer.
 - Making the design constructable added USD 360: the taller firebox and longer coil (USD 55), steelwork for the skids, post, stay and saddles (USD 70), firebox internals and glands (USD 50), feed lines and stainless fittings (USD 95), the relief discharge and vent line (USD 45) and fixings and straps (USD 45).
@@ -79,3 +85,4 @@ Value-engineering target: USD 2,200 (a hypothetical control target, not a limit)
 | 2026-10-02 | The two hoods ride on a second vehicle for the prototype | Amish: "i approve your recommendations for all 555 open decisions." | STR-PRC-001 open questions |
 | 2026-10-02 | Design for construction accepted: changes C1 to C14 of STR-DDR-003 as made, with the seal pot overflow decided separately (item 6) | Amish: "i approve your recommendations for all 555 open decisions." | STR-DDR-003 |
 | 2026-10-02 | Hood ballast, skirt depth or steam rate decided from TRL 4 soil tests, with skirt leakage measured at the hood edge; the hood handles are sized to take ballast weights so no redesign is needed later | Amish: "i approve your recommendations for all 555 open decisions." | STR-CAL-001, section 2; STR-PRC-001 open questions |
+| 2026-10-03 | Cost overrun accepted: the estimated cost of USD 2,600 against the USD 2,200 target (USD 400 over) | Amish: "Cost over target - i accept all the cost variations and overruns" | [REVIEW.md](REVIEW.md), session 2026-10-03 |
