@@ -5,6 +5,9 @@ repo: BoujeeEnjinia1701/steamroot         # GitHub repository, shown on every dr
 area: Agriculture
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
+stage: P3                # pipeline stage, STANDARDS section 19; P3 reached with the kit 1.9.1 upgrade (2026-10-25)
+stem_check: open         # STR-STM-001 v0.1: S6, S7, S12, E2 fixed (STR-DEC-001 S1, S3, S4); S11 and B4 fail with fixes sent to Amish (#18, S2); S5, S15 to S17, M2, E3 plausible
+concept_options: [A, B]  # STR-OPT-001: A monotube coil generator (current design), B vented fire-tube kettle; within 10 %, both to Amish (STR-DEC-001 #14)
 trl_evidence:
   - docs/01-problem.md
   - docs/02-concept.md
@@ -17,18 +20,42 @@ trl_evidence:
   - docs/05-build-plan.md
   - docs/06-design-decisions.md
   - cad/src/model.py
-  - cad/step/steamroot.step
+  - cad/src/str_parts.py
+  - cad/src/str_option_b.py
+  - cad/fidelity.json
+  - cad/step/A-assembly.step
+  - cad/step/B-assembly.step
   - cad/stl/steamroot.stl
   - cad/drawings/STR-DWG-002.svg
   - cad/drawings/STR-DWG-002.pdf
   - bom/bom.csv
+  - docs/01b-stem-check.md
+  - docs/04-calcs/stem_check.py
+  - docs/04-calcs/stem_results.csv
+  - docs/04-calcs/options_results.csv
+  - docs/02a-concept-options.md
+  - docs/decisions/0004-concept-selection.md
+  - docs/03a-user-requirements.md
+  - docs/03b-traceability.md
+  - docs/07-regulatory.md
+  - docs/08-feasibility.md
+  - docs/09-risk.md
+  - docs/10-market.md
+  - docs/11-plan.md
+  - docs/05-build-plan/overview.png
+  - cad/drawings/STR-DWG-127.pdf
+  - cad/drawings/STR-DWG-128.pdf
+  - cad/src/product_model.py
+  - media/hero.png
+  - media/concept-blueprint.png
+  - media/model.glb
 shortlisted: true
 design_state: constructable   # STANDARDS section 18; made constructable in STR-DDR-003 (2026-10-01)
 pitch: >-
   Low-pressure, biomass-fired steam generator with a flue-gas economizer and a steam-hood trailer for soil pasteurization, operated near atmospheric pressure to stay out of pressure vessel code.
 problem: >-
   Herbicide-free weed and pathogen control by steaming soil works, but the portable boilers that do it are inefficient and diesel-fired.
-budget_usd: 2200           # value-engineering target, not a limit (Amish, 2026-10-01); set by Amish 2026-09-25 (STR-DDR-002); estimated cost USD 2,275
+budget_usd: 2200           # value-engineering target, not a limit (Amish, 2026-10-01); set by Amish 2026-09-25 (STR-DDR-002); estimated cost USD 2,720 (STR-CAL-001 v0.5)
 difficulty: 5  # 1 easiest, 5 hardest
 hero_image: media/hero.png
 licenses:

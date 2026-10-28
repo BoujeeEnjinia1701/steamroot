@@ -54,7 +54,17 @@ A = {
     "h_conv": 20.0,              # W/(m2 K), gas to coil convection
     "t_wall": 110.0,             # coil wall temperature, C
     "k_lining": 0.12, "h_shell": 12.0,   # ceramic fiber at mean temperature; shell outside film
-    "U_eco": 25.0,               # W/(m2 K), economizer overall coefficient (gas side controlled)
+    "U_eco": 25.0,               # W/(m2 K), economizer coefficient ASSUMED in v0.4 (superseded in v0.5 by the correlation below)
+    # Gas side of the bank and economizer (v0.5, STEM check S12): Zukauskas in-line tube bank correlation at the
+    # velocity through the minimum free area of each gas pass, plus non-luminous gas radiation
+    "eps_g_bank": 0.06,          # H2O + CO2 emissivity, about 0.015 atm m each at 700 K (Hottel charts; +/- 50 %; 0.08 before the review)
+    "R_foul": 0.003,             # m2 K/W, soot and tar on the gas side of the bank and economizer (independent review, 2026-10-25)
+    "bypass": 0.10,              # share of the gas slipping round the baffle edges without crossing the tubes (review)
+    "dp_bed": 3.0,               # Pa, grate and fuel bed at the design gas flow, scaling with flow squared (Ergun estimate 2 to 5 Pa, review)
+    "eps_g_eco": 0.05,           # the same at about 520 K
+    "Cd_tube": 1.2,              # drag coefficient of one tube in cross flow at Re 100 to 300 (gas pressure drop per row)
+    "K_turn": 1.5,               # velocity heads per 180 degree turn round a baffle
+    "M_fg": 28.5,                # molar mass of the flue gas, g/mol
     # Pressure drop
     "hose_bore": 0.025, "hose_len": 6.0, "K_hose_fittings": 5.0, "dp_manifold": 500.0,  # Pa
     # Dry-coil event
@@ -65,7 +75,7 @@ A = {
     "rv_rated_lb_h": 375.0,      # Watts Series 315, 3/4 in, 15 psi set: 375 lb/h (maker's capacity table)
     # R5 and R4 study (decided by Amish 2026-09-25: study a convective evaporator bank with controlled air;
     # 2026-10-02: size it with primary and secondary air dampers, keeping R7)
-    "U_bank": 30.0,              # W/(m2 K), bare-tube evaporator bank in cross flow (gas side controlled)
+    "U_bank": 30.0,              # W/(m2 K), bank coefficient ASSUMED in v0.4 (superseded in v0.5 by the correlation)
     "lambda_ctl": 1.5,           # excess air ratio held with the primary and secondary air dampers (range 1.5 to 2.0)
     "k_bank_lining": 0.12,       # 25 mm fibre on the bank box walls
     "draft_cd": 0.6,             # discharge coefficient of the damper openings
@@ -79,8 +89,10 @@ A = {
     "m_instr_safety": 8.0, "m_hood_extra": 5.5,   # manifold and handles; the handles are 30 x 30 x 2.5 steel tube on foot plates
     "m_construction": 46.0,      # skids, header post, pot stay and foot plate, saddles, coil brackets, grate stand,
                                  # gland plates, both dampers, feed lines, vent line and discharge, seal pot overflow
-                                 # (42.5 kg from model volumes, python cad/src/model.py --mass) plus the roof frame and unions
+                                 # (42.5 kg from the v0.4 model; 32.8 kg in the kit 1.9 model, python cad/src/model.py --mass) plus the roof frame,
+                                 # unions and fixings; kept at 46.0 since the whole kit 1.9 model (cad/fidelity.json) agrees with this table within 1 %
     "m_bank": 26.0,              # evaporator bank box, lining, tube, supports, link (python cad/src/model.py --mass)
+    "m_baffles": 7.4,            # gas-pass baffles and ledges, STR-DEC-001 S1 (python cad/src/model.py --mass, kit 1.9 parts)
     # Budget
     "budget_usd": 2200.0,        # value-engineering target (a hypothetical control target, not a limit); STR-DDR-002
 }
@@ -98,6 +110,74 @@ def sat_temp_from_pp(p_pa):
     """Saturation temperature (C) from vapor pressure (Pa), Antoine for water 1 to 100 C."""
     p_mmhg = p_pa / 133.322
     return 1730.63 / (8.07131 - math.log10(p_mmhg)) - 233.426
+
+
+C2_INLINE = ((1, 0.70), (2, 0.80), (3, 0.86), (4, 0.90), (5, 0.92), (7, 0.95), (10, 0.97), (13, 0.98), (16, 0.99), (20, 1.0))
+
+
+def gas_props(T_c):
+    """Flue gas taken as air (kinematic viscosity m2/s, conductivity W/(m K), Pr) at T_c; power-law fits to
+    the air tables, within about 7 % from 400 to 900 K."""
+    T = T_c + 273.15
+    return 1.5e-5 * (T / 293.0) ** 1.7, 0.0257 * (T / 293.0) ** 0.8, 0.70
+
+
+def gas_passes(g, which, baffled=True):
+    """Gas passes across a tube bank: list of (minimum free flow area m2, tube rows crossed in series).
+    'bank': two layers of bk_runs runs along X in the lined bank box; 'eco': three layers in the economizer box.
+    Baffled, the gas crosses each layer sideways (along Y); unbaffled it rises through the layers.
+    Each pass is (minimum free area m2, rows in series, blockage d/s with s the channel height or tube pitch)."""
+    if which == "bank":
+        d = g["bk_tube_od"] / 1000
+        Lx = (g["fb_l"] - 2 * (g["bk_shell_t"] + g["bk_lining_t"])) / 1000
+        Wy = (g["fb_w"] - 2 * (g["bk_shell_t"] + g["bk_lining_t"])) / 1000
+        Hc = (g["bk_h"] - g["bk_shell_t"] - g["bk_lining_t"]) / 1000
+        n = int(g["bk_runs"])
+        if not baffled:
+            return [(Lx * (Wy - n * d), int(g["bk_layers"]), d / (g["bk_pitch"] / 1000))]
+        zb0 = (g["bk_baffle_z"] - g["bk_baffle_t"] / 2) / 1000
+        zb1 = (g["bk_baffle_z"] + g["bk_baffle_t"] / 2) / 1000
+        return [(Lx * (zb0 - d), n, d / zb0), (Lx * (Hc - zb1 - d), n, d / (Hc - zb1))]
+    d = g["eco_tube_od"] / 1000
+    Lx, Wy, Hc = (g["eco_l"] - 4) / 1000, (g["eco_w"] - 4) / 1000, g["eco_h"] / 1000
+    layers = [nn for _, nn in sorted(g["eco_layers"])]                 # bottom layer first
+    if not baffled:
+        return [(Lx * (Wy - max(layers) * d), len(layers), d / (g["eco_pitch"] / 1000))]
+    t = g["eco_baffle_t"] / 2000
+    zs = [0.0] + [z / 1000 for z in g["eco_baffle_z"]] + [Hc]
+    out = []
+    for i, nn in enumerate(layers):
+        h = (zs[i + 1] - (t if i + 1 < len(zs) - 1 else 0)) - (zs[i] + (t if i > 0 else 0))
+        out.append((Lx * (h - d), nn, d / h))
+    return out
+
+
+def tube_bank(passes, mdot, T_gas, T_wall, d, eps_g, a):
+    """Mean gas-side coefficient (W/(m2 K)) over a bank of passes and its gas pressure drop (Pa).
+    Pressure drop: each tube row takes Cd (d/s) of a velocity head at the channel approach velocity (drag of a
+    cylinder spread over its channel), each turn round a baffle K_turn velocity heads.
+    Zukauskas correlation for in-line banks: Nu = C2 C Re^m Pr^0.36 with C, m = 0.80, 0.40 (Re 10 to 100) or
+    0.51, 0.50 (Re 100 to 1000, isolated-cylinder form), C2 the row correction for the rows in series;
+    plus gas radiation eps_g sigma (Tg^4 - Tw^4) / (Tg - Tw)."""
+    nu, k, pr = gas_props(T_gas)
+    rho = 101325 * a["M_fg"] / 1000 / (8.314 * (T_gas + 273.15))
+    rows = sum(p_[1] for p_ in passes)
+    hs, dp, info = 0.0, 0.0, []
+    for i, (A_min, nn, blk) in enumerate(passes):
+        c2 = next(c for nr, c in C2_INLINE[::-1] if nn >= nr)      # row correction per pass: the entry effect recurs at each turn
+        v = mdot / rho / A_min
+        Re = v * d / nu
+        C, m = (0.80, 0.40) if Re < 100 else (0.51, 0.50)
+        h = c2 * C * Re ** m * pr ** 0.36 * k / d
+        hs += h * nn
+        v_app = v * (1 - blk)                   # approach velocity in the channel
+        dp += nn * a["Cd_tube"] * blk * rho * v_app ** 2 / 2 + (a["K_turn"] * rho * v_app ** 2 / 2 if i > 0 else 0.0)
+        info.append((v, Re, h))
+    Tg, Tw = T_gas + 273.15, T_wall + 273.15
+    h_rad = eps_g * SIGMA * (Tg ** 4 - Tw ** 4) / max(1.0, Tg - Tw)
+    h_clean = hs / rows + h_rad
+    U = 1 / (1 / h_clean + a.get("R_foul", 0.0))                 # with the gas-side fouling resistance
+    return U, dp, dict(passes=info, h_rad=h_rad, rho=rho, c2=c2, h_clean=h_clean)
 
 
 def run(a=A, geo=GEO, verbose=False):
@@ -260,11 +340,14 @@ def run(a=A, geo=GEO, verbose=False):
 
     r["bank"] = {lam: bank_study(lam, a["F_rad"]) for lam in (1.5, 2.0)}
 
-    def fired(g, lam, F, L_bank_m):
-        """Forward model of the firebox, evaporator bank and economizer (STR-CAL-001 v0.4, section 4).
+    def fired(g, lam, F, L_bank_m, baffled=True, U_fixed=None):
+        """Forward model of the firebox, evaporator bank and economizer (STR-CAL-001 v0.5, section 4).
         The firing rate is found so that the coil and bank together boil the feed the economizer delivers;
         the bank is a counterflow exchanger at 100 C, the economizer a counterflow exchanger capped at
-        t_eco_out. g is a geometry dictionary (coil turns, firebox height, bank tube)."""
+        t_eco_out. g is a geometry dictionary (coil turns, firebox height, bank tube). The gas-side
+        coefficients come from tube_bank() for the baffled or unbaffled passes, unless U_fixed = (U_bank, U_eco)
+        is given (the v0.4 assumption, kept for comparison)."""
+        pb, pe = gas_passes(g, "bank", baffled), gas_passes(g, "eco", baffled)
         r_fg = 1 + lam * air_st
         od = g["tube_od"] / 1000
         L = math.hypot(math.pi * g["coil_mean_d"] / 1000, g["coil_pitch"] / 1000) * g["coil_turns"]
@@ -293,17 +376,28 @@ def run(a=A, geo=GEO, verbose=False):
                 (lo, hi) = (mid, hi) if ex(mid)[0] > 0 else (lo, mid)
             Tg = (lo + hi) / 2
             _, qc, qs = ex(Tg)
-            eps_b = 1 - math.exp(-a["U_bank"] * A_bank / (Cg * 1000)) if A_bank > 0 else 0.0
-            qb = Cg * (Tg - a["t_steam"]) * eps_b
-            qbw = (Tg - a["t_soil0"]) / R_bwall / 1000 * A_bwall      # bank box wall loss, from the gas
-            T1 = Tg - (qb + qbw) / Cg
-            Cmin, Cmax = min(Cg, Cw), max(Cg, Cw)
-            ntu = a["U_eco"] * A_eco / (Cmin * 1000)
-            cr = Cmin / Cmax
-            eps_e = (1 - math.exp(-ntu * (1 - cr))) / (1 - cr * math.exp(-ntu * (1 - cr)))
-            qe = min(eps_e * Cmin * (T1 - a["t_feed"]), Cw * (a["t_eco_out"] - a["t_feed"]))
+            T1, Ts = Tg - 150.0, Tg - 300.0
+            for _ in range(6):     # gas-side coefficients at the mean gas temperature of each exchanger
+                if U_fixed:
+                    Ub, Ue, dpb, dpe, ib, ie = U_fixed[0], U_fixed[1], 0.0, 0.0, {}, {}
+                else:
+                    Ub, dpb, ib = tube_bank(pb, mfg, (Tg + T1) / 2, a["t_wall"], g["bk_tube_od"] / 1000, a["eps_g_bank"], a)
+                    Ue, dpe, ie = tube_bank(pe, mfg, (T1 + Ts) / 2, (a["t_feed"] + a["t_eco_out"]) / 2, g["eco_tube_od"] / 1000, a["eps_g_eco"], a)
+                bp = a["bypass"] if (baffled and not U_fixed) else 0.0
+                Cx = Cg * (1 - bp)                                     # gas that actually crosses the tubes
+                eps_b = 1 - math.exp(-Ub * A_bank / (Cx * 1000)) if A_bank > 0 else 0.0
+                qb = Cx * (Tg - a["t_steam"]) * eps_b
+                qbw = (Tg - a["t_soil0"]) / R_bwall / 1000 * A_bwall      # bank box wall loss, from the gas
+                T1 = Tg - (qb + qbw) / Cg
+                Cmin, Cmax = min(Cx, Cw), max(Cx, Cw)
+                ntu = Ue * A_eco / (Cmin * 1000)
+                cr = Cmin / Cmax
+                eps_e = (1 - math.exp(-ntu * (1 - cr))) / (1 - cr * math.exp(-ntu * (1 - cr)))
+                qe = min(eps_e * Cmin * (T1 - a["t_feed"]), Cw * (a["t_eco_out"] - a["t_feed"]))
+                Ts = T1 - qe / Cg
             return dict(Tg=Tg, qc=qc, qs=qs, qb=qb, qbw=qbw, T1=T1, qe=qe, mfg=mfg, Cg=Cg,
-                        T_stack=T1 - qe / Cg, t_eo=a["t_feed"] + qe / Cw)
+                        T_stack=Ts, t_eo=a["t_feed"] + qe / Cw, U_bank=Ub, U_eco=Ue, dp_bank_gas=dpb,
+                        dp_eco_gas=dpe, gas_bank=ib, gas_eco=ie)
 
         lo, hi = 1e-4, 0.02
         for _ in range(70):
@@ -329,15 +423,18 @@ def run(a=A, geo=GEO, verbose=False):
     r["design"] = design
     r["design_lam2"] = fired(geo, a["lambda"], a["F_rad"], L_bank)
     r["sens_bank"] = {(lam_, F_): fired(geo, lam_, F_, L_bank)["eta"] for lam_ in (1.5, 2.0, 2.5) for F_ in (0.25, 0.40, 0.60)}
-    # options of the study (coil turns, firebox height, bank) at the controlled excess air
+    r["design_v04_assumed"] = fired(geo, a["lambda_ctl"], a["F_rad"], L_bank, U_fixed=(a["U_bank"], a["U_eco"]))
+    r["design_unbaffled"] = fired(geo, a["lambda_ctl"], a["F_rad"], L_bank, baffled=False)
+    r["design_unbaffled_lam2"] = fired(geo, a["lambda"], a["F_rad"], L_bank, baffled=False)
+    # options of the study (coil turns, firebox height, bank, baffles) at the controlled excess air
     g11 = dict(geo, coil_turns=11, fb_h=1000.0)
     r["study"] = [
-        ("v0.3 design: 11 turns, 1000 mm firebox, no bank, lambda 2.0", fired(g11, 2.0, a["F_rad"], 0.0)),
-        ("11 turns, 1000 mm firebox, no bank, dampers (lambda 1.5)", fired(g11, a["lambda_ctl"], a["F_rad"], 0.0)),
-        (f"11 turns, 1000 mm firebox, {L_bank:.1f} m bank, lambda 1.5", fired(g11, a["lambda_ctl"], a["F_rad"], L_bank)),
-        (f"Chosen: 10 turns, 960 mm firebox, {L_bank:.1f} m bank, lambda 1.5", design),
-        (f"Chosen, dampers left open (lambda 2.0)", r["design_lam2"]),
-        (f"9 turns, 920 mm firebox, {L_bank:.1f} m bank, lambda 1.5",
+        ("v0.3 design: 11 turns, 1000 mm firebox, no bank, no baffles, lambda 2.0", fired(g11, 2.0, a["F_rad"], 0.0, baffled=False)),
+        (f"v0.4 design as published: 10 turns, {L_bank:.1f} m bank, assumed U 30 and 25, lambda 1.5", r["design_v04_assumed"]),
+        (f"v0.4 design, coefficients from the correlation (no baffles), lambda 1.5", r["design_unbaffled"]),
+        (f"Chosen (v0.5): v0.4 design with gas-pass baffles, lambda 1.5", design),
+        (f"Chosen at lambda 2.0 (sensitivity only; dampers wide open reach about 1.6)", r["design_lam2"]),
+        (f"Chosen with baffles, 9 turns, 920 mm firebox, lambda 1.5",
          fired(dict(geo, coil_turns=9, fb_h=920.0), a["lambda_ctl"], a["F_rad"], L_bank)),
     ]
     # efficiency needed for R4 (4 kg/m2 at 15 cm with two hoods)
@@ -367,7 +464,7 @@ def run(a=A, geo=GEO, verbose=False):
     fbd = dict(design)
     lmtd_e = ((design["T1"] - design["t_eo"]) - (design["T_stack"] - a["t_feed"])) / math.log(
         (design["T1"] - design["t_eo"]) / (design["T_stack"] - a["t_feed"]))
-    fbd.update(A_eco_req=design["qe"] * 1000 / (a["U_eco"] * lmtd_e), lmtd=lmtd_e, T_after_eco=design["T_stack"])
+    fbd.update(A_eco_req=design["qe"] * 1000 / (design["U_eco"] * lmtd_e), lmtd=lmtd_e, T_after_eco=design["T_stack"])
     r["fb"] = fbd
     base = fbd
     # Treatment-level fuel figures
@@ -379,9 +476,40 @@ def run(a=A, geo=GEO, verbose=False):
     rho_a, rho_f = 1.2, 1.2 * 288.15 / (a["t_flue_mean"] + 273.15)
     H_draft = (geo["chimney_top"] - DGEO["F"] - geo["grate_z"]) / 1000
     r["draft_pa"] = G * H_draft * (rho_a - rho_f)
-    v_in = a["draft_cd"] * math.sqrt(2 * r["draft_pa"] / rho_a)
-    r["air_need_mm2"] = {lam_: (r["design"]["m_f"] if lam_ == a["lambda_ctl"] else r["design_lam2"]["m_f"]) * lam_ * air_st / rho_a / v_in * 1e6
-                         for lam_ in (a["lambda_ctl"], a["lambda"])}
+    # flow losses on the gas side (v0.5, corrected after the independent review): grate and fuel bed, roof and bank box
+    # holes, the baffled passes, the chimney and its cap, worked out for each excess air ratio
+    A_hole = math.pi / 4 * (geo["chimney_d"] / 1000) ** 2
+    rho_at = lambda T_c: 101325 * a["M_fg"] / 1000 / (8.314 * (T_c + 273.15))
+    ch_len = (geo["chimney_top"] - DGEO["lid_top"]) / 1000
+    A_open = (geo["air_open"][0] * geo["air_open"][1] + geo["air2_open"][0] * geo["air2_open"][1]) / 1e6
+    mfg_ref = r["design"]["mfg"]
+
+    def draft_case(d_, lam_):
+        v_at = lambda T_c, area: d_["mfg"] / rho_at(T_c) / area
+        dp_holes = sum(1.5 * rho_at(T) * v_at(T, A_hole) ** 2 / 2 for T in (d_["Tg"], d_["T1"]))
+        v_ch = v_at(d_["T_stack"], A_hole)
+        dp_chim = (0.03 * ch_len / (geo["chimney_d"] / 1000) + 1.0 + 2.5) * rho_at(d_["T_stack"]) * v_ch ** 2 / 2   # friction, entry, cap
+        dp_bed = a["dp_bed"] * (d_["mfg"] / mfg_ref) ** 2
+        tot = dp_bed + dp_holes + d_["dp_bank_gas"] + d_["dp_eco_gas"] + dp_chim
+        net = r["draft_pa"] - tot
+        air = d_["m_f"] * lam_ * air_st / rho_a                                            # m3/s of combustion air
+        need = air / (a["draft_cd"] * math.sqrt(2 * max(net, 0.05) / rho_a)) * 1e6 if net > 0 else float("inf")
+        return dict(bed=dp_bed, holes=dp_holes, bank=d_["dp_bank_gas"], eco=d_["dp_eco_gas"], chimney=dp_chim,
+                    v_chimney=v_ch, v_hole=v_at(d_["Tg"], A_hole), total=tot, net=net, need=need)
+
+    r["dp_gas"] = draft_case(r["design"], a["lambda_ctl"])
+    r["dp_gas_lam2"] = draft_case(r["design_lam2"], a["lambda"])
+    r["dp_gas_total"] = r["dp_gas"]["total"]
+    r["draft_net_pa"] = r["dp_gas"]["net"]
+    r["air_need_mm2"] = {a["lambda_ctl"]: r["dp_gas"]["need"], a["lambda"]: r["dp_gas_lam2"]["need"]}
+    # the leanest mixture the openings can pass with both dampers wide open
+    lam_max = a["lambda_ctl"]
+    for k_ in range(1, 21):
+        lam_t = a["lambda_ctl"] + 0.05 * k_
+        if draft_case(fired(geo, lam_t, a["F_rad"], L_bank), lam_t)["need"] > A_open * 1e6:
+            break
+        lam_max = lam_t
+    r["lam_open_max"] = lam_max
     r["air_open_mm2"] = (geo["air_open"][0] * geo["air_open"][1], geo["air2_open"][0] * geo["air2_open"][1])
     r["H_draft"] = H_draft
     r["wood_per_m2_15_at65"] = r["bank"][2.0]["wood_kg_h"] / r["rate15_2"]
@@ -404,7 +532,17 @@ def run(a=A, geo=GEO, verbose=False):
         Gx = dpdz_l + 2 * (dpdz_g - dpdz_l) * x
         msh += (Gx * (1 - x)**(1 / 3) + dpdz_g * x**3) / n
     curv = max(1.0, (Re_g * (Di / 2 / (geo["coil_mean_d"] / 2000))**2)**0.05)     # Ito, turbulent helical coil
-    f_boil = r["Q_coil"] and (m_s * (h_g - a["h_f100"])) / r["Q_coil"]              # fraction of coil length boiling
+    # the bank delivers the feed already boiling (quality x_b, below), so the whole coil is two-phase: average the
+    # friction over a quality rising from x_b to 1 (corrected after the independent review; was the v0.3 boiling fraction)
+    d0 = r["design"]
+    q_sub0 = m_s * a["cp_w"] * (a["t_steam"] - d0["t_eo"])
+    x_in = max(0.0, (d0["qb"] - q_sub0) / (m_s * a["h_fg"]))
+    msh = 0.0
+    for i in range(n):
+        x = x_in + (1 - x_in) * (i + 0.5) / n
+        Gx = dpdz_l + 2 * (dpdz_g - dpdz_l) * x
+        msh += (Gx * (1 - x)**(1 / 3) + dpdz_g * x**3) / n
+    f_boil = 1.0
     dp_fric = msh * curv * L_coil * f_boil
     dp_acc = Gm**2 * (1 / a["rho_g"] - 1 / a["rho_l"])
     height = geo["coil_pitch"] * geo["coil_turns"] / 1000
@@ -431,8 +569,11 @@ def run(a=A, geo=GEO, verbose=False):
         x = x_b * (i + 0.5) / n
         Gx = gl + 2 * (gg - gl) * x
         msh_b += (Gx * (1 - x)**(1 / 3) + gg * x**3) / n
-    curv_b = 1.10                                            # return bends of the serpentine, allowance
-    dp_bank = curv_b * L_bank * (gl * f_sub + msh_b * (1 - f_sub)) + Gb**2 * x_b * (1 / a["rho_g"] - 1 / a["rho_l"])
+    dp_bank = L_bank * (gl * f_sub + msh_b * (1 - f_sub)) + Gb**2 * x_b * (1 / a["rho_g"] - 1 / a["rho_l"])
+    # 18 return bends and 2 risers at 0.3 velocity heads each, homogeneous density at the mean two-phase quality
+    rho_m = 1 / ((x_b / 2) / a["rho_g"] + (1 - x_b / 2) / a["rho_l"])
+    n_bends = 2 * (int(geo["bk_runs"]) - 1) * int(geo["bk_layers"]) + 2 * (int(geo["bk_layers"]) - 1) + 2
+    dp_bank += n_bends * 0.3 * Gb**2 / (2 * rho_m)
     r.update(Gb=Gb, x_b=x_b, dp_bank=dp_bank, Di_b=Di_b)
     Ah = math.pi * a["hose_bore"]**2 / 4
     Gh = m_s / Ah
@@ -516,6 +657,7 @@ def run(a=A, geo=GEO, verbose=False):
         "Instruments, alarms, safety kit": a["m_instr_safety"],
         "Supports and lines added for construction": a["m_construction"],
         "Evaporator bank (box, lining, tube, supports)": a["m_bank"],
+        "Gas-pass baffles and ledges (2026-10-24)": a["m_baffles"],
     }
     r["mass"] = mass
     r["m_total"] = sum(mass.values())
@@ -543,11 +685,12 @@ def run(a=A, geo=GEO, verbose=False):
 
     # ---------------------------------------------------- G. requirement status
     def status(value, target, higher_is_better, band=0.05):
+        """met; at risk (passing but within the band); not met (on the wrong side of the target, however close)."""
         ok = value >= target if higher_is_better else value <= target
         near = abs(value - target) <= band * target
         if ok:
             return "at risk" if near else "met"
-        return "at risk" if near else "not met"
+        return "not met"
     fb = base
     req = [
         ("R1", "Soil at 70 C for 20 to 30 min at 15 cm over 80 % of footprint",
@@ -559,9 +702,9 @@ def run(a=A, geo=GEO, verbose=False):
          status(r["rate5_2"], 3.4, True)),
         ("R3", "Steam output", f"30 kg/h with coil gas at {fb['Tg']:.0f} C, firing {fb['Q_in']:.1f} kW",
          "30 kg/h or more", "met"),
-        ("R4", "Wood per m2 at 15 cm", f"{r['wood_per_m2_15']:.1f} kg/m2 with the bank and dampers ({r['wood_per_m2_15_lam2']:.1f} kg/m2 with the dampers open)",
+        ("R4", "Wood per m2 at 15 cm", f"{r['wood_per_m2_15']:.1f} kg/m2 with the bank and dampers ({r['wood_per_m2_15_lam2']:.1f} kg/m2 at lambda 2.0, beyond the dampers' reach)",
          "4 kg/m2 or less", status(r["wood_per_m2_15"], 4.0, False)),
-        ("R5", "Fuel to steam efficiency", f"{100*fb['eta']:.0f} % with the bank at lambda {a['lambda_ctl']} ({100*r['design_lam2']['eta']:.0f} % at lambda {a['lambda']})",
+        ("R5", "Fuel to steam efficiency", f"{100*fb['eta']:.0f} % with the bank at lambda {a['lambda_ctl']} ({100*r['design_lam2']['eta']:.0f} % at lambda {a['lambda']}, a sensitivity)",
          "65 % or more", status(fb["eta"], 0.65, True)),
         ("R6", "Normal pressure at the header", f"{p_header/1e5:.3f} bar gauge",
          "0.1 bar gauge or less", status(p_header / 1e5, 0.10, False)),
@@ -630,9 +773,19 @@ def run(a=A, geo=GEO, verbose=False):
     d = r["design"]
     say(f"  design: firebox gas {d['Tg']:.0f} C, coil {d['qc']:.2f} kW, bank {d['qb']:.2f} kW (gas to {d['T1']:.0f} C), "
         f"bank box wall {d['qbw']:.2f} kW, economizer {d['qe']:.2f} kW (water to {d['t_eo']:.0f} C), stack {d['T_stack']:.0f} C")
-    say(f"  natural draft {r['draft_pa']:.1f} Pa over {r['H_draft']:.2f} m; air opening needed "
-        + ", ".join(f"{v:,.0f} mm2 at lambda {k}" for k, v in r["air_need_mm2"].items())
-        + f"; primary {r['air_open_mm2'][0]:,.0f} mm2 + secondary {r['air_open_mm2'][1]:,.0f} mm2")
+    for nm, key, keyi in (("bank", "U_bank", "gas_bank"), ("economizer", "U_eco", "gas_eco")):
+        gi = d[keyi]
+        say(f"  {nm} gas side (baffled): " + "; ".join(f"pass {i+1} {v:.2f} m/s, Re {Re:.0f}, h {h:.1f}" for i, (v, Re, h) in enumerate(gi["passes"]))
+            + f"; radiation {gi['h_rad']:.1f}; clean {gi['h_clean']:.1f}; with fouling U {d[key]:.1f} W/(m2 K); bypass {100*a['bypass']:.0f} %")
+    du = r["design_unbaffled"]
+    say(f"  without baffles: U bank {du['U_bank']:.1f}, economizer {du['U_eco']:.1f} W/(m2 K); efficiency {100*du['eta']:.1f} % "
+        f"({100*r['design_unbaffled_lam2']['eta']:.1f} % at lambda {a['lambda']}); v0.4 assumed 30 and 25: {100*r['design_v04_assumed']['eta']:.1f} %")
+    dg = r["dp_gas"]
+    say(f"  gas-side losses: grate and bed {dg['bed']:.2f} Pa, holes {dg['holes']:.2f} Pa (hole velocity {dg['v_hole']:.2f} m/s), bank {dg['bank']:.2f} Pa, "
+        f"economizer {dg['eco']:.2f} Pa, chimney and cap {dg['chimney']:.2f} Pa ({dg['v_chimney']:.2f} m/s); total {r['dp_gas_total']:.2f} Pa")
+    say(f"  natural draft {r['draft_pa']:.1f} Pa over {r['H_draft']:.2f} m, {r['draft_net_pa']:.1f} Pa left for the air openings; air opening needed "
+        + ", ".join((f"{v:,.0f} mm2" if v != float("inf") else "not reachable") + f" at lambda {k}" for k, v in r["air_need_mm2"].items())
+        + f"; primary {r['air_open_mm2'][0]:,.0f} mm2 + secondary {r['air_open_mm2'][1]:,.0f} mm2; leanest mixture with both dampers open lambda {r['lam_open_max']:.2f}")
     p = r["fb_preheat"]
     say(f"  with combustion air preheated by 135 K: efficiency {100*p['eta']:.1f} %, stack {p['T_stack']:.0f} C, "
         f"wood {p['wood_kg_h']:.1f} kg/h")
@@ -698,5 +851,26 @@ def run(a=A, geo=GEO, verbose=False):
     return r
 
 
+def sensitivities(a=A):
+    """One-at-a-time sensitivities of fuel-to-steam efficiency (CAL Table 6a, independent review 2026-10-25)."""
+    cases = [
+        ("design (lambda 1.5, F 0.40)", {}),
+        ("unburned loss 6 %", dict(f_unburned=0.06)),
+        ("unburned loss 8 %", dict(f_unburned=0.08)),
+        ("coil convection 10 W/(m2 K)", dict(h_conv=10.0)),
+        ("lambda 1.6 (dampers wide open)", dict(lambda_ctl=1.6)),
+        ("wood at 30 % moisture", dict(moist=0.30)),
+        ("no fouling, no bypass", dict(R_foul=0.0, bypass=0.0)),
+    ]
+    out = []
+    for label, ch in cases:
+        r = run(dict(a, **ch))
+        out.append((label, 100 * r["design"]["eta"], r["wood_per_m2_15"]))
+    return out
+
+
 if __name__ == "__main__":
     run(verbose=True)
+    print("\nH. One-at-a-time sensitivities (efficiency %, wood kg/m2 at 15 cm)")
+    for label, eta, w in sensitivities():
+        print(f"  {label}: {eta:.1f} %, {w:.2f} kg/m2")

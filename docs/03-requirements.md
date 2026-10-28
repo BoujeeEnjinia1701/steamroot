@@ -1,11 +1,11 @@
 ---
-doc_id: STR-REQ-001
-title: SteamRoot requirements
+doc_id: STR-PRS-001
+title: SteamRoot product requirements and specifications
 project: SteamRoot
-doc_type: Requirements
-version: "0.7"
+doc_type: Product requirements and specifications
+version: "0.8"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,42 +33,55 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "R4 to be restated after the evaporator bank study and R5 study to keep R7 (decided 2026-10-02); authority named; no status changed"
-- version: "0.7"
+- version: "0.8"
   date: '2026-10-02'
   author: Amish Chadha
   change: "Status from STR-CAL-001 v0.4 (evaporator bank, dampers, seal pot overflow, ballast handles): R4 not met to at risk, R5 not met to met, R11 mass met to at risk; R4 restatement to 4.5 kg/m2 proposed, awaiting Amish"
+- version: "0.8"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Migrated from STR-REQ-001 to STR-PRS-001 (kit 1.9.1 upgrade): R1 to R12 become PR-001 to PR-015 with the same targets, each traced to STR-URS-001; status from STR-CAL-001 v0.5 (gas-pass baffles): PR-004 at risk to not met, PR-005 met to at risk, PR-008 met to at risk (battery); PR-016 to PR-018 proposed, awaiting Amish; after the independent review: PR-011 at risk to not met, PR-005 66.1 %, PR-010 at 3.2 m, PR-009 basis open"
 ---
 
-# SteamRoot requirements
+# SteamRoot product requirements and specifications
 
-These requirements were checked by calculation at TRL 3 in STR-CAL-001 v0.4 (`docs/04-calcs/01-sizing.md`), which covers the constructable design of STR-DDR-003 with the evaporator bank, air dampers, seal pot overflow and ballast-rated hood handles decided on 2026-10-02. On 2026-09-25 Amish accepted the recommendations from the TRL 3 review (STR-DDR-002): R2 is restated to the calculated two-hood rate, R6 is split into a header limit and a coil inlet limit, R9 is worded for a standard 15 psi valve sized for the dry-coil refeed flash, R11 applies as towed with the tank drained, R12 is $2,200, and R4 and R5 keep their targets. On 2026-10-01 Amish set the budget as a value-engineering target rather than a limit, so R12 is reported as over or under that target. Of the fifteen checks, none is not met, five are at risk (R4, R2 twice, R11 mass and width), one is not verifiable at TRL 3, eight are met on paper, and R12 is USD 400 over the value-engineering target. R5 is met only while the air dampers hold the excess air near 1.5. Safety requirements (R6, R7, R9 and R10) take priority over performance requirements if they conflict.
+What the design must do, each requirement traced to a user need in STR-URS-001. The targets are those of STR-REQ-001 v0.7 as decided by Amish on 2026-09-25 and 2026-10-02, carried over unchanged; R2, R6 and R11, which each held two targets, are split into two rows and the old number is in "Was". Status is from STR-CAL-001 v0.5 (`docs/04-calcs/01-sizing.md`), which carries the gas-pass baffles fitted on 2026-10-24 under Amish's standing instruction of 2026-10-23 (STR-DEC-001 S1), and the 3.2 m chimney outlet and latching pump trip of 2026-10-25 (S3, S4). Targets remain proposals to review with the co-design partners. Of the 18 rows, none is withdrawn; 2 are not met (PR-004, with a restatement proposed, and PR-011, with a basis proposed), 1 is not met for one operator and proposed to Amish (PR-016), 5 are at risk, 1 is over the value-engineering target, 1 is to verify at TRL 4 and 8 are met on paper or by design. Safety requirements (PR-006, PR-007, PR-009, PR-010, PR-013, PR-017) take priority over performance requirements if they conflict. Method: STANDARDS section 22.
 
 > **Safety:** SteamRoot is a fired steam generator. Meeting these requirements on paper does not make it safe or legal to build. A written ruling from the local boiler authority is an open prerequisite for any detail design or build.
 
-*Table 1. Requirements and TRL 3 status.*
+Table 1. Product requirements and specifications.
 
-| ID | Requirement | Target | Verification (TRL 3 or later) | Status at TRL 3 (STR-CAL-001) |
-| --- | --- | --- | --- | --- |
-| R1 | Pasteurize soil to working depth | Soil at 70 °C (158 °F) or more for 20 to 30 min at 10 to 15 cm depth across at least 80 % of the hood footprint | Heat balance calculation; later thermocouple probes at 15 cm | Not verifiable at TRL 3 (1D model holds 70 °C at 15 cm if the front reaches 16.5 cm) |
-| R2 | Treat beds at a useful rate | About 1.9 m²/h (1.85 m²/h or more) at 15 cm depth; 3.4 m²/h or more at 5 cm depth (weed seed bank only), with two hoods used alternately. Restated from 2 and 5 m²/h until soil tests exist (decided by Amish, 2026-09-25, STR-DDR-002) | Calculation from steam output, steam per m² and hood cycle | At risk (thin margin): 1.88 m²/h at 15 cm, 3.41 m²/h at 5 cm |
-| R3 | Generate enough steam | 30 kg/h or more of saturated steam, continuous, from one firebox | Heat transfer and combustion calculation | Met: 30 kg/h at 31.6 kW firing |
-| R4 | Limit fuel use | 4 kg or less of wood at 20 % moisture (wet basis; about 14.5 MJ/kg lower heating value) per m² at 15 cm depth. Target kept (decided by Amish, 2026-09-25); to be restated after the evaporator bank study, since even 65 % efficiency leaves it short (decided 2026-10-02) | Energy balance calculation | At risk: 4.2 kg/m² with the dampers set, 4.7 kg/m² with them open (about 72 % efficiency needed for 4 kg/m²). Proposed, awaiting Amish: restate to 4.5 kg/m² or less with the dampers set (STR-CAL-001, section 4) |
-| R5 | Use biomass efficiently | 65 % or more of fuel energy delivered as steam, with the economizer. Target kept; a convective evaporator bank with controlled air is under study (decided by Amish, 2026-09-25), to be sized in the next paper iteration with primary and secondary air dampers and without relaxing R7 (decided 2026-10-02) | Energy balance calculation; later flue temperature and fuel weighing | Met on paper: 69 % with the 6.4 m evaporator bank and the dampers holding λ near 1.5; 61 % if the dampers are left open (λ = 2.0) |
-| R6 | Stay near atmospheric pressure | Normal working pressure 0.1 bar gauge (1.5 psi) or less at the steam header, where the vent limit applies, and 0.15 bar gauge (2.2 psi) or less at the coil inlet; an open vent to atmosphere that cannot be closed or isolated (redefined by Amish, 2026-09-25) | Pressure drop calculation; design review | Met: header 0.033 bar, coil inlet (now the evaporator bank inlet) 0.128 bar; seal limit 0.084 bar with the overflow; open vent met by design |
-| R7 | Keep stored energy low | 8 L or less of water in the heated section; no closed steam drum | Volume calculation from the coil geometry | Met: 7.3 L flooded (coil 5.1 L, bank 0.9 L, economizer 0.6 L, header 0.8 L) |
-| R8 | Run between refills | 3 h or more of steaming per feed water fill | Tank volume and steam rate | Met: 4.2 h |
-| R9 | Protect against overpressure | A certified steam relief valve set at the lowest standard certified pressure, 15 psi (1.03 bar) or less, with rated capacity for both the full steam output and the dry-coil refeed flash (about 138 kg/h, 13 mm orifice), as a second line of protection behind R6 (reworded by Amish, 2026-09-25) | Valve rating and capacity check | Met on paper: 15 psi set, maker's rating 170 kg/h (375 lb/h) for the 3/4 in valve, 23 % over the flash |
-| R10 | Protect the operator and site | Chimney outlet 2.2 m or more above ground with a spark arrestor (mesh 6 mm or finer); fire outdoors only; steam diverted to the vent, not the hood, before the hood is lifted; hood handles 60 °C or cooler | Design review; later surface temperature check | Met: 2.4 m, 6 mm mesh, hood skin 23 °C |
-| R11 | Tow with farm vehicles | 500 kg or less as towed, with the feed tank and seal pot drained (filled on site); overall width 1.5 m or less (restated by Amish, 2026-09-25) | Mass estimate from the model and BOM | Mass at risk: 499 kg as towed with both hoods aboard (633 kg full; 437 kg with the hoods on a second vehicle, as decided for the prototype). Width at risk: 1.48 m |
-| R12 | Think along a value-engineering lens | Parts cost at or under the USD 2,200 value-engineering target, a hypothetical control target, not a limit (Amish, 2026-10-01; the figure was raised from $1,800 on 2026-09-25, STR-DDR-002, and first from $1,500) | Priced BOM | USD 2,600, USD 400 over the value-engineering target |
+| ID | Traces to | Category | Title | Requirement | Target | Tolerance | Units | Verification | Status | Was |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PR-001 | UR-001 | Performance | Pasteurize soil to working depth | Soil shall reach 70 °C (158 °F) or more for 20 to 30 min at 10 to 15 cm depth across at least 80 % of the hood footprint | 70 for 20 to 30 min, 80 % of footprint | min | °C, min, % | Analysis (CAL-001 section 2), TRL 3; thermocouple probes at 15 cm, TRL 4 | To verify at TRL 4 (1D model holds 70 °C at 15 cm if the front reaches 16.5 cm; STEM S11 fails: in soils finer than sand the steam cannot pass at full flow under the hood; bed preparation and hold-down proposed, DEC #18) | R1 |
+| PR-002 | UR-002 | Performance | Treatment rate at 15 cm | Two hoods used alternately shall treat at least 1.85 m2/h (about 1.9) at 15 cm depth (restated by Amish 2026-09-25, STR-DDR-002) | 1.85 | min | m2/h | Analysis (CAL-001 section 3), TRL 3; timed trial, TRL 4 | At risk: 1.88 m2/h; about 1.5 to 1.6 m2/h net of edge strips, overlap and hose losses (STEM M2) | R2 |
+| PR-003 | UR-003 | Performance | Steam output | The generator shall make at least 30 kg/h of saturated steam, continuously, from one firebox | 30 | min | kg/h | Analysis (CAL-001 section 4), TRL 3; feed metering, TRL 4 | Met on paper: 30 kg/h at 32.2 kW firing | R3 |
+| PR-004 | UR-004 | Performance | Wood per m2 | Wood use shall be at most 4 kg at 20 % moisture (about 14.5 MJ/kg) per m2 at 15 cm (target kept 2026-09-25; to be restated, decided 2026-10-02) | 4.0 | max | kg/m2 | Analysis (CAL-001 section 4), TRL 3; fuel weighing, TRL 4 | Not met: 4.36 kg/m2 with the baffles and dampers set (4.44 with the dampers wide open); restatement to 4.5 kg/m2 proposed, awaiting Amish (DEC #12) | R4 |
+| PR-005 | UR-004 | Performance | Fuel-to-steam efficiency | At least 65 % of the fuel energy shall reach the water as steam, with the economizer and evaporator bank | 65 | min | % | Analysis (CAL-001 section 4), TRL 3; flue temperature, oxygen and fuel weighing, TRL 4 | At risk: 66.1 % at λ = 1.5 with the gas-pass baffles, a margin smaller than its uncertainties (62.5 to 66.9 % in CAL Table 6a; 59.8 % without baffles) | R5 |
+| PR-006 | UR-005 | Safety | Header pressure and open vent | Normal working pressure at the steam header shall be at most 0.1 bar gauge (1.5 psi), with an open vent to atmosphere that cannot be closed or isolated (redefined by Amish 2026-09-25) | 0.10 | max | bar gauge | Analysis (CAL-001 section 5); design review, TRL 3 | Met on paper: 0.033 bar; seal limit 0.084 bar; vent cannot be isolated | R6 |
+| PR-007 | UR-005 | Safety | Stored water | The heated section shall hold at most 8 L of water, with no closed steam drum | 8.0 | max | L | Analysis (CAL-001 section 6), TRL 3 | Met on paper: 7.3 L flooded | R7 |
+| PR-008 | UR-006 | Usability | Run between refills | One feed water fill, and one battery charge, shall last at least 3 h of steaming | 3.0 | min | h | Analysis (CAL-001 section 7), TRL 3; timed run, TRL 4 | At risk: water 4.2 h; the 20 Ah battery runs to about 100 % depth of discharge per fill at an assumed 4 A pump (STEM E3; DEC #16) | R8 |
+| PR-009 | UR-005 | Safety | Certified relief valve | A certified steam relief valve set at 15 psi (1.03 bar) or less shall pass both the full steam output and the dry-coil refeed flash, as a second line of protection behind PR-006 (reworded by Amish 2026-09-25) | 15 psi set; capacity at least the refeed flash | max set, min capacity | psi, kg/h | Valve rating and capacity check (CAL-001 section 6), TRL 3 | Met on paper: rated 170 kg/h against a 141 kg/h flash on a 30 s basis; the flash basis is open (STEM S16, DEC #20); confirm on the valve bought | R9 |
+| PR-010 | UR-007, UR-013 | Safety | Operator and site protection | The chimney outlet shall be at least 2.2 m above ground with a spark arrestor of 6 mm mesh or finer; the fire shall be outdoors only; steam shall be diverted to the vent before a hood is lifted; hood handles shall stay at 60 °C or cooler | 2.2 m; 6 mm; 60 °C | min; max; max | m, mm, °C | Design review, TRL 3; surface temperature check, TRL 4 | Met by design: 3.2 m (raised for draft, DEC S3), 6 mm mesh, hood skin 23 °C | R10 |
+| PR-011 | UR-008 | Packaging and transport | Towed mass | The machine as towed, with the feed tank and seal pot drained, shall weigh at most 500 kg (restated by Amish 2026-09-25) | 500 | max | kg | Analysis (CAL-001 section 7 and the model), TRL 3; weighbridge, TRL 4 | Not met: 509 kg with both hoods aboard (643 kg full; 447 kg without the hoods, which ride on a second vehicle for the prototype; basis proposed in DEC #13) | R11 |
+| PR-012 | UR-009 | Packaging and transport | Parts cost | Parts cost shall be at or under the USD 2,200 value-engineering target, a hypothetical control target, not a limit (Amish 2026-10-01) | 2,200 | max | USD | Priced BOM, TRL 3 | Over target: USD 2,720 (USD 520 over; the overrun to USD 2,600 was accepted by Amish on 2026-10-03, the USD 120 of STEM fixes is new) | R12 |
+| PR-013 | UR-005 | Safety | Coil inlet pressure | Normal working pressure at the coil inlet (now the evaporator bank inlet) shall be at most 0.15 bar gauge (2.2 psi) | 0.15 | max | bar gauge | Analysis (CAL-001 section 5), TRL 3 | Met on paper: 0.129 bar | R6 |
+| PR-014 | UR-002 | Performance | Treatment rate at 5 cm | Two hoods used alternately shall treat at least 3.4 m2/h at 5 cm depth (weed seed bank only) | 3.4 | min | m2/h | Analysis (CAL-001 section 3), TRL 3 | At risk: 3.41 m2/h | R2 |
+| PR-015 | UR-008 | Packaging and transport | Overall width | Overall width as towed shall be at most 1.5 m | 1.5 | max | m | Model and drawing STR-DWG-002, TRL 3 | At risk: 1.48 m | R11 |
+| PR-016 | UR-010 | Usability | Hood handling | No person shall lift more than 23 kg when a hood is moved between settings (revised NIOSH lifting equation load constant), ballast weights lifted off first | 23 | max | kg per person | Analysis (STEM B4), TRL 3; handling trial, TRL 4 | Not met for one person: 31.3 kg hood, handles 1.12 m apart; a two-person share of 15.6 kg is borderline once the reach is counted. Wheel kit recommended; proposed, awaiting Amish (DEC S2) | New |
+| PR-017 | UR-011 | Safety | Two independent means against pressure | The steam side shall be designed for operation only at atmospheric pressure and carry two independent means to prevent the build-up of pressure (Texas Health and Safety Code 755.022(a)(4)), subject to the authority's written ruling | 2 | min | independent means | Design review, TRL 3; written ruling from TDLR before any build | Met by design (water seal and certified relief valve); ruling not yet obtained. Proposed, awaiting Amish (DEC #17) | New |
+| PR-018 | UR-012, UR-014 | Physical architecture | Workshop build | The machine shall be built from stock steel sections, stock stainless tube and catalogue safety parts with the tools of a farm workshop and a competent welder, following STR-BLD-001 | Stock and catalogue parts only | none | none | Inspection of the model, BOM and build plan, TRL 3 | Met by design (STR-BLD-001; `cad/fidelity.json` D3). Proposed, awaiting Amish (DEC #17) | New |
+
+Categories: physical architecture, performance, materials, usability, packaging and transport, safety, electrical, software. Status: met on paper, met by design, at risk, not met, over target, withdrawn, to verify at TRL 4.
 
 ## Assumptions
 
-- Soil to 15 cm depth: bulk density 1,300 kg/m³, gravimetric water content 20 % (dry basis), starting temperature 15 °C. At TRL 3 the soil is modeled with a condensation front: soil above the front reaches 100 °C, and the front must reach 16.5 cm so that 15 cm stays at 70 °C or more through a 25-minute hold (STR-CAL-001, section 2). The TRL 2 model heated a uniform layer to 75 °C.
+- Soil to 15 cm depth: bulk density 1,300 kg/m³, gravimetric water content 20 % (dry basis), starting temperature 15 °C. The soil is modelled with a condensation front: soil above the front reaches 100 °C, and the front must reach 16.5 cm so that 15 cm stays at 70 °C or more through a 25-minute hold (STR-CAL-001, section 2).
 - Specific heat of dry mineral soil 0.84 kJ/(kg K), of water 4.18 kJ/(kg K).
-- 70 °C for 30 minutes is widely used as a soil pasteurization target for most weed seeds and fungal pathogens. Some hard-seeded weeds and heat-tolerant viruses need higher temperatures; this is accepted.
-- Wood at 20 % moisture (wet basis) has a lower heating value of about 14.5 MJ/kg for a typical hardwood analysis. Earlier versions quoted about 16 MJ/kg, which was too high.
-- Pressure thresholds for boiler and pressure vessel rules vary by jurisdiction. R6 and R9 are set to be well below common low-pressure thresholds, but compliance must be confirmed locally. The written ruling from the local boiler authority, the Texas Department of Licensing and Regulation's boiler program (Amish's home jurisdiction is Texas, decided 2026-10-02), is an open prerequisite.
-- R11 assumes the machine is towed with the feed tank and seal pot drained and filled from a water supply at the site. Towing full puts it at about 633 kg.
-- The R9 capacity check uses the maker's published capacity for the Watts Series 315, 3/4 in, 15 psi valve (375 lb/h); it must be confirmed for the valve actually bought.
-- The R2 treatment rate assumes two hoods used alternately, a 25-minute hold, 2 minutes to reset a hood and 1 minute of vented steam each time the hose is moved.
+- 70 °C for 20 to 30 minutes sits inside the extension guidance for weed seeds and soil-borne pathogens (STR-STM-001, B1). Some hard-seeded weeds and heat-tolerant viruses need higher temperatures; this is accepted.
+- Wood at 20 % moisture (wet basis) has a lower heating value of about 14.5 MJ/kg for a typical hardwood analysis.
+- Pressure thresholds for boiler and pressure vessel rules vary by jurisdiction. PR-006, PR-009 and PR-017 are set to stay within the Texas exemption for boilers designed for operation only at atmospheric pressure, but compliance must be confirmed: the written ruling from the Texas Department of Licensing and Regulation's boiler program is an open prerequisite.
+- PR-011 assumes the machine is towed with the feed tank and seal pot drained and filled from a water supply at the site.
+- The PR-009 capacity check uses the maker's published capacity for the Watts Series 315, 3/4 in, 15 psi valve (375 lb/h); it must be confirmed for the valve actually bought.
+- PR-002 and PR-014 assume two hoods used alternately, a 25-minute hold, 2 minutes to reset a hood and 1 minute of vented steam each time the hose is moved.
+- PR-008 assumes a pump current of 4 A until a pump is chosen; the datasheet value replaces it.

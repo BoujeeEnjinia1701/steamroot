@@ -1,4 +1,5 @@
-"""SteamRoot general arrangement drawing STR-DWG-002 Rev P4 (constructable design, STR-DDR-003, with the 2026-10-02 decisions).
+"""SteamRoot general arrangement drawing STR-DWG-002 Rev P5 (constructable design, STR-DDR-003, the 2026-10-02 decisions and the
+kit 1.9 D3 model with the gas-pass baffles of STR-DEC-001 S1).
 
 Run from the repo root:  python cad/src/sheets.py
 Builds cad/drawings/STR-DWG-002.svg, .pdf and .png with .kit/drawing.py from cad/src/model.py.
@@ -25,13 +26,14 @@ bb = asm.bounding_box()
 work = ROOT / "cad" / "drawings" / "_views"
 views = project_views(asm, work)
 
-s = Sheet(project="SteamRoot", title="General arrangement, working position", dwg_no="STR-DWG-002", rev="P4",
-          author="Amish Chadha", date="2026-10-02", theme="technical",
+s = Sheet(project="SteamRoot", title="General arrangement, working position", dwg_no="STR-DWG-002", rev="P5",
+          author="Amish Chadha", date="2026-10-24", theme="technical",
           material="PRELIMINARY, NOT FOR FABRICATION. Boiler authority ruling OPEN (prerequisite)",
           revisions=[("P1", "Preliminary GA from TRL 3 model; regulatory ruling open", "2026-09-25", "AC"),
                      ("P2", "Notes per STR-DDR-002: relief valve capacity, towed mass, R6 limits", "2026-09-25", "AC"),
                      ("P3", "Constructable design per STR-DDR-003; making sketches STR-DWG-101 to 121", "2026-10-01", "AC"),
-                     ("P4", "Evaporator bank, dampers, seal pot overflow, ballast handles (2026-10-02)", "2026-10-02", "AC")])
+                     ("P4", "Evaporator bank, dampers, seal pot overflow, ballast handles (2026-10-02)", "2026-10-02", "AC"),
+                     ("P5", "Kit 1.9 D3 model; gas-pass baffles, flue openings and chimney moved (STR-DEC-001 S1)", "2026-10-24", "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 s.add_svg(views["iso"], 276, 30, 140, 96, label="Isometric view", sublabel="Not to scale")
 
@@ -40,9 +42,9 @@ s.add_notes("Items (BOM numbers)", [
     "3 Feed tank 125 L; 4 Feed pump 12 V",
     f"5 Firebox {P['fb_l']:.0f} x {P['fb_w']:.0f} x {P['fb_h']:.0f} on skids, {P['fb_lining_t']:.0f} fiber; 2 air dampers",
     f"6 Coil 316 SS {P['tube_od']} x {P['tube_wall']}, {c['L_coil']:.1f} m, {P['coil_turns']} turns, above the fire",
-    f"22 Evaporator bank {P['fb_l']:.0f} x {P['fb_w']:.0f} x {P['bk_h']:.0f}, {c['L_bank']:.1f} m of {P['bk_tube_od']} tube",
-    f"7 Economizer {P['eco_l']:.0f} x {P['eco_w']:.0f} x {P['eco_h']:.0f}, {P['eco_tube_len']/1000:.1f} m tube",
-    f"8 Chimney DN{P['chimney_d']:.0f}, outlet {P['chimney_top']/1000:.1f} m, 6 mm mesh",
+    f"22 Evaporator bank {P['fb_l']:.0f} x {P['fb_w']:.0f} x {P['bk_h']:.0f}, {c['L_bank']:.1f} m of {P['bk_tube_od']} tube, 1 baffle",
+    f"7 Economizer {P['eco_l']:.0f} x {P['eco_w']:.0f} x {P['eco_h']:.0f}, {P['eco_tube_len']/1000:.1f} m tube, 2 baffles",
+    f"8 Chimney DN{P['chimney_d']:.0f} at the back, outlet {P['chimney_top']/1000:.1f} m, 6 mm mesh",
     f"9 Header DN50 at {P['header_z']/1000:.2f} m; dip leg {D['dip']:.0f}; vent {P['vent_top']/1000:.1f} m",
     f"  Seal pot overflow at the water mark, {P['ovf_trap']:.0f} loop seal, to ground at rear",
     f"10 Certified relief valve, 15 psi (1.03 bar), rated {c['rv_rated_kg_h']:.0f} kg/h",
@@ -62,7 +64,7 @@ s.add_notes("Key dimensions and notes", [
     "Firebox and chimney outdoors only; generator never inside a greenhouse",
     "OPEN PREREQUISITE: written ruling from the local boiler authority",
     "on this open-vented fired coil. No detail design or build before it.",
-    "Making sketches STR-DWG-101 to 121; build plan STR-BLD-001",
+    "Making sketches STR-DWG-101 to 128; build plan STR-BLD-001",
 ], x=20, y=196, width=205)
 
 out = ROOT / "cad" / "drawings" / "STR-DWG-002"

@@ -1,0 +1,35 @@
+{
+ "level": "D3",
+ "stage": "P3",
+ "hash": "483df948f7159385",
+ "options": {
+  "A": {
+   "title": "Monotube coil generator (current design)",
+   "parts": 585,
+   "made_or_bought": 184,
+   "fasteners": 298,
+   "welds": 103,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 507.4,
+   "step_files": 184
+  },
+  "B": {
+   "title": "Vented fire-tube kettle",
+   "parts": 486,
+   "made_or_bought": 159,
+   "fasteners": 234,
+   "welds": 93,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 456.5,
+   "step_files": 0
+  }
+ },
+ "failures": [],
+ "warnings": [],
+ "passed": true,
+ "seconds": 266.2
+}

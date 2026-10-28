@@ -4,7 +4,7 @@ Run from the repo root:  python cad/src/build_plan_media.py [overview|sheets|joi
 With no argument it draws everything; "sheets 105" draws one making sketch. Every picture is drawn
 from cad/src/model.py (build_components), so the pictures and the model never disagree:
     docs/05-build-plan/overview.png        every component pulled apart, numbered in build order
-    cad/drawings/STR-DWG-101 to 126        making sketches for the made components
+    cad/drawings/STR-DWG-101 to 128        making sketches for the made components
     docs/05-build-plan/joint-NN.png        close-ups of the joints that need explaining
     docs/05-build-plan/step-NN.png         one picture per assembly step
     docs/05-build-plan/wiring.png          12 V wiring of the pump and alarms (matplotlib)
@@ -24,7 +24,7 @@ DWG = ROOT / "cad" / "drawings"
 DATE = "2026-10-01"
 D = derived(P)
 C = build_components(P)
-COIL_SWEPT = C["coil"].shape                              # the true swept tube, for the coil sketch views
+COIL_SWEPT = coil_display(P, per_turn=36)                  # the coil centreline as short straight pieces: projecting the hollow swept helix takes over 20 min
 C["coil"] = C["coil"]._replace(shape=coil_display(P))      # light version for pictures (same centreline)
 FX = P["fb_x"]
 
@@ -87,7 +87,9 @@ def win(shape, x0, x1, y0, y1, z0, z1):
         if bb.min.X >= x0 and bb.max.X <= x1 and bb.min.Y >= y0 and bb.max.Y <= y1 and bb.min.Z >= z0 and bb.max.Z <= z1:
             kids.append(so)
             continue
-        kids += [x for x in (so & box).solids() if x.volume > 1e-6]
+        cut = so & box
+        if cut is not None:
+            kids += [x for x in cut.solids() if x.volume > 1e-6]
     return Compound(children=kids)
 
 
@@ -103,7 +105,7 @@ def made():
         "door": part("Door, hinges and latch", comp("door", "hinges", "latch"), COL["door"]),
         "damper": part("Primary air damper slide", C["damper"].shape, COL["damper"]),
         "damper2": part("Secondary air damper", comp("damper2", "guides2"), COL["damper2"]),
-        "bank": part("Evaporator bank box and tube", comp("bk_box", "bk_lining", "bk_bank", "bk_sups", "bk_cover"), COL["bk_box"]),
+        "bank": part("Evaporator bank box, tube and baffle", comp("bk_box", "bk_lining", "bk_bank", "bk_sups", "bk_baffle", "bk_cover"), COL["bk_box"]),
         "overflow": part("Seal pot overflow, stay and clip", comp("overflow", "ovf_stay", "ovf_clip"), COL["overflow"]),
         "coil": part("Monotube coil", C["coil"].shape, COL["coil"]),
         "glands": part("Tube gland plates (2)", C["glands"].shape, COL["glands"]),
@@ -167,15 +169,24 @@ def sheets(only=None):
     z0 = D["fb_z0"]
     at0 = lambda sh: b.Pos(-FX, 0, -z0) * sh  # noqa: E731   firebox parts with the shell's bottom at 0
 
-    def sheet(num, *a, change=None, new=False, **k):
+    def sheet(num, *a, change=None, new=False, change3=None, new3=False, **k):
         if only and num not in only:
             return
         kw = dict(base)
+        revs = [("P1", "Making sketch for the prototype build plan", DATE, "AC")]
         if change:      # revised on 2026-10-02 for the decisions of that day
-            kw.update(date="2026-10-02", rev="P2", revisions=[("P1", "Making sketch for the prototype build plan", DATE, "AC"),
-                                                              ("P2", change, "2026-10-02", "AC")])
+            revs.append(("P2", change, "2026-10-02", "AC"))
+            kw.update(date="2026-10-02", rev="P2", revisions=revs)
         elif new:
             kw.update(date="2026-10-02")
+        if new and change3:
+            revs = [("P1", "Making sketch for the evaporator bank and dampers", "2026-10-02", "AC")]
+        if change3:     # revised on 2026-10-24 for the gas-pass baffles (STR-DEC-001 S1) and the kit 1.9 model
+            rv = f"P{len(revs) + 1}"
+            revs.append((rv, change3, "2026-10-24", "AC"))
+            kw.update(date="2026-10-24", rev=rv, revisions=revs)
+        elif new3:
+            kw.update(date="2026-10-24", revisions=[("P1", "Making sketch for the gas-pass baffles (STR-DEC-001 S1)", "2026-10-24", "AC")])
         out.append(bv.component_sheet(*a, **k, **kw))
 
     sheet(101, Part("Firebox shell", C["shell"].shape, COL["shell"]), [M["skids"], M["trailer"], M["roof"]],
@@ -231,14 +242,14 @@ def sheets(only=None):
                  "Check: the coil rests on all three, level within 3 mm."])
 
     sheet(104, Part("Fibre lining", C["lining"].shape, COL["lining"]), [M["shell"], M["stand"]],
-          change="Walls 907 tall for the 960 firebox",
+          change="Walls 907 tall for the 960 firebox", change3="Roof board flue hole moved 145 to the front (STR-DEC-001 S1)",
           dwg_no="STR-DWG-104", title="SteamRoot fibre lining: cutting sketch", material="Ceramic fibre: 25 mm blanket (2 layers) and 50 mm board",
           view_shape=at0(C["lining"].shape), inset_view=(18, -62),
           notes=["Floor: 50 mm board 694 x 594 (the inside of the shell), laid first.",
                  "Walls: two layers of 25 mm blanket, rigidised, 907 tall, standing",
                  "  on the floor board. Cut the back and front 694 long and the two",
                  "  ends 494 long, so the ends fit between them.",
-                 "Roof board: 50 mm board 594 x 494 with a 150 hole in the centre,",
+                 "Roof board: 50 mm board 594 x 494, 150 hole 145 in front of centre,",
                  "  pinned under the roof plate (it comes off with the roof).",
                  "Cut through the front: door opening 300 x 240 and air inlet",
                  "  160 x 60, lined up with the shell openings.",
@@ -333,16 +344,17 @@ def sheets(only=None):
     rf = C["roof"].shape + C["board"].shape
     sheet(110, Part("Firebox roof", rf, COL["roof"]), [M["shell"], M["eco"]],
           change="No economizer studs on the roof; the bank box frame is bolted down with the roof",
+          change3="Flue hole moved 145 to the front for the gas-pass baffles (STR-DEC-001 S1)",
           dwg_no="STR-DWG-110", title="SteamRoot firebox roof and roof board: making sketch", material="Mild steel sheet 3 mm; 50 mm fibre board",
           view_shape=b.Pos(-FX, 0, -(top - P["fb_lining_t"])) * rf, inset_view=(25, -62),
           notes=["Roof plate: 3 mm sheet 750 x 650, the outside of the top frame.",
-                 "Cut a 150 hole in the centre for the flue.",
+                 "Cut a 150 flue hole, centred on the length, 145 in front of centre.",
                  "Drill 14 holes 9 mm, 12.5 in from the edge, to match the frame:",
                  "  five along each side, two more at each end.",
                  "The evaporator bank box (sketch 122) stands on the roof: its",
                  "  bottom frame takes the same 14 bolts, M8 x 35.",
-                 "Roof board: 50 mm fibre board 594 x 494 with a 150 hole, pinned",
-                 "  under the plate with stainless pins and speed washers, centred.",
+                 "Roof board: 50 mm fibre board 594 x 494, its 150 hole under the",
+                 "  plate's; pinned under the plate with stainless pins and washers.",
                  "Fit: on a 12 mm ceramic rope gasket on the frame; bank box frame",
                  "  on a second gasket on top; 14 M8 bolts through all three, nuts",
                  "  under the frame. The board fits inside the wall lining.",
@@ -351,15 +363,16 @@ def sheets(only=None):
     ebx = C["eco_box"].shape
     sheet(111, Part("Economizer box", ebx, COL["eco_box"]), [M["roof"], M["shell"], M["lid"]],
           change="Sits on the evaporator bank box, not the roof",
+          change3="Inlet hole 145 in front; baffle ledges (sketch 128) (STR-DEC-001 S1)",
           dwg_no="STR-DWG-111", title="SteamRoot economizer box: making sketch", material="Mild steel sheet 2 mm; plate 6 mm; flat bar 25 x 3 mm",
           view_shape=b.Pos(-FX, 0, -D["eco_z0"]) * ebx, inset_view=(20, -62),
-          notes=["Base: 6 mm plate 580 x 520 with a 150 hole in the centre and twelve",
-                 "  9 mm holes for the studs on the bank box top, 15 in from the edge.",
+          notes=["Base: 6 mm plate 580 x 520, 150 gas inlet hole 145 in front of the",
+                 "  centre line; twelve 9 mm stud holes, 15 in from the edge.",
                  "Walls: 2 mm sheet, 520 x 460 outside, 260 tall, welded to the base.",
                  "Top flange: 25 mm wide, 3 mm, round the top outside, with eight",
                  "  7 mm holes for the lid bolts.",
                  "Two 25 x 3 support bars across the inside, 240 apart, tops 54 above",
-                 "  the base: the tube bank rests on them.",
+                 "  the base; four baffle ledges on the end walls (sketch 128).",
                  "Bulkhead union holes, 13 mm: left end 190 behind the centre line,",
                  "  212 above the base; right end 152 in front, 60 above the base.",
                  "Drain: 12 mm hole in the left end, 14 above the base, and a 20 mm",
@@ -385,12 +398,12 @@ def sheets(only=None):
                  "Check: pressure test with water; no run touches the walls."])
 
     sheet(113, Part("Economizer lid", C["eco_lid"].shape, COL["eco_lid"]), [M["eco"], M["chimney"]],
-          dwg_no="STR-DWG-113", title="SteamRoot economizer lid and spigot: making sketch", material="Mild steel sheet 2 mm; tube 148 OD",
+          change3="Outlet and spigot moved 145 to the back (STR-DEC-001 S1)", dwg_no="STR-DWG-113", title="SteamRoot economizer lid and spigot: making sketch", material="Mild steel sheet 2 mm; tube 148 OD",
           view_shape=b.Pos(-FX, 0, -D["eco_top"]) * C["eco_lid"].shape, inset_view=(25, -62),
-          notes=["Lid: 2 mm plate 570 x 510 with a 148 hole in the centre and eight",
-                 "  7 mm holes matching the box's top flange.",
-                 "Spigot: 148 OD tube, 60 tall, welded into the hole. The chimney",
-                 "  (150 bore) slides over it.",
+          notes=["Lid: 2 mm plate 570 x 510, 148 hole centred on the length and",
+                 "  145 behind the centre line; eight 7 mm holes for the flange.",
+                 "Spigot: 148 OD stainless tube, 62 long, set through the hole flush",
+                 "  underneath and welded round under the lid. Chimney slides over.",
                  "Fit: on a ceramic rope gasket on the top flange; eight M6 bolts.",
                  "The lid comes off to clean the tube bank: clean it every few days",
                  "  of firing; soot cuts the heat recovered.",
@@ -513,12 +526,12 @@ def sheets(only=None):
     bkb = C["bk_box"].shape + C["bk_lining"].shape + C["bk_cover"].shape
     bz0 = D["bk_z0"]
     sheet(122, Part("Evaporator bank box", bkb, COL["bk_box"]), [M["roof"], M["eco"], part("Bank tube", C["bk_bank"].shape, COL["bk_bank"])],
-          new=True, dwg_no="STR-DWG-122", title="SteamRoot evaporator bank box: making sketch",
+          new=True, change3="Top outlet hole moved 145 to the front (STR-DEC-001 S1)", dwg_no="STR-DWG-122", title="SteamRoot evaporator bank box: making sketch",
           material="Mild steel sheet 2 mm; angle 25 x 25 x 3 mm; 25 mm fibre blanket and board",
           view_shape=b.Pos(-FX, 0, -bz0) * bkb, inset_view=(22, -62),
           notes=["Walls: 2 mm sheet, 700 x 600 outside (the firebox size), 170 tall,",
-                 "  open at the bottom. Top: 2 mm plate welded on, 150 hole in the",
-                 "  centre for the flue gas.",
+                 "  open at the bottom. Top: 2 mm plate welded on, 150 gas outlet",
+                 "  hole 145 in front of the centre line, over the roof's hole.",
                  "Bottom frame: 25 x 25 x 3 angle round the outside, horizontal leg",
                  "  outward, with 14 holes 9 mm matching the roof bolts.",
                  "Weld twelve M8 studs on the top plate for the economizer base.",
@@ -531,7 +544,7 @@ def sheets(only=None):
 
     bkt = C["bk_bank"].shape + C["bk_sups"].shape
     sheet(123, Part("Evaporator bank tube", bkt, COL["bk_bank"]), [M["roof"], part("Bank box", C["bk_box"].shape, COL["bk_box"])],
-          new=True, dwg_no="STR-DWG-123", title="SteamRoot evaporator bank tube and supports: making sketch",
+          new=True, change3="Spacers split round the gas-pass baffle (sketch 127)", dwg_no="STR-DWG-123", title="SteamRoot evaporator bank tube and supports: making sketch",
           material="Stainless steel 316 tube 15.88 OD x 1.24 wall (5/8 x 0.049 in); flat bar 6 mm",
           view_shape=b.Pos(-FX, 0, -bz0) * bkt, inset_view=(35, -62),
           notes=["About 6.4 m of 15.88 x 1.24 stainless tube in one length, bent",
@@ -543,7 +556,7 @@ def sheets(only=None):
                  "  at the right end, 152 in front of the centre: the hottest gas",
                  "  meets the last of the water (counterflow).",
                  "Supports: two 6 mm bars across the box, 300 apart, standing on the",
-                 "  roof plate under the bottom layer; two 6 mm spacers between layers.",
+                 "  roof plate; spacers above and below the baffle (sketch 127).",
                  "Pressure test with water before fitting (see the safety stops).",
                  "Check: the bank sits on all four bars; tails level and square."])
 
@@ -582,19 +595,59 @@ def sheets(only=None):
 
     hdl = C["handles1"].shape
     sheet(126, Part("Hood handles", hdl, COL["handles"]), [part("Hood", comp("hood1", "skirt1"), COL["hood"])],
-          new=True, dwg_no="STR-DWG-126", title="SteamRoot hood handles for ballast (make 2 sets): making sketch",
+          new=True, change3="Two M6 bolts a foot plate (four do not clear the hood roof)", dwg_no="STR-DWG-126", title="SteamRoot hood handles for ballast (make 2 sets): making sketch",
           material="Steel square tube 30 x 30 x 2.5 mm; plate 3 mm",
           view_shape=b.Pos(-cx, 0, 0) * hdl, inset_view=(25, -62),
           notes=["Make two sets (one a hood). Each side: a 900 long bar of 30 x 30",
                  "  x 2.5 tube, ends capped, on two standoffs 800 apart.",
                  "Standoffs: 30 x 30 tube 57 long, welded to the bar and to a 100 x",
-                 "  100 x 3 foot plate with four 7 mm holes.",
+                 "  100 x 3 foot plate with two 7 mm holes, 70 apart, level.",
                  "Fit: foot plates on the hood sides, centred 60 down from the top,",
-                 "  through-bolted (4 x M6 each) to the backing plates in the wall.",
+                 "  through-bolted (2 x M6 each) to 100 x 68 backing plates inside.",
                  "Sized to carry ballast weights: up to 40 kg a hood, hung two a",
                  "  side, at a load factor of 2 (bending about 34 MPa in the bar).",
                  "Take the weights off before the hood is lifted and moved.",
                  "Check: a 20 kg weight hung mid-bar: no visible bend or play."])
+
+    bf = C["bk_baffle"].shape
+    sheet(127, Part("Bank gas-pass baffle", bf, COL["bk_bank"]), [part("Bank tube and bars", comp("bk_bank", "bk_sups"), COL["bk_bank"]),
+          part("Bank box", comp("bk_box", "bk_lining"), COL["bk_box"])],
+          new3=True, dwg_no="STR-DWG-127", title="SteamRoot bank gas-pass baffle: making sketch",
+          material="Stainless steel 304 sheet 1.5 mm; flat bar 6 mm",
+          view_shape=b.Pos(-FX, 0, -bz0) * bf, inset_view=(30, -62),
+          notes=["Baffle: 1.5 mm 304 stainless sheet 644 x 471, corners R5. It fills",
+                 "  the lined box from end to end and from the front lining to 73",
+                 "  short of the back lining: the gas turns up through that gap.",
+                 "It lies flat 72.75 to 74.25 above the roof plate, between the two",
+                 "  layers of the bank: gas enters under it at the front, crosses the",
+                 "  bottom layer, turns at the back, crosses the top layer forward.",
+                 "Spacers: cut each 6 mm spacer bar in two, 20 below and 23 above",
+                 "  the baffle; the baffle is clamped between them, no fixings.",
+                 "Fit with the bank: bars, bottom layer, lower spacers, baffle,",
+                 "  upper spacers, top layer; then lower the box over it all.",
+                 "Why: without it the gas creeps past the tubes at 0.1 m/s and the",
+                 "  design makes 60 %, not 68 % (STR-CAL-001 v0.5)."])
+
+    ebf = C["eco_box"].shape.solids()
+    ebaf = [q[1] for q in C["eco_box"].pieces if "baffle" in q[0] or "ledge" in q[0]]
+    from build123d import Compound as _Cp
+    eb_sh = _Cp(children=ebaf)
+    sheet(128, Part("Economizer baffles and ledges", eb_sh, COL["eco_bank"]), [part("Economizer box and tube bank", comp("eco_box", "eco_bank"), COL["eco_box"])],
+          new3=True, dwg_no="STR-DWG-128", title="SteamRoot economizer gas-pass baffles and ledges: making sketch",
+          material="Stainless steel 316L sheet 1 mm; flat bar 25 x 3 and 10 x 3 mm",
+          view_shape=b.Pos(-FX, 0, -D["eco_floor"]) * eb_sh, inset_view=(30, -62),
+          notes=["Two baffles of 1 mm 316L stainless sheet, corners R5: lower 494 x",
+                 "  397, underside 97.5 above the floor, from the front wall to 58",
+                 "  short of the back; upper 514 x 397, underside 173.5 up, from 58",
+                 "  behind the front wall to the back wall.",
+                 "Ledges on the two end walls, about 387 long, one fillet weld each:",
+                 "  lower pair 25 x 3 flat (they close the lower baffle's end gaps),",
+                 "  upper pair 10 x 3 flat so the lower baffle passes between them.",
+                 "Gas: in at the front of the floor, across the bottom layer, back",
+                 "  over the middle layer, across the top layer to the outlet.",
+                 "Fit: on the bench slide the lower baffle in from the front and the",
+                 "  upper from the back between the bank's layers; lower all three",
+                 "  into the box together. 316L: the cold end runs wet with acid."])
     return out
 
 
@@ -788,7 +841,7 @@ def steps():
        "tube bank into the economizer box (on the bench)",
        "Lower the bank onto the two support bars; connect each end to its bulkhead union through the end wall",
        elev=30, azim=-62, label_done=True)
-    bank_parts = part("Evaporator bank on its bars", comp("bk_bank", "bk_sups"), COL["bk_bank"])
+    bank_parts = part("Evaporator bank on its bars, with its baffle", comp("bk_bank", "bk_sups", "bk_baffle"), COL["bk_bank"])
     bank_box = part("Bank box, lined", comp("bk_box", "bk_lining", "bk_cover"), COL["bk_box"])
     st(11, fb7, [mv(bank_parts, (0, 0, 250)), mv(bank_box, (0, 0, 650)), mv(M["eco"], (0, 0, 1050)), mv(M["lid"], (0, 0, 1350))],
        "evaporator bank, economizer and lid onto the roof",
@@ -872,23 +925,23 @@ def wiring():
     blk(53, 40, 12, 10, "Main switch", "2-pole,\nweatherproof", "#7C3AED")
     blk(17, 17, 16, 14, "Feed pump", "12 V diaphragm,\nabout 4 L/min,\nneedle valve and\nflow meter after it", "#16A34A")
     blk(37.5, 17, 13.5, 12, "Buzzer and lamp", "on the box lid,\nloud enough to\nhear at the hoods", "#DC2626")
-    blk(58, 17, 18, 14, "Alarm controller", "type K input,\nalarm set about\n150 C, relay out", "#0F766E")
+    blk(58, 17, 18, 14, "Alarm controller", "type K input, 150 C;\nlatching relay cuts\nthe pump; manual\nreset only", "#0F766E")
     blk(86, 40, 22, 11, "Coil outlet thermocouple", "type K, clamped to\nthe outlet pipe beside\nthe header", "#B87333")
     blk(86, 19, 22, 11, "Tank float switch", "low level, in the\ndrum, about 20 L left", "#2563EB")
     wire([(31.3, 45), (35.7, 45)], RED); lab(33.5, 47.2, "2.5 mm²", RED, "center")
     wire([(48.3, 45), (52.7, 45)], RED); lab(50.5, 47.2, "2.5 mm²", RED, "center")
-    wire([(56, 39.7), (56, 35), (25, 35), (25, 31.3)], RED); lab(30, 36.6, "pump +, 2.5 mm²", RED)
-    wire([(62, 39.7), (62, 31.3)], RED); lab(62.7, 35.4, "controller +, 0.75 mm²", RED)
+    wire([(59.5, 31.3), (59.5, 34), (25, 34), (25, 31.3)], RED); lab(27, 35.8, "pump +, through the latching relay, 2.5 mm²", RED)
+    wire([(62, 39.7), (62, 31.3)], RED); lab(62.7, 37.2, "supply +, 2.5 mm²", RED)
     wire([(16.7, 44), (15.6, 44), (15.6, 14.6), (67, 14.6), (67, 16.7)], GRY, 1.4)
     wire([(25, 14.6), (25, 16.7)], GRY, 1.4); wire([(44.25, 14.6), (44.25, 16.7)], GRY, 1.4)
     wire([(57.7, 24), (51.3, 24)], RED, 1.3); lab(54.5, 26.2, "alarm out", RED, "center")
     wire([(85.7, 44), (81, 44), (81, 28), (76.3, 28)], "#B87333", 1.3); lab(81.7, 36, "thermocouple cable,\ntype K, no joints", "#B87333")
     wire([(85.7, 23), (76.3, 23)], BLU, 1.3); lab(81, 21.2, "float, 0.75 mm²", BLU, "center")
-    ax.text(16, 9.4, "The alarms only warn: they do not stop the fire. On an alarm, close the air damper, keep the feed running if the tank has water,",
+    ax.text(16, 9.4, "On a coil alarm the latching relay stops the pump until it is reset by hand (STR-DEC-001 S4): a stalled pump can never restart",
             fontsize=7.6, color="#B45309", fontweight="bold")
-    ax.text(16, 6.6, "and never restart the feed into a hot, dry coil. All circuits are 12 V; no mains wiring is part of this build.",
+    ax.text(16, 6.6, "into a hot, dry coil. The fire keeps burning: close both dampers, let the coil cool, then reset. All circuits are 12 V; no mains.",
             fontsize=7.6, color="#B45309", fontweight="bold")
-    ax.text(16, 3.9, "Red: 12 V supply. Grey: 0 V return (2.5 mm² to the pump, 0.75 mm² to the buzzer and controller). Blue: float switch. Copper: thermocouple (type K cable all the way).", fontsize=7.2, color=MUT)
+    ax.text(16, 3.9, "Red: 12 V supply; the pump is fed only through the controller's relay. Grey: 0 V return (2.5 mm² to the pump, 0.75 mm² to the buzzer and controller). Blue: float switch. Copper: thermocouple (type K cable all the way).", fontsize=7.2, color=MUT)
     OUT.mkdir(parents=True, exist_ok=True)
     o = OUT / "wiring.png"
     fig.savefig(o, facecolor="white"); plt.close(fig)

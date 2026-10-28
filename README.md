@@ -1,14 +1,14 @@
 # SteamRoot
 
-![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386352583.svg)](https://zenodo.org/badge/latestdoi/1386352583) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/steamroot/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/steamroot/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/steamroot/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/steamroot)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Stage P3](https://img.shields.io/badge/stage-P3%20design%20outputs-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386352583.svg)](https://zenodo.org/badge/latestdoi/1386352583) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/steamroot/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/steamroot/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/steamroot/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/steamroot)
 
-**Area:** Agriculture · **TRL:** 3 of 9 (analytical proof of concept on paper) · **Value-engineering target:** USD 2,200 (estimated cost USD 2,600) · **Difficulty:** 5 of 5
+**Area:** Agriculture · **TRL:** 3 of 9 (analytical proof of concept on paper) · **Value-engineering target:** USD 2,200 (estimated cost USD 2,720) · **Difficulty:** 5 of 5
 
 Low-pressure, biomass-fired steam generator with a flue-gas economizer and a steam-hood trailer for soil pasteurization, operated near atmospheric pressure to stay out of pressure vessel code.
 
 ![SteamRoot: towable wood-fired soil steamer that never holds pressure, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement STR-DWG-002 (PDF)](cad/drawings/STR-DWG-002.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
+[Studio render](media/render-studio.png) · [Exploded render](media/render-exploded.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement STR-DWG-002 (PDF)](cad/drawings/STR-DWG-002.pdf) · [STEM check](docs/01b-stem-check.md) · [Concept options](docs/02a-concept-options.md) · [Requirements](docs/03-requirements.md) · [Traceability](docs/03b-traceability.md) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -59,13 +59,25 @@ Low-pressure, biomass-fired steam generator with a flue-gas economizer and a ste
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
-TRL 3 status (paper only): the sizing note [STR-CAL-001](docs/04-calcs/01-sizing.md) finds 30 kg/h of steam at a header pressure of about 0.03 bar with 7.3 L of water in the heated section, about 1.9 m²/h treated at 15 cm with two hoods and 499 kg as towed with the tank drained and both hoods aboard. With the evaporator bank and the primary and secondary air dampers decided on 2026-10-02, fuel-to-steam efficiency is about 69 % against the 65 % target (about 61 % if the dampers are left open) and wood use is 4.2 kg per m² against 4. Value-engineering target: USD 2,200. Estimated cost of the constructable design: USD 2,600 (USD 400 over the target). A written ruling from the local boiler authority is an open prerequisite before any detail design or build. TRL 4 work is on hold.
+TRL 3 status (paper only): the sizing note [STR-CAL-001](docs/04-calcs/01-sizing.md) finds 30 kg/h of steam at a header pressure of about 0.03 bar with 7.3 L of water in the heated section, about 1.9 m²/h treated at 15 cm with two hoods and 509 kg as towed with the tank drained and both hoods aboard (over the 500 kg target). With the evaporator bank, the primary and secondary air dampers, the gas-pass baffles and a 3.2 m chimney outlet, fuel-to-steam efficiency is about 66 % against the 65 % target, a margin smaller than its uncertainties, and wood use is 4.36 kg per m² against 4. Value-engineering target: USD 2,200. Estimated cost of the constructable design: USD 2,720 (USD 520 over the target). A written ruling from the local boiler authority is an open prerequisite before any detail design or build. TRL 4 work is on hold.
+
+![SteamRoot concept: shaded view of the trailer, steam generator and two hoods with a 1.75 m person for scale](media/hero.png)
+
+## STEM check
+
+Thirty-seven claims about the design are checked against known physics, chemistry, biology and engineering ([STR-STM-001](docs/01b-stem-check.md)), and an independent reviewer tried to refute them. The working principle holds. Four details failed and were fixed under Amish's standing instruction: the evaporator bank and economizer had been assumed to take heat from the flue gas at 25 to 30 W/(m² K), but the gas crept through their boxes at about 0.1 m/s, where they manage about 10 to 12, so stainless gas-pass baffles now make it cross the tubes at about 1 m/s (22 and 21 W/(m² K) with fouling, 66 %); once the fuel bed was counted the 2.4 m chimney left no draft, so the outlet rises to 3.2 m; the coil alarm now latches the pump off until reset by hand; and the economizer baffles are 316L for the acid condensate. Two claims fail with fixes that change how the machine is used, so they go to Amish: steam cannot pass finer soils at full flow under the hood, and a 31 kg hood 1.2 m wide is too heavy for one person. Six claims stay plausible until TRL 4 data or a decision (firebox heat exchange, the refeed flash basis, net treatment rate, battery size), so the check stays open.
+
+## Concept options
+
+![SteamRoot concept options, side by side at one scale](media/options.png)
+
+Option A, the monotube coil generator (the current design, score 132 of 180), and option B, a vented fire-tube kettle that boils a 70 L pool (120), are within 10 % of each other, so both go to Amish without a pick ([STR-OPT-001](docs/02a-concept-options.md)). A leads on fuel use, stored energy and the regulatory case; B is simpler to run and build and rides through a pump stop. Both are modelled at the same level of detail, with every bolt and weld.
 
 ## Key components
 
 - Once-through monotube coil, 25.4 mm 316 stainless
 - Fiber-lined firebox
-- Evaporator bank and economizer in the flue, with primary and secondary air dampers
+- Evaporator bank and economizer in the flue, with stainless gas-pass baffles and primary and secondary air dampers
 - Fixed-rate feed pump with coil outlet and tank level alarms
 - Water-seal vent with an overflow and loop seal, and a certified relief valve
 - Two steam hoods used alternately
@@ -77,7 +89,7 @@ The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 
 ![SteamRoot prototype: every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 
-The [prototype build plan](docs/05-build-plan.md) (STR-BLD-001) shows, in pictures, how to make each of the 31 components and put them together in twenty steps; nothing has been built, and nothing may be until the local boiler authority has given its written ruling. The firebox, roof, skids, brackets, grate stand, door, dampers, evaporator bank box, economizer, header, post, seal pot and overflow are cut and welded from mild steel and stainless sheet, tube and pipe; the coil and the evaporator bank are each bent from one length of stainless tube; the hoods are folded and riveted. Writing the plan made the design buildable: the firebox grew to about 1 m so the door and fire sit below the coil, the roof now bolts on so the coil can be fitted, the seal pot's dip leg was shortened, and supports, glands, feed lines and a vent line were added (STR-DDR-003, accepted by Amish on 2026-10-02). The decisions of 2026-10-02 then added the evaporator bank box, the secondary air damper, a seal pot overflow that holds the seal limit at 0.084 bar, and hood handles that can carry ballast. Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not; open decisions are in the [design decisions register](docs/06-design-decisions.md).
+The [prototype build plan](docs/05-build-plan.md) (STR-BLD-001) shows, in pictures, how to make each of the 31 components and put them together in twenty steps, with 128 making sketches; nothing has been built, and nothing may be until the local boiler authority has given its written ruling. The firebox, roof, skids, brackets, grate stand, door, dampers, evaporator bank box, economizer, header, post, seal pot and overflow are cut and welded from mild steel and stainless sheet, tube and pipe; the coil and the evaporator bank are each bent from one length of stainless tube; the hoods are folded and riveted. Writing the plan made the design buildable: the firebox grew to about 1 m so the door and fire sit below the coil, the roof now bolts on so the coil can be fitted, the seal pot's dip leg was shortened, and supports, glands, feed lines and a vent line were added (STR-DDR-003, accepted by Amish on 2026-10-02). The decisions of 2026-10-02 then added the evaporator bank box, the secondary air damper, a seal pot overflow that holds the seal limit at 0.084 bar, and hood handles that can carry ballast. The kit 1.9.1 upgrade (2026-10-25) added the gas-pass baffles and rebuilt the model to detail level D3: 575 parts with every bolt, washer, nut, stud and weld bead, in clearance holes, with no part overlapping another (`cad/fidelity.json`). Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not; open decisions are in the [design decisions register](docs/06-design-decisions.md).
 
 ## Safety
 
@@ -87,8 +99,8 @@ The [prototype build plan](docs/05-build-plan.md) (STR-BLD-001) shows, in pictur
 
 | Folder | Contents |
 | --- | --- |
-| `docs/` | Problem, concept, requirements, calculations and design decisions |
-| `cad/src/` | build123d Python source, the source of truth for all geometry |
+| `docs/` | Problem, STEM check, concept and options, user and product requirements, traceability, calculations, build plan, decisions, regulatory, feasibility, risk, market and plan |
+| `cad/src/` | build123d Python source, the source of truth for all geometry (`model.py`: both concept options at D3) |
 | `cad/step/`, `cad/stl/` | Exported models for FreeCAD, other CAD tools and printing |
 | `cad/drawings/` | 2D sketches and dimensioned drawings |
 | `bom/` | Bill of materials |

@@ -3,9 +3,9 @@ doc_id: STR-PRC-001
 title: SteamRoot design precis
 project: SteamRoot
 doc_type: Design precis
-version: "0.7"
+version: "0.8"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -37,11 +37,15 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Approved decisions carried into the design (STR-CAL-001 v0.4): evaporator bank and secondary air damper added, firebox 960 mm with 10 coil turns, seal pot overflow with loop seal (seal limit 0.084 bar), ballast-rated hood handles; figures and requirement status updated"
+- version: "0.8"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: gas-pass baffles in the bank box and economizer (STR-DEC-001 S1, STEM check S6 and S7) with the flue openings and chimney moved; figures from STR-CAL-001 v0.5; requirement IDs from STR-PRS-001; concept options (STR-OPT-001) and STEM check (STR-STM-001) linked; after the independent review: chimney outlet 3.2 m (S3), latching pump trip (S4), 316L economizer baffles, efficiency 66.1 %"
 ---
 
 # SteamRoot design precis
 
-SteamRoot is a towable, wood-fired steam generator that never holds pressure. A pump pushes water once through an economizer, an evaporator bank in the flue and a large-bore stainless coil above the fire, the steam flows at close to atmospheric pressure through a hose to one of two insulated hoods pressed onto the soil, and primary and secondary air dampers hold the excess air near 1.5. The TRL 3 calculation (STR-CAL-001 v0.4) confirms the core safety idea on paper: 30 kg/h of steam with 7.3 L of water in the heated section and a header pressure of about 0.03 bar. With the evaporator bank and dampers decided on 2026-10-02, fuel-to-steam efficiency is about 69 % (target 65 %, met if the dampers are set) and wood use 4.2 kg per m² at 15 cm (target 4, at risk; a restatement to 4.5 is proposed). It treats about 1.9 m²/h at 15 cm with two hoods and weighs 499 kg as towed with the tank drained and both hoods aboard. Value-engineering target: USD 2,200. Estimated cost of the constructable design: USD 2,600 (USD 400 over the target). The design was made constructable on 2026-10-01 (STR-DDR-003, accepted by Amish on 2026-10-02); the prototype build plan is [docs/05-build-plan.md](05-build-plan.md) and open decisions are in [docs/06-design-decisions.md](06-design-decisions.md).
+SteamRoot is a towable, wood-fired steam generator that never holds pressure. A pump pushes water once through an economizer, an evaporator bank in the flue and a large-bore stainless coil above the fire, gas-pass baffles make the flue gas cross the bank and economizer tubes, the steam flows at close to atmospheric pressure through a hose to one of two insulated hoods pressed onto the soil, and primary and secondary air dampers hold the excess air near 1.5. The TRL 3 calculation (STR-CAL-001 v0.4) confirms the core safety idea on paper: 30 kg/h of steam with 7.3 L of water in the heated section and a header pressure of about 0.03 bar. With the evaporator bank and dampers decided on 2026-10-02 and the gas-pass baffles added on 2026-10-24 (STR-DEC-001 S1), fuel-to-steam efficiency is about 66 % (target 65 %, at risk: met only with the dampers set and the 3.2 m chimney outlet, and inside its uncertainty) and wood use 4.36 kg per m² at 15 cm (target 4, not met; a restatement to 4.5 is proposed). It treats about 1.9 m²/h at 15 cm with two hoods and weighs 509 kg as towed with the tank drained and both hoods aboard (over the 500 kg target). Value-engineering target: USD 2,200. Estimated cost of the constructable design: USD 2,720 (USD 520 over the target). The STEM check is in [docs/01b-stem-check.md](01b-stem-check.md) and the concept options, this design (A) and a vented fire-tube kettle (B), in [docs/02a-concept-options.md](02a-concept-options.md); A and B score within 10 %, so the choice is with Amish. The design was made constructable on 2026-10-01 (STR-DDR-003, accepted by Amish on 2026-10-02); the prototype build plan is [docs/05-build-plan.md](05-build-plan.md) and open decisions are in [docs/06-design-decisions.md](06-design-decisions.md).
 
 > **Safety:** SteamRoot is a concept for review, not a design to build. It combines open fire, carbon monoxide, and steam that causes severe burns in under a second. Local boiler and pressure vessel rules may apply even at low pressure. **A written ruling from the local boiler authority is an open prerequisite:** Amish approved getting it before TRL 3 detail work, and it has not been obtained. See the Safety section before any further work.
 
@@ -52,7 +56,7 @@ SteamRoot is a towable, wood-fired steam generator that never holds pressure. A 
 ## How it works
 
 1. **Feed.** A 12 V diaphragm pump draws water from a 125 L tank and meters 0.5 L/min (30 kg/h) into the economizer at a fixed rate. A float switch warns when the tank runs low.
-2. **Preheat and start to boil.** The economizer coil sits at the top of the flue and warms the feed water from about 15 °C to about 65 °C. The water then passes down through an evaporator bank, a serpentine of 15.88 mm stainless tube in a lined box on the firebox roof, where the hotter gas leaving the firebox brings it to the boil.
+2. **Preheat and start to boil.** The economizer coil sits at the top of the flue and warms the feed water from about 15 °C to about 65 °C. The water then passes down through an evaporator bank, a serpentine of 15.88 mm stainless tube in a lined box on the firebox roof, where the hotter gas leaving the firebox brings it to the boil. A stainless baffle between the bank's two layers, and two more between the economizer's three layers, make the gas cross each layer of tubes in turn; the gas enters each box at the front and the chimney stands at the back of the economizer.
 3. **Boil.** The warm water enters the bottom of a monotube coil that sits above the fire bed inside the fiber-lined firebox, on three brackets, with the door, grate and the two air inlets below it: primary air under the grate and secondary air through a slot in the door above the fire bed. It boils as it rises through 10 turns and leaves the top of the coil as steam. The coil holds about 5 L of water. A thermocouple on the coil outlet sounds an alarm if the outlet overheats, which is the sign of a coil running dry.
 4. **Vent and separate.** The coil discharges into a steam header 1.55 m above the ground. The header is always open to the atmosphere through a water-seal pot: a dip leg reaches 890 mm below the water line. An overflow at the static water mark, piped through a 350 mm loop seal down to ground level at the back of the trailer away from the operator's side (decided by Amish, 2026-10-02), stops the pot being overfilled and lets the water the dip leg displaces run away. Steam can therefore build only about 0.084 bar gauge (890 mm of water) before it bubbles through the seal and out of a vent pipe that ends 2.3 m above the ground, above head height. The seal cannot stick or be adjusted, and it is never valved off. A certified relief valve on the header is the second line of protection.
 5. **Deliver.** Steam flows through a 6 m, 25 mm steam hose to a hood. A three-way diverter at the header sends steam to the hose or to the vent and has no closed position.
@@ -76,9 +80,9 @@ Item numbers match the exploded view, the general arrangement drawing STR-DWG-00
 | 4 | Feed pump | 12 V diaphragm pump with needle valve and flow meter | Its 3 bar shut-off pressure also caps coil inlet pressure if the coil blocks |
 | 5 | Firebox | 700 x 600 x 960 mm steel box on two skids, bolted roof, 50 mm ceramic fiber lining, grate on a stand, latched door, primary air damper under the door and secondary air slide on the door | About 32 kW firing. A castable lining would add about 270 kg |
 | 6 | Monotube steam coil | 316 stainless tube, 25.4 mm OD x 1.65 mm wall, 13.2 m in 10 turns on 420 mm | Decided by Amish, 2026-09-25; one turn fewer since 2026-10-02 to keep R7 |
-| 22 | Evaporator bank | 6.4 m of 15.88 mm x 1.24 mm 316 stainless tube in two layers, in a lined 700 x 600 x 170 mm box between the roof and the economizer | Decided 2026-10-02; lifts efficiency to about 69 % with the dampers set |
-| 7 | Flue-gas economizer | 7.3 m of 12.7 mm stainless tube in a box on the bank box, with condensate drain | Flue condensate is acidic (dew point about 51 °C) |
-| 8 | Chimney and spark arrestor | 150 mm flue, outlet 2.4 m above ground, 6 mm mesh | Keeps flue gas above head height |
+| 22 | Evaporator bank | 6.4 m of 15.88 mm x 1.24 mm 316 stainless tube in two layers, in a lined 700 x 600 x 170 mm box between the roof and the economizer, with a 1.5 mm stainless gas-pass baffle between the layers | Decided 2026-10-02; baffle added 2026-10-24 (STR-DEC-001 S1); about 66 % with the dampers set |
+| 7 | Flue-gas economizer | 7.3 m of 12.7 mm stainless tube in three layers in a box on the bank box, two 1 mm 316L stainless gas-pass baffles, condensate drain | Flue condensate is acidic (dew point about 51 °C); baffles added 2026-10-24, 316L after the review |
+| 8 | Chimney and spark arrestor | 150 mm flue at the back of the economizer lid, outlet 3.2 m above ground, 6 mm mesh | Keeps flue gas above head height; raised from 2.4 m for draft (STR-DEC-001 S3) |
 | 9 | Steam header and water-seal vent | DN50 header at 1.55 m on a post, 114 mm seal pot with an 890 mm dip leg, an overflow at the static water mark through a loop seal to the ground behind the trailer, vent to 2.3 m, three-way diverter with a vent line, quick coupling | Primary pressure limit. Decided by Amish, 2026-09-25 |
 | 10 | Certified relief valve | ASME Section IV steam safety valve, 15 psi (1.03 bar) set, 3/4 in, rated 170 kg/h (375 lb/h) | Secondary protection only; sized for the dry-coil refeed flash (decided by Amish, 2026-09-25) |
 | 11 | Steam hose | EPDM saturated-steam hose, 25 mm bore, 6 m, ground-joint couplings, whip checks | Steam rated, not hot-water rated |
@@ -86,7 +90,7 @@ Item numbers match the exploded view, the general arrangement drawing STR-DWG-00
 | 13 | Battery | 12 V 20 Ah sealed lead acid | Not drawn |
 | 14 | Instruments | Steam gauge, four type K thermocouples and reader | Soil probes at 15 cm; not drawn |
 | 15 | Safety kit | Personal CO alarm, fire extinguisher, gloves, face shield | Not drawn |
-| 16 | Feed and coil alarms | Coil outlet temperature alarm, tank low-level switch | Decided by Amish, 2026-09-25; not drawn |
+| 16 | Feed and coil alarms | Coil outlet temperature alarm with a latching relay that cuts the pump until reset by hand, tank low-level switch | Decided by Amish, 2026-09-25; latching trip 2026-10-25 (STR-DEC-001 S4); not drawn |
 
 ![Exploded view](../media/exploded.png)
 
@@ -94,32 +98,32 @@ Item numbers match the exploded view, the general arrangement drawing STR-DWG-00
 
 ## TRL 3 numbers
 
-All values come from STR-CAL-001 (`docs/04-calcs/01-sizing.md`, script `docs/04-calcs/sizing.py`). They are paper estimates; none is tested.
+Requirement IDs are those of STR-PRS-001 (old R numbers in brackets). All values come from STR-CAL-001 v0.5 (`docs/04-calcs/01-sizing.md`, script `docs/04-calcs/sizing.py`). They are paper estimates; none is tested.
 
 *Table 2. Key results.*
 
 | Quantity | Value | Requirement |
 | --- | --- | --- |
-| Steam output | 30 kg/h, firing 31.6 kW, firebox gas 510 °C | R3 met |
-| Heat into the water | 21.78 kW (coil 16.91 kW, bank 3.14 kW, economizer 1.73 kW) | |
-| Fuel to steam efficiency | 68.9 % at λ = 1.5 (66 % to 71 % for F = 0.25 to 0.60; 61 % with the dampers open; see STR-CAL-001, Table 6) | R5 met on paper if the dampers are set |
-| Stack temperature | 235 °C | |
-| Wood use | 7.9 kg/h at 14.5 MJ/kg | |
+| Steam output | 30 kg/h, firing 32.9 kW, firebox gas 519 °C | PR-003 (R3) met |
+| Heat into the water | 21.78 kW (coil 17.19 kW, bank 2.79 kW, economizer 1.80 kW) | |
+| Fuel to steam efficiency | 66.1 % at λ = 1.5 with the baffles (63.8 % to 68.3 % for F = 0.25 to 0.60; 62.5 to 66.9 % in the other sensitivities; 59.8 % without the baffles; STR-CAL-001, Tables 4, 6 and 6a) | PR-005 (R5) at risk: met only with the dampers set, inside its uncertainty |
+| Stack temperature | 257 °C | |
+| Wood use | 8.2 kg/h at 14.5 MJ/kg | |
 | Steam per m² at 15 cm | 15.6 kg/m² (front to 16.5 cm) | |
-| Treatment rate, two hoods | 1.88 m²/h at 15 cm; 3.41 m²/h at 5 cm | R2 at risk (restated to about 1.9 and 3.4 m²/h) |
-| Wood per m² at 15 cm | 4.2 kg/m² (4.7 kg/m² with the dampers open) | R4 at risk; restatement to 4.5 kg/m² proposed, awaiting Amish |
-| Header pressure, normal | 0.033 bar gauge | R6 met (0.1 bar at the header) |
-| Coil inlet pressure, normal (at the bank inlet) | 0.128 bar gauge | R6 met (0.15 bar at the coil inlet) |
-| Water seal limit | 0.084 bar gauge with the overflow | R6 open vent met by design |
-| Water in heated section, flooded | 7.32 L | R7 met |
-| Steaming per fill | 4.2 h | R8 met |
-| Relief valve orifice needed | 6.2 mm at 30 kg/h; 13.3 mm for a dry-coil refeed flash (138 kg/h); 3/4 in valve rated 170 kg/h | R9 met on paper |
-| Chimney outlet, hood outer skin | 2.4 m; 23 °C | R10 met |
-| Mass as towed, tank and seal drained | 499 kg with both hoods aboard (633 kg full; 437 kg with the hoods on a second vehicle) | R11 at risk |
-| Overall width | 1.48 m | R11 at risk |
-| Parts cost | USD 2,600 | USD 400 over the USD 2,200 value-engineering target |
+| Treatment rate, two hoods | 1.88 m²/h at 15 cm; 3.41 m²/h at 5 cm | PR-002, PR-014 (R2) at risk (restated to about 1.9 and 3.4 m²/h) |
+| Wood per m² at 15 cm | 4.36 kg/m² (4.44 kg/m² with the dampers wide open) | PR-004 (R4) not met; restatement to 4.5 kg/m² proposed, awaiting Amish |
+| Header pressure, normal | 0.033 bar gauge | PR-006 (R6) met (0.1 bar at the header) |
+| Coil inlet pressure, normal (at the bank inlet) | 0.129 bar gauge | PR-013 (R6) met (0.15 bar at the coil inlet) |
+| Water seal limit | 0.084 bar gauge with the overflow | PR-006 (R6) open vent met by design |
+| Water in heated section, flooded | 7.32 L | PR-007 (R7) met |
+| Steaming per fill | 4.2 h (battery to confirm: about 100 % depth of discharge at an assumed 4 A pump) | PR-008 (R8) at risk |
+| Relief valve orifice needed | 6.2 mm at 30 kg/h; 13.4 mm for a dry-coil refeed flash (141 kg/h on a 30 s basis, which is open, DEC #20); 3/4 in valve rated 170 kg/h | PR-009 (R9) met on paper |
+| Chimney outlet, hood outer skin | 3.2 m; 23 °C | PR-010 (R10) met |
+| Mass as towed, tank and seal drained | 509 kg with both hoods aboard (643 kg full; 447 kg with the hoods on a second vehicle) | PR-011 (R11) not met |
+| Overall width | 1.48 m | PR-015 (R11) at risk |
+| Parts cost | USD 2,720 | PR-012 (R12): USD 520 over the USD 2,200 value-engineering target |
 
-The main performance gap was heat transfer. One coil in the firebox takes heat mostly by radiation, and without the bank the flue gas left the economizer at about 450 °C. Amish decided on 2026-09-25 to keep the 65 % target and study a convective evaporator bank with controlled air, and on 2026-10-02 to size it with primary and secondary dampers inside the 8 L limit of R7. The study in STR-CAL-001 v0.4, section 4, found that the dampers alone lift efficiency from 51 % to 61 %, and that a 6.4 m bank of smaller-bore tube with one coil turn fewer reaches about 69 % with 7.3 L of water. Efficiency now depends on the operator keeping the dampers set; with them open it falls to about 61 %. R4 needs about 72 %, so it stays just short at 4.2 kg/m².
+The main performance gap was heat transfer, and the kit 1.9.1 STEM check found it was larger than version 0.4 of the calculation showed: the bank and economizer coefficients it assumed (30 and 25 W/(m² K)) hold only if the gas crosses the tubes briskly, and in the open boxes it rises at about 0.1 m/s, where they are about 12. The gas-pass baffles fix that (about 22 and 21 W/(m² K) after fouling and edge bypass, 66.1 %), and the 3.2 m chimney gives the draft to push the gas through them with the fuel bed counted. The history: One coil in the firebox takes heat mostly by radiation, and without the bank the flue gas left the economizer at about 450 °C. Amish decided on 2026-09-25 to keep the 65 % target and study a convective evaporator bank with controlled air, and on 2026-10-02 to size it with primary and secondary dampers inside the 8 L limit of R7. The study in STR-CAL-001 v0.4, section 4, found that the dampers alone lift efficiency from 51 % to 61 %, and that a 6.4 m bank of smaller-bore tube with one coil turn fewer reaches about 69 % with 7.3 L of water if the gas side delivers what was assumed; with the baffles it reaches 66.1 %. Efficiency depends on the operator keeping the dampers set and on an unburned loss of 4 %; at 6 % it falls to 64.3 %, with the dampers wide open to 64.9 %. PR-004 needs about 72 %, so it stays short at 4.36 kg/m².
 
 The second gap is steam per square meter. Soil behind the steam front sits at 100 °C, not 75 °C, and the front must go 1.5 cm past the working depth to hold 70 °C through the hold. In soils finer than sand, the steam cannot be pushed through 16.5 cm of soil at full flow without lifting a 31 kg hood, so real rates may be lower still. The hood handles are sized to carry 40 kg of ballast if the TRL 4 soil tests call for it.
 
@@ -153,7 +157,7 @@ SteamRoot is the highest-risk concept in the portfolio. Every later stage must k
 
 > **Safety: steam burns.** Steam at 100 °C releases its latent heat on skin and causes deep burns within a second. Divert steam to the vent before lifting a hood or moving the hose coupling. In fine soils steam may jet from under the hood skirt, because the soil resists steam flow more than the hood's weight can hold (STR-CAL-001, section 2). Keep hands and feet clear of the skirt and the vent outlet. Wear heat-resistant gloves, a face shield, long sleeves and closed boots. Keep bystanders, children and animals at least 5 m away. Use a steam-rated hose with a whip check, and inspect it before every use.
 
-> **Safety: dry coil.** If the feed pump stops or the tank runs dry, the coil heats toward the firebox gas temperature (about 520 °C) while the fire keeps burning. Refeeding it could flash about 1.3 kg of water at about five times the design steam flow, more than the vent path is sized for. Never restart the feed into a hot, dry coil. Close the air damper, let the fire die and let the coil cool first. The coil outlet alarm and the tank low-level alarm exist to catch this early.
+> **Safety: dry coil.** If the feed pump stops or the tank runs dry, the coil heats toward the firebox gas temperature (about 520 °C) while the fire keeps burning. Refeeding it could flash 1.2 kg of water or more (about 2 kg if the coil reaches 700 to 800 °C) at five times the design steam flow or more; the basis for sizing the vent path is still open (STR-DEC-001 #20). Never restart the feed into a hot, dry coil. Close the air damper, let the fire die and let the coil cool first. The coil outlet alarm and the tank low-level alarm exist to catch this early, and the coil alarm latches the pump off until it is reset by hand.
 
 > **Safety: fire.** Operate only on bare ground or gravel, clear of dry vegetation, with a fire extinguisher and water at hand. The spark arrestor must be fitted; the flue leaves at about 450 °C. Do not operate during fire bans or in high wind. Never leave a lit firebox unattended, and let it burn out fully before towing.
 
@@ -167,6 +171,8 @@ SteamRoot is the highest-risk concept in the portfolio. Every later stage must k
 ## Open questions
 
 These are tracked, with options and recommendations, in the design decisions register STR-DEC-001 ([docs/06-design-decisions.md](06-design-decisions.md)).
+
+- Raised by the kit 1.9.1 upgrade (2026-10-25), proposed, awaiting Amish: the concept choice between this design (A) and a vented fire-tube kettle (B), which score within 10 % (#14); hood handling, since a 31 kg hood is beyond one person and borderline for two (S2, a wheel kit recommended); battery size (#16); three new product requirements (#17); bed preparation and hood hold-down for finer soils (#18); the render site scene (#19); the refeed flash basis (#20); a firebox skin limit (#21). Decided under the standing instruction of 2026-10-23: gas-pass baffles (S1), the 3.2 m chimney outlet (S3) and the latching pump trip (S4).
 
 - Regulatory status of an open-vented, fired monotube coil in Amish's home jurisdiction, Texas: the written ruling is asked of the Texas Department of Licensing and Regulation's boiler program. Open prerequisite; gates all further work.
 - First co-design partners (decided 2026-10-02): one market garden and one nursery within driving distance of Irving that already steam, solarize or chemically treat soil, found through Texas A&M AgriLife Extension's horticulture contacts. None is named or agreed yet.

@@ -1,6 +1,7 @@
 """SteamRoot concept media from the TRL 3 parametric model.
 
-Run from the repo root:  python cad/src/concept_media.py
+Run from the repo root:  python cad/src/concept_media.py        (all concept media)
+                         python cad/src/concept_media.py web    (only the web model, media/model.glb)
 Geometry comes from cad/src/model.py and the figures from docs/04-calcs/sizing.py (STR-CAL-001),
 so the media, the model and the calculation stay in step. Not for fabrication.
 """
@@ -69,23 +70,24 @@ STYLE = [  # (model part name, label, color, BOM item, exploded offset in mm)
 parts = [Part(label, g[name], color, bom, off) for name, label, color, bom, off in STYLE]
 
 soil_kw = c["Q_steam"] * c["d15"]["eta_hood"]
-render_all(
-    parts, project="SteamRoot", title="Biomass steam trailer, TRL 3 model", dwg_no="STR-DWG-001",
-    key_figures=[
-        f"Open-vented: water seal {c['p_seal']/1e5:.3f} bar; bank inlet {c['p_inlet']/1e5:.2f} bar gauge (calc.)",
-        f"30 kg/h steam from {fb['wood_kg_h']:.0f} kg/h wood, {100*fb['eta']:.0f} % fuel to steam (calc.)",
-        f"{c['d15']['ms']:.1f} kg steam per m2 to 70 C at 15 cm (calc.)",
-        f"{c['rate15_2']:.1f} m2/h at 15 cm, {c['rate5_2']:.1f} m2/h at 5 cm, two hoods (calc.)",
-        f"Towed mass {c['m_empty_tank']:.0f} kg drained ({c['m_total']:.0f} kg full), width {c['width']:.2f} m (calc.)",
-    ],
-    cut_exclude=("Wheels", "Steam hose"),
-    flow={"title": "energy flow at 30 kg/h steam, 15 cm depth (all values calculated estimates, STR-CAL-001)",
-          "unit": "kW (est.)",
-          "stages": [("Wood fuel in", round(fb["Q_in"], 1)), ("Steam generator", round(c["Q_steam"], 1)),
-                     ("Steam hoods", round(c["Q_steam"], 1)), ("Soil, 0 to 16.5 cm", round(soil_kw, 1))],
-          "losses": [(1, "Flue and shell", round(fb["Q_in"] - c["Q_steam"], 1)),
-                     (2, "Skirt and hood", round(c["Q_steam"] - soil_kw, 1))]},
-)
+if "web" not in sys.argv[1:]:          # python cad/src/concept_media.py web  -> only media/model.glb
+  render_all(
+      parts, project="SteamRoot", title="Biomass steam trailer, TRL 3 model", dwg_no="STR-DWG-001",
+      key_figures=[
+          f"Open-vented: water seal {c['p_seal']/1e5:.3f} bar; bank inlet {c['p_inlet']/1e5:.2f} bar gauge (calc.)",
+          f"30 kg/h steam from {fb['wood_kg_h']:.0f} kg/h wood, {100*fb['eta']:.0f} % fuel to steam (calc.)",
+          f"{c['d15']['ms']:.1f} kg steam per m2 to 70 C at 15 cm (calc.)",
+          f"{c['rate15_2']:.1f} m2/h at 15 cm, {c['rate5_2']:.1f} m2/h at 5 cm, two hoods (calc.)",
+          f"Towed mass {c['m_empty_tank']:.0f} kg drained ({c['m_total']:.0f} kg full), width {c['width']:.2f} m (calc.)",
+      ],
+      cut_exclude=("Wheels", "Steam hose"),
+      flow={"title": "energy flow at 30 kg/h steam, 15 cm depth (all values calculated estimates, STR-CAL-001)",
+            "unit": "kW (est.)",
+            "stages": [("Wood fuel in", round(fb["Q_in"], 1)), ("Steam generator", round(c["Q_steam"], 1)),
+                       ("Steam hoods", round(c["Q_steam"], 1)), ("Soil, 0 to 16.5 cm", round(soil_kw, 1))],
+            "losses": [(1, "Flue and shell", round(fb["Q_in"] - c["Q_steam"], 1)),
+                       (2, "Skirt and hood", round(c["Q_steam"] - soil_kw, 1))]},
+  )
 
 # The kit exports glTF at a very fine tessellation; the 15 m helix then makes model.glb about 10 MB.
 # Re-export the same colored parts at a coarser tolerance for the web viewer.

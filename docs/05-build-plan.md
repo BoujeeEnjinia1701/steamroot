@@ -3,9 +3,9 @@ doc_id: STR-BLD-001
 title: SteamRoot prototype build plan
 project: SteamRoot
 doc_type: Build plan
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: "Approved 2026-10-02 decisions carried into the design: evaporator bank box between the roof and the economizer, 960 mm firebox and 10-turn coil, secondary air damper on the door, seal pot overflow with a loop seal, hood handles sized for ballast; pictures and sketches STR-DWG-101 to 126 regenerated"
+  - version: "0.4"
+    date: '2026-10-25'
+    author: Amish Chadha
+    change: "Kit 1.9.1 upgrade: gas-pass baffles in the bank box and economizer (STR-DEC-001 S1) with sections 3.30 and 3.31 and sketches STR-DWG-127 and 128; flue openings moved to the front and the chimney to the back; hood foot plates on two M6 bolts each; checks keyed to STR-PRS-001; pictures regenerated from the D3 model; after the independent review: chimney outlet 3.2 m (S3), latching pump trip (S4), 316L economizer baffles"
 ---
 
 # SteamRoot prototype build plan
@@ -35,7 +39,7 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order; the second hood is the same as the first.*
 
-The prototype is a small wood-fired steam generator on a used single-axle trailer, with two insulated steam hoods that are pressed onto a soil bed. On the trailer stand a lined steel firebox with a stainless steel coil above the fire and two air dampers, an evaporator bank box, a flue-gas economizer and a chimney stacked on the firebox roof, a steam header on a post with its water-seal pot, overflow, vent, relief valve and diverter, a feed water drum on two saddles, and a box holding the feed pump, battery and alarms. A 6 m steam hose takes the steam to whichever hood is in use. Figure 1 shows the 31 components in the order you make or fit them. Most are made in a farm or small fabrication workshop: the firebox shell, roof, skids, brackets, grate stand, door and dampers are cut and welded from mild steel sheet, tube and angle; the coil and the evaporator bank are each bent from one length of stainless tube; the bank box, the economizer box and its tube bank, the header, seal pot, overflow and post are made from sheet, pipe and tube; the hoods are folded and riveted from aluminium and galvanised sheet. Everything else is bought: the trailer, the ceramic fibre lining, the cast grate, the chimney and spark arrestor, the certified relief valve, the diverter, the hose, the drum, the pump and the alarms. The parts cost about $2,600 from the bill of materials.
+The prototype is a small wood-fired steam generator on a used single-axle trailer, with two insulated steam hoods that are pressed onto a soil bed. On the trailer stand a lined steel firebox with a stainless steel coil above the fire and two air dampers, an evaporator bank box, a flue-gas economizer and a chimney stacked on the firebox roof, a steam header on a post with its water-seal pot, overflow, vent, relief valve and diverter, a feed water drum on two saddles, and a box holding the feed pump, battery and alarms. A 6 m steam hose takes the steam to whichever hood is in use. Figure 1 shows the 31 components in the order you make or fit them. Most are made in a farm or small fabrication workshop: the firebox shell, roof, skids, brackets, grate stand, door and dampers are cut and welded from mild steel sheet, tube and angle; the coil and the evaporator bank are each bent from one length of stainless tube; the bank box, the economizer box and its tube bank, the header, seal pot, overflow and post are made from sheet, pipe and tube; the hoods are folded and riveted from aluminium and galvanised sheet. Everything else is bought: the trailer, the ceramic fibre lining, the cast grate, the chimney and spark arrestor, the certified relief valve, the diverter, the hose, the drum, the pump and the alarms. The parts cost about $2,720 from the bill of materials. Everything is stock section, sheet, tube or a catalogue part, built with the tools of a farm workshop and a competent welder (PR-018).
 
 ## 2. What changed to make it buildable
 
@@ -149,7 +153,7 @@ The skids hold the firebox floor 50 above the deck. That air gap keeps the deck 
 1. Cut the floor board 694 x 594 and lay it in first.
 2. Cut each layer of wall blanket 907 tall: the back and front 694 long, the two ends 494 long so they fit between them. Cut through the front for the door opening (300 x 240) and air inlet (160 x 60), and through the right end for the two tube slots, each lined up with the shell. Slot the blanket where the brackets pass (bracket size plus 1).
 3. Press each layer over the pins, the joints of the second layer staggered from the first, and hold it with speed washers. Brush on rigidizer.
-4. Cut the roof board 594 x 494 with a 150 hole in the centre; it goes on the roof (section 3.11).
+4. Cut the roof board 594 x 494 with a 150 hole centred on its length and 145 in front of the centre line (the operator side), under the roof plate's flue hole; it goes on the roof (section 3.11).
 
 **How it fits the parts next to it.** The walls stand on the floor board; the roof board fits inside the tops of the walls (Figure 18).
 
@@ -273,7 +277,7 @@ The skids hold the firebox floor 50 above the deck. That air gap keeps the deck 
 
 **How to make it.**
 
-1. Cut the plate 750 x 650 and a 150 hole in its centre.
+1. Cut the plate 750 x 650 and a 150 flue hole centred on its length and 145 in front of the centre line, so the gas enters the bank box at the front (STR-DEC-001 S1).
 2. Drill 14 holes of 9 mm to match the top frame (clamp the plate to the frame and drill through).
 3. Pin the roof board (section 3.5) centred under the plate with stainless pins and speed washers, lining up the two 150 holes.
 
@@ -291,11 +295,12 @@ The skids hold the firebox floor 50 above the deck. That air gap keeps the deck 
 
 **How to make it.**
 
-1. Cut the base 580 x 520 from 6 mm plate, with a 150 hole in the centre and twelve 9 mm holes 15 in from the edge for the roof studs.
+1. Cut the base 580 x 520 from 6 mm plate, with a 150 gas inlet hole centred on its length and 145 in front of the centre line, over the bank box outlet, and twelve 9 mm holes 15 in from the edge for the studs.
 2. Cut and weld the walls from 2 mm sheet, 520 x 460 outside and 260 tall, onto the base. Weld a 25 wide, 3 mm flange round the top outside, with eight 7 mm holes for the lid bolts.
 3. Weld two 25 x 3 support bars across the inside, 240 apart, their tops 54 above the base.
 4. Drill the two 13 mm holes for the bulkhead unions: in the left end 190 behind the centre line and 212 above the base; in the right end 152 in front and 60 above the base. Fit the unions.
 5. Drill a 12 mm drain hole in the left end, 14 above the base, 150 behind the centre line, and fit a stainless drain valve. The condensate is acid.
+6. Weld the four ledges for the gas-pass baffles to the inside of the two end walls (section 3.31).
 
 **How it fits the parts next to it.**
 
@@ -320,7 +325,7 @@ The skids hold the firebox floor 50 above the deck. That air gap keeps the deck 
 3. Leave a short straight at each end to meet the bulkhead unions.
 4. Pressure test it cold to 3 bar for 10 minutes.
 
-**How it fits the parts next to it.** Lower it into the open box onto the two support bars, then connect each end to its bulkhead union (step 10). Water enters at the top and leaves at the bottom, so the rising gas meets colder and colder tube.
+**How it fits the parts next to it.** Slide the two gas-pass baffles in between its layers (section 3.31), lower it with them into the open box onto the two support bars, then connect each end to its bulkhead union (step 10). Water enters at the top and leaves at the bottom, so the rising gas meets colder and colder tube.
 
 **Check before moving on.** No run touches a wall; no leak at 3 bar.
 
@@ -334,8 +339,8 @@ The skids hold the firebox floor 50 above the deck. That air gap keeps the deck 
 
 **How to make it.**
 
-1. Cut the lid 570 x 510 with a 148 hole in the centre and eight 7 mm holes matching the box's top flange.
-2. Weld a 148 outside diameter tube, 60 tall, upright into the hole.
+1. Cut the lid 570 x 510 with a 148 hole centred on its length and 145 behind the centre line (the outlet is at the back since the baffles, STR-DEC-001 S1), and eight 7 mm holes matching the box's top flange.
+2. Set a 148 outside diameter stainless tube, 62 long, upright through the hole, flush underneath, and weld it all round under the lid.
 
 **How it fits the parts next to it.** The lid sits on a rope gasket on the top flange under eight M6 bolts; the chimney (150 bore) slides over the spigot (Figure 18). Take the lid off to brush soot from the tube bank.
 
@@ -517,9 +522,9 @@ The pot stands on the deck in front of the header post, held by four M10 bolts a
 
 **What it is.** A weatherproof box, about 240 x 250 x 240, bolted to the deck on the left of the firebox, holding the feed pump with its needle valve and flow meter, the 12 V battery, a fuse, the main switch and the alarm controller, with the buzzer and lamp on its lid.
 
-**What to do to it.** Mount the parts on a board in the box and wire them as Figure 33 shows: battery through a 10 A fuse and the main switch to the pump and the controller in 2.5 mm² and 0.75 mm² wire; the type K thermocouple, clamped to the coil outlet pipe beside the header, back to the controller in type K cable with no joints; the drum's float switch to the controller; the controller's relay to the buzzer and lamp. Fit a cable gland for each cable that enters the box.
+**What to do to it.** Mount the parts on a board in the box and wire them as Figure 33 shows: battery through a 10 A fuse and the main switch to the controller, and from the controller's latching relay to the pump, in 2.5 mm² wire, with 0.75 mm² to the buzzer and lamp; the type K thermocouple, clamped to the coil outlet pipe beside the header, back to the controller in type K cable with no joints; the drum's float switch to the controller; the controller's alarm output to the buzzer and lamp. The pump is fed only through the latching relay, so a coil alarm stops it until the reset button is pressed (STR-DEC-001 S4). Fit a cable gland for each cable that enters the box.
 
-**Check before moving on.** With the main switch on, heating the thermocouple with a hot air gun sounds the alarm at about 150 °C, and lifting the float switch out of water sounds it too.
+**Check before moving on.** With the main switch on, heating the thermocouple with a hot air gun sounds the alarm at about 150 °C and stops the pump, which stays stopped when the gun is taken away until the reset is pressed; lifting the float switch out of water sounds the alarm too.
 
 ### 3.24 Bought components
 
@@ -529,7 +534,7 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 - **Feed drum (line 3).** 125 L HDPE drum with a bulkhead outlet and strainer near the bottom of one end, a filler cap and a level sight tube.
 - **Feed pump (line 4).** 12 V diaphragm pump, about 4 L/min, shut-off pressure 3 bar or less, with a needle valve and a rotameter flow meter.
 - **Lining, grate, door hardware (line 5).** Ceramic fibre blanket and board rated for 1260 °C with rigidizer; 300 x 300 cast grate; two weld-on lift-off hinges; a turn latch; 12 mm ceramic rope.
-- **Chimney and spark arrestor (line 8).** 150 mm single-wall stainless flue about 0.5 m and a spark arrestor cap with mesh of 6 mm or finer.
+- **Chimney and spark arrestor (line 8).** 150 mm single-wall stainless flue about 1.2 m, putting the outlet 3.2 m above ground (raised from 2.4 m for draft, STR-DEC-001 S3), and a spark arrestor cap with mesh of 6 mm or finer.
 - **Header and seal fittings (line 9).** DN50 stainless pipe and caps, sockets, 114.3 and 42.2 pipe, sight tube, drain valve; 3/4 in galvanised pipe, six elbows, a half coupling and a plug for the overflow; a three-way diverter valve rated for saturated steam that cannot stop with both outlets shut; a steam-rated quick coupling.
 - **Relief valve (line 10).** Certified, code-stamped steam safety valve, 15 psi (1.03 bar) set, 3/4 in, rated 170 kg/h (375 lb/h) or more.
 - **Steam hose (line 11).** EPDM saturated-steam hose, 25 bore, 6 m, ground-joint couplings and whip checks.
@@ -545,11 +550,11 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 
 *Figure 34. Evaporator bank box making sketch (STR-DWG-122).*
 
-**What it is and what it is made from.** A lined steel box that stands on the firebox roof and holds the evaporator bank in the hot gas leaving the firebox, before the gas reaches the economizer. It raises the fuel to steam efficiency from about 51 % to about 69 % with the dampers set (STR-CAL-001, section 4). Mild steel sheet 2 mm, 25 x 25 x 3 mm angle, 25 mm ceramic fibre blanket and board.
+**What it is and what it is made from.** A lined steel box that stands on the firebox roof and holds the evaporator bank in the hot gas leaving the firebox, before the gas reaches the economizer. With its gas-pass baffle (section 3.30) and the dampers set it raises the fuel to steam efficiency from about 51 % to about 68 % (STR-CAL-001 v0.5, section 4). Mild steel sheet 2 mm, 25 x 25 x 3 mm angle, 25 mm ceramic fibre blanket and board.
 
 **How to make it.**
 
-1. Fold or weld four walls of 2 mm sheet into an open box 700 x 600 outside (the size of the firebox) and 170 tall. Weld a 2 mm top plate on it with a 150 hole in the centre for the flue gas.
+1. Fold or weld four walls of 2 mm sheet into an open box 700 x 600 outside (the size of the firebox) and 170 tall. Weld a 2 mm top plate on it with a 150 gas outlet hole centred on its length and 145 in front of the centre line, over the roof's flue hole.
 2. Weld a frame of 25 x 25 x 3 angle round the outside of the bottom edge, horizontal leg outward, and drill 14 holes of 9 mm in it to match the roof bolt holes (clamp it to the roof and drill through).
 3. Weld twelve M8 studs on the top plate for the economizer base (mark them through the economizer base plate, section 3.12).
 4. In the right end, cut a slot 18 wide from the bottom edge up to 113, centred 152 in front of the centre line, for the bank's two tails. Make a 3 mm cover plate with two 16.5 holes, 60 apart vertically, to close it, held by two M5 screws.
@@ -571,10 +576,10 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 
 1. Bend the tube in one length into two layers of five straight runs, with the bends at 47.6 radius (a standard 5/8 in hand bender), the runs 95 apart and the bend tips 290 each side of the centre. Join the layers with a riser at the left end.
 2. Leave both ends straight at the right end, 152 in front of the centre line, one in the top layer (the inlet) and one in the bottom layer (the outlet), long enough to end 15 outside the box.
-3. Cut two support bars from 6 mm flat bar, 546 long and 37 tall, and two spacers 546 long and 44 tall.
+3. Cut two support bars from 6 mm flat bar, 546 long and 37 tall, and four spacers 546 long: two 20 tall (under the baffle) and two 23 tall (over it).
 4. Pressure test the bank cold to 3 bar with water; hold 10 minutes with no fall and no leak.
 
-**How it fits the parts next to it.** The two bars stand on the roof plate 300 apart across the box, the bottom layer rests on them, the spacers sit between the layers, and the top layer rests on the spacers. Water enters the top layer from the economizer and leaves the bottom layer for the coil, so the last of the water meets the hottest gas. A 15.88 to 12.7 reducing union on each tail joins the 12.7 link and jumper (step 18). Together the bank, coil, economizer and header hold about 7.3 L of water when flooded, inside the 8 L limit.
+**How it fits the parts next to it.** The two bars stand on the roof plate 300 apart across the box, the bottom layer rests on them, the lower spacers, the gas-pass baffle (section 3.30) and the upper spacers sit between the layers, and the top layer rests on the upper spacers. Water enters the top layer from the economizer and leaves the bottom layer for the coil, so the last of the water meets the hottest gas. A 15.88 to 12.7 reducing union on each tail joins the 12.7 link and jumper (step 18). Together the bank, coil, economizer and header hold about 7.3 L of water when flooded, inside the 8 L limit.
 
 **Check before moving on.** The bank sits on all four bars without rocking; the tails are level and square to the wall.
 
@@ -624,11 +629,45 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 **How to make it.**
 
 1. For each side, cut a 900 bar of 30 x 30 x 2.5 tube and cap its ends.
-2. Weld two standoffs of 30 x 30 tube, 57 long, under the bar 800 apart, and weld each to a 100 x 100 x 3 foot plate with four 7 mm holes.
+2. Weld two standoffs of 30 x 30 tube, 57 long, under the bar 800 apart, and weld each to a 100 x 100 x 3 foot plate with two 7 mm holes, 70 apart and level.
 
-**How it fits the parts next to it.** The foot plates are bolted through the hood wall, the hardwood block and the backing plate (section 3.20) with four M6 bolts each, centred 60 below the top of the hood. Each hood's handles carry up to 40 kg of ballast, two weights a side, at a load factor of 2; the bar then sees about 34 MPa, a seventh of its yield strength. With 40 kg on, the hood presses on the soil with about 580 Pa and the header pressure rises only to about 0.036 bar. How much ballast is needed is found in the soil tests at TRL 4. Take the weights off before a hood is lifted.
+**How it fits the parts next to it.** The foot plates are bolted through the hood wall, the hardwood block and the backing plate (section 3.20) with two M6 bolts each, centred 60 below the top of the hood; the nuts are inside the hood on the inner pan. Four bolts do not fit: the upper pair would come out in the insulation under the hood roof. Each hood's handles carry up to 40 kg of ballast, two weights a side, at a load factor of 2; the bar then sees about 34 MPa, a seventh of its yield strength. With 40 kg on, the hood presses on the soil with about 580 Pa and the header pressure rises only to about 0.036 bar. How much ballast is needed is found in the soil tests at TRL 4. Take the weights off before a hood is lifted.
 
 **Check before moving on.** A 20 kg weight hung at the middle of a bar causes no visible bend or play.
+
+### 3.30 Evaporator bank gas-pass baffle
+
+![Figure 39. Making sketch of the bank gas-pass baffle](../cad/drawings/STR-DWG-127.png)
+
+*Figure 39. Bank gas-pass baffle making sketch (STR-DWG-127).*
+
+**What it is and what it is made from.** A flat stainless plate between the two layers of the evaporator bank that makes the hot gas cross the tubes twice, sideways, instead of creeping up past them. Without it the gas moves at about 0.1 m/s and the bank does little; with it the gas crosses the tubes at about 1 m/s and the machine makes about 68 % instead of about 60 % (STR-CAL-001 v0.5, section 4; decided under Amish's standing instruction of 2026-10-23, STR-DEC-001 S1). Stainless steel 304 sheet 1.5 mm.
+
+**How to make it.**
+
+1. Cut the baffle 644 x 471 from 1.5 mm 304 stainless, corners rounded to 5 mm, edges deburred.
+2. Cut the four spacers of section 3.26 (two 20 tall, two 23 tall).
+
+**How it fits the parts next to it.** It fills the lined box from end to end and from the front lining to 73 short of the back lining. Gas from the roof hole at the front runs under it across the bottom layer, turns up through the gap at the back, and runs over it across the top layer to the outlet at the front. Slide it in from the front between the layers, on the lower spacers, and slide the upper spacers in on top: it is clamped, with no fixings, so it can expand.
+
+**Check before moving on.** The baffle lies flat on the lower spacers, its back edge 73 from the back lining; the bank riser at the back left passes through the gap.
+
+### 3.31 Economizer gas-pass baffles and ledges
+
+![Figure 40. Making sketch of the economizer baffles](../cad/drawings/STR-DWG-128.png)
+
+*Figure 40. Economizer gas-pass baffles and ledges making sketch (STR-DWG-128).*
+
+**What it is and what it is made from.** Two stainless plates between the three layers of the economizer tube bank that make the gas cross each layer in turn, on four flat-bar ledges (STR-DEC-001 S1). Stainless steel 316L sheet 1 mm, chosen because the economizer runs wet with acid condensate; flat bar 25 x 3 under the lower baffle and 10 x 3 mm under the upper.
+
+**How to make it.**
+
+1. Cut the lower baffle 494 x 397 and the upper baffle 514 x 397 from 1 mm 316L stainless, corners rounded to 5 mm.
+2. Weld two 25 x 3 ledges, about 387 long, to the end walls with their tops 97.5 above the floor, from the front wall back; and two 10 x 3 ledges with their tops 173.5 up, from the back wall forward. One fillet weld under each.
+
+**How it fits the parts next to it.** On the bench, slide the lower baffle in between the bottom and middle layers of the tube bank from the front, and the upper baffle between the middle and top layers from the back. Lower the bank with both baffles into the box: the lower baffle passes between the narrow upper ledges and lands on the wide lower ledges, which close its end gaps; the upper baffle lands on the upper ledges. Gas enters at the front of the floor, crosses the bottom layer to the back, the middle layer forward and the top layer back to the outlet and chimney at the back.
+
+**Check before moving on.** Both baffles rest on their ledges, each with its 58 gap at the side where the tube riser passes; no baffle touches a tube.
 
 ## 4. Putting it together
 
@@ -692,19 +731,19 @@ Lay ceramic rope on the top frame, lower the roof and board on, and fit the 14 M
 
 ![Step 10](05-build-plan/step-10.png)
 
-Lower the tube bank onto the two support bars and connect each end to its bulkhead union.
+Slide the two gas-pass baffles in between the layers of the tube bank (lower one from the front, upper one from the back; section 3.31), lower the bank with them onto the support bars and ledges, and connect each end to its bulkhead union.
 
 ### Step 11: evaporator bank, economizer and lid onto the roof
 
 ![Step 11](05-build-plan/step-11.png)
 
-Stand the two support bars on the roof, set the bottom layer of the bank on them with its tails to the right, and fit the spacers. Lay rope gasket round the roof edge, lower the bank box over the bank so the tails come up the slot, and fit the slot cover. Fit the 14 M8 x 35 bolts through the box frame, roof and top frame, tightened evenly. Lay rope gasket on the box top round the flue hole, set the economizer over the twelve studs and fit the nuts. Lay rope on the top flange and bolt the lid on with eight M6 bolts.
+Stand the two support bars on the roof, set the bottom layer of the bank on them with its tails to the right, slide in the lower spacers, the gas-pass baffle from the front (section 3.30) and the upper spacers. Lay rope gasket round the roof edge, lower the bank box over the bank so the tails come up the slot, and fit the slot cover. Fit the 14 M8 x 35 bolts through the box frame, roof and top frame, tightened evenly. Lay rope gasket on the box top round the flue hole, set the economizer over the twelve studs and fit the nuts. Lay rope on the top flange and bolt the lid on with eight M6 bolts.
 
 ### Step 12: chimney and spark arrestor
 
 ![Step 12](05-build-plan/step-12.png)
 
-Slide the chimney over the spigot and fix it with three self-drilling screws; push the spark arrestor cap onto its top. Check the mesh is in place.
+Slide the chimney over the spigot at the back of the economizer lid and fix it with three self-drilling screws; push the spark arrestor cap onto its top. Check the mesh is in place and the outlet stands about 3.2 m above the ground. The flue stands 1.2 m above the lid: check it is upright and do not fire in high wind (its stability in wind is not yet checked).
 
 ### Step 13: header post and header
 
@@ -756,25 +795,27 @@ Couple the hose to the diverter and to the hood in use, and fit the whip checks 
 
 ## 5. First checks
 
-These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of STR-REQ-001.
+These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of STR-PRS-001, with the old STR-REQ-001 numbers in brackets.
 
 *Table 2. First checks.*
 
 | Check | Requirement | How | Pass when |
 | --- | --- | --- | --- |
-| Open path to the vent | R6 | Cold, empty: with the diverter in each of its positions, blow low-pressure air into the bank inlet | Air always leaves by the vent or the hose; no position closes both |
-| Seal limit | R6 | Pot filled to the mark with cold water; raise the header pressure slowly with air through a regulator; watch the gauge | Steam path opens (air bubbles through) at 0.08 to 0.09 bar; water above the mark leaves by the overflow; no water leaves the vent |
-| Water in the heated section | R7 | Fill the coil, bank, economizer and header; drain and measure | 8 L or less (7.3 L calculated) |
-| Leak test, steam side | R6, R7 | Cold water at 3 bar for 10 minutes, seal pot branch plugged for the test only | No leak, no pressure fall; plug removed |
-| Feed rate | R3, R8 | Set the needle valve; time a measured volume at the coil inlet | 0.5 L/min (30 kg/h) |
-| Alarms | Feed control (STR-DDR-001) | Heat the thermocouple with a hot air gun; lift the float switch | Alarm sounds at about 150 °C and at about 20 L left |
-| Relief valve | R9 | Read the nameplate and code stamp; lift the test lever cold | 15 psi set; 170 kg/h or more; lever moves freely |
-| Chimney and mesh | R10 | Measure the outlet height and the mesh | 2.2 m or more (2.4 m); mesh 6 mm or finer |
-| Mass and width | R11 | Weigh on a weighbridge with the drum and pot drained; measure the width | 500 kg or less (499 kg estimated with both hoods aboard, 437 kg without); 1.5 m or less (1.48 m) |
-| Steam output and pressure (first fire) | R3, R6 | With feed at 0.5 L/min, fire to steady steam at the hood; read the header gauge | Dry steam at the hood; header 0.1 bar or less |
-| Hood handles | R10 | Contact thermometer on the handles and outer skin after 30 minutes of steaming | 60 °C or less |
-| Run per fill | R8 | Time from a full drum to the low-level alarm | 3 h or more (4.2 h calculated) |
-| Soil temperature | R1 | Type K probes at 15 cm under a hood | 70 °C or more for 20 to 30 minutes over 80 % of the footprint |
+| Open path to the vent | PR-006 (R6) | Cold, empty: with the diverter in each of its positions, blow low-pressure air into the bank inlet | Air always leaves by the vent or the hose; no position closes both |
+| Seal limit | PR-006 (R6) | Pot filled to the mark with cold water; raise the header pressure slowly with air through a regulator; watch the gauge | Steam path opens (air bubbles through) at 0.08 to 0.09 bar; water above the mark leaves by the overflow; no water leaves the vent |
+| Water in the heated section | PR-007 (R7) | Fill the coil, bank, economizer and header; drain and measure | 8 L or less (7.3 L calculated) |
+| Leak test, steam side | PR-013, PR-007 (R6, R7) | Cold water at 3 bar for 10 minutes, seal pot branch plugged for the test only | No leak, no pressure fall; plug removed |
+| Feed rate | PR-003, PR-008 (R3, R8) | Set the needle valve; time a measured volume at the coil inlet | 0.5 L/min (30 kg/h) |
+| Alarms | Feed control (STR-DDR-001) | Heat the thermocouple with a hot air gun; lift the float switch | Alarm sounds at about 150 °C and the pump stays off until reset by hand; alarm at about 20 L left |
+| Relief valve | PR-009 (R9) | Read the nameplate and code stamp; lift the test lever cold | 15 psi set; 170 kg/h or more; lever moves freely |
+| Chimney and mesh | PR-010 (R10) | Measure the outlet height and the mesh | 2.2 m or more (3.2 m); mesh 6 mm or finer |
+| Mass and width | PR-011, PR-015 (R11) | Weigh on a weighbridge with the drum and pot drained; measure the width | 500 kg or less (509 kg estimated with both hoods aboard, 447 kg without); 1.5 m or less (1.48 m) |
+| Steam output and pressure (first fire) | PR-003, PR-006 (R3, R6) | With feed at 0.5 L/min, fire to steady steam at the hood; read the header gauge | Dry steam at the hood; header 0.1 bar or less |
+| Hood handles | PR-010 (R10) | Contact thermometer on the handles and outer skin after 30 minutes of steaming | 60 °C or less |
+| Run per fill | PR-008 (R8) | Time from a full drum to the low-level alarm | 3 h or more (4.2 h calculated) |
+| Soil temperature | PR-001 (R1) | Type K probes at 15 cm under a hood | 70 °C or more for 20 to 30 minutes over 80 % of the footprint |
+| Gas-pass baffles in place | PR-005 (R5) | With the economizer lid off and before the bank box goes on, look | Bank baffle on its spacers, gap at the back; economizer baffles on their ledges, gaps at alternate sides |
+| Hood handling | PR-016 | Weigh a hood; two people lift it by the handles with the ballast off | 23 kg or less per person |
 
 ## 6. Safety stops
 
@@ -803,10 +844,10 @@ Stop at each point. Carry on only when everything listed is true.
 
 ## 8. Where the numbers come from
 
-- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 124 checks); STEP and STL exports in `cad/step/` and `cad/stl/`.
-- Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/STR-DWG-101` to `STR-DWG-126`.
-- General arrangement: `cad/drawings/STR-DWG-002.pdf`, Rev P4.
-- Calculations: `docs/04-calcs/01-sizing.md` (STR-CAL-001 v0.4) and `docs/04-calcs/sizing.py`; evaporator bank and dampers section 4, masses section 7, pressures and seal section 5, stored water and the overflow section 6.
+- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 124 checks) and the kit 1.9 fidelity check (`python .kit/cad_check.py --export`, detail level D3, `cad/fidelity.json`); STEP per part in `cad/step/A/` and assemblies in `cad/step/`, STL in `cad/stl/`.
+- Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/STR-DWG-101` to `STR-DWG-128`.
+- General arrangement: `cad/drawings/STR-DWG-002.pdf`, Rev P5.
+- Calculations: `docs/04-calcs/01-sizing.md` (STR-CAL-001 v0.5) and `docs/04-calcs/sizing.py`; evaporator bank, baffles and dampers section 4, masses section 7, pressures and seal section 5, stored water and the overflow section 6.
 - Bill of materials: `bom/bom.csv`.
-- Decisions: `docs/decisions/0003-design-for-construction.md` (STR-DDR-003), with STR-DDR-001 and STR-DDR-002; open decisions in `docs/06-design-decisions.md` (STR-DEC-001).
-- Requirements: `docs/03-requirements.md` (STR-REQ-001 v0.7).
+- Decisions: `docs/decisions/0003-design-for-construction.md` (STR-DDR-003), with STR-DDR-001 and STR-DDR-002; STR-DDR-004 (concept selection and STEM check fixes); open decisions in `docs/06-design-decisions.md` (STR-DEC-001).
+- Requirements: `docs/03-requirements.md` (STR-PRS-001 v0.8), traced in `docs/03b-traceability.md`.

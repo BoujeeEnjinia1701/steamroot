@@ -3,9 +3,9 @@ doc_id: STR-PRB-001
 title: SteamRoot problem statement
 project: SteamRoot
 doc_type: Problem statement
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Partners and authority answered by Amish's 2026-10-02 decisions"
+- version: "0.6"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Users-and-needs and stakeholder tables added (kit 1.9.1 upgrade, STANDARDS section 22); user requirements in STR-URS-001"
 ---
 
 # SteamRoot problem statement
@@ -55,6 +59,30 @@ Heating soil to about 70 °C (158 °F) for 20 to 30 minutes kills most weed seed
 | Community garden or farm cooperative | A shared, towable machine that several growers can use | Shared equipment, varied operator experience |
 | Extension educator or researcher | An open, documented reference design to demonstrate and study | Field days, trials, university farms |
 | Open hardware community | A buildable, inspectable low-pressure steam design | Farm workshops, makerspaces |
+
+Table 1. Users and needs (kit 1.8 form; the user requirements drawn from it are in STR-URS-001).
+
+| User type | Goals and needs | Typical use scenario | Pain points and challenges |
+| --- | --- | --- | --- |
+| Small organic farm or market garden | Clear weed seeds and disease from high-value beds without herbicides; use the farm's own wood | Steaming beds 0.75 to 1.2 m wide before a high-value crop, hood by hood, through a working day | Hand weeding is often the largest labour cost; commercial steamers are diesel-fired and costly |
+| Nursery or seedling grower | Pasteurize propagation beds and potting media | Steam piped into a polytunnel or shed from a generator parked outside | The fire and its carbon monoxide must stay outdoors |
+| Community garden or farm cooperative | Share one towable machine between growers | Towed between sites by car or utility vehicle; varied operators | Operator skill varies; towed mass and width limits |
+| Operator (any of the above) | Run it safely alone with a helper nearby | Lighting, setting the feed and dampers, moving the hose and hoods | Steam burns, hot surfaces, heavy hoods, refilling water |
+| Extension educator or researcher | An open, documented reference design | Field days, trials, university farms | Proprietary equipment cannot be inspected or taught from |
+| Open hardware community | A buildable, inspectable low-pressure steam design | Farm workshops and makerspaces | Improvised sealed rigs are dangerous |
+
+## Stakeholders
+
+Table 2. Stakeholders.
+
+| Stakeholder group | Role or interest | Engagement needed |
+| --- | --- | --- |
+| Texas Department of Licensing and Regulation, boiler program | Rules whether an open-vented, fired monotube coil is a regulated boiler (Texas Health and Safety Code chapter 755) | A written ruling before any build (decided by Amish 2026-10-02); the design is reviewed against it |
+| Texas A&M AgriLife Extension, horticulture contacts | Route to the first co-design partners (decided by Amish 2026-10-02) | Introductions to one market garden and one nursery |
+| First co-design partners (one market garden, one nursery near Irving) | Use the machine and judge the targets | Review the user and product requirements; host TRL 4 soil tests when Amish approves TRL 4 |
+| County fire marshal or commissioners court | Burn bans on outdoor burning in dry periods (Texas Local Government Code 352.081) | Check before each use (STR-REG-001) |
+| Organic certifier | Whether steaming fits the grower's organic system plan (7 CFR 205.206 lists heat as a weed control) | The grower confirms with their certifier |
+| Amish Chadha | Owner of scope, budget, naming and safety trade-offs | Decisions in STR-DEC-001 |
 
 ## Constraints
 
